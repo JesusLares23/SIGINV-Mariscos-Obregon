@@ -11,13 +11,32 @@ import java.awt.BorderLayout;
  * @author demib
  */
 public class MainFrame extends javax.swing.JFrame {
+    
+        /* moviendo por pruebas
     PnlCarrito pnlCarrito = new PnlCarrito();
     PnlProductos pnlProductos = new PnlProductos(pnlCarrito);
+    */
+    
+    private PnlCarrito pnlCarrito;
+    private PnlProductos pnlProductos;
+    private PnlProveedores pnlProveedores;
+    
+    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        
+                
+        pnlCarrito = new PnlCarrito();
+        pnlProductos = new PnlProductos(pnlCarrito);
+        pnlProveedores = new PnlProveedores();
+        
+         pnlCarrito.setReferences(pnlContainer, pnlProveedores,lblVentana);
+         
+          pnlProveedores.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
+        
         
     }
 
