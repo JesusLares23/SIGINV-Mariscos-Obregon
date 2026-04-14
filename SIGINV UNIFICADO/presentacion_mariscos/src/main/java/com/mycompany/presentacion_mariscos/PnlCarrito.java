@@ -4,6 +4,7 @@
  */
 package com.mycompany.presentacion_mariscos;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BoxLayout;
@@ -19,6 +20,12 @@ import javax.swing.JScrollPane;
 public class PnlCarrito extends javax.swing.JPanel {
     
     private List<ItemCarrito> listaOrden;
+    
+    
+    //necesario para desplegar PnlProveedores
+    private JPanel pnlContainer;
+    private PnlProveedores pnlProveedores;
+    private JLabel lblVentana;
 
     /**
      * Creates new form PnlCarrito
@@ -112,7 +119,12 @@ public class PnlCarrito extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
-        // TODO add your handling code here:
+        // Despliega panel proveedores
+        pnlContainer.removeAll();
+        pnlContainer.add(pnlProveedores, BorderLayout.CENTER);
+         lblVentana.setText("Selecciona Proveedor");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
         
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
@@ -125,6 +137,14 @@ public class PnlCarrito extends javax.swing.JPanel {
     private javax.swing.JPanel pnlHeader;
     // End of variables declaration//GEN-END:variables
 
+    
+        //necesario para desplegar PnlProveedores
+    public void setReferences(JPanel pnlContainer, PnlProveedores pnlProveedores, JLabel lblVentana) {
+        this.pnlContainer = pnlContainer;
+        this.pnlProveedores = pnlProveedores;
+         this.lblVentana = lblVentana;
+    }
+    
     public JButton getjButton1() {
         return btnSiguiente;
     }
