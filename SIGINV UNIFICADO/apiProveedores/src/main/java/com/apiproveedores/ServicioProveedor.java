@@ -156,6 +156,16 @@ public class ServicioProveedor extends JFrame{
         }
     }
     
+    //prueba para conexión  con pantalla de proveedores
+public List<Producto> obtenerProductos() {
+    if (productos == null) {
+        configurarDiccionarioUnidades();
+        inicializarProductos();
+    }
+    return productos;
+}
+    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new ServicioProveedor().setVisible(true);
