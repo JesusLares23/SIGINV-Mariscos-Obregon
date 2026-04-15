@@ -1,9 +1,12 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.presentacion_mariscos;
 
+
+import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
 import java.awt.BorderLayout;
 
 /**
@@ -19,7 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private PnlCarrito pnlCarrito;
     private PnlProductos pnlProductos;
-    private PnlProveedores pnlProveedores;
+    private PnlProveedores pnlProveedores2;
     
     
     /**
@@ -31,11 +34,11 @@ public class MainFrame extends javax.swing.JFrame {
                 
         pnlCarrito = new PnlCarrito();
         pnlProductos = new PnlProductos(pnlCarrito);
-        pnlProveedores = new PnlProveedores();
+        pnlProveedores2 = new PnlProveedores();
         
-         pnlCarrito.setReferences(pnlContainer, pnlProveedores,lblVentana);
+         pnlCarrito.setReferences(pnlContainer, pnlProveedores2,lblVentana);
          
-          pnlProveedores.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
+          pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
         
         
     }
