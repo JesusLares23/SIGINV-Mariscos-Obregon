@@ -4,6 +4,7 @@
  */
 package com.mycompany.presentacion_mariscos;
 
+import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,9 @@ public class PnlCarrito extends javax.swing.JPanel {
     private List<ItemCarrito> listaOrden;
     
     
-    //necesario para desplegar PnlProveedores
+    //necesario para desplegar PnlProveedores2
     private JPanel pnlContainer;
-    private PnlProveedores pnlProveedores;
+    private PnlProveedores pnlProveedores2;
     private JLabel lblVentana;
 
     /**
@@ -121,7 +122,7 @@ public class PnlCarrito extends javax.swing.JPanel {
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // Despliega panel proveedores
         pnlContainer.removeAll();
-        pnlContainer.add(pnlProveedores, BorderLayout.CENTER);
+        pnlContainer.add(pnlProveedores2, BorderLayout.CENTER);
          lblVentana.setText("Selecciona Proveedor");
         pnlContainer.revalidate();
         pnlContainer.repaint();
@@ -139,9 +140,9 @@ public class PnlCarrito extends javax.swing.JPanel {
 
     
         //necesario para desplegar PnlProveedores
-    public void setReferences(JPanel pnlContainer, PnlProveedores pnlProveedores, JLabel lblVentana) {
+    public void setReferences(JPanel pnlContainer, PnlProveedores pnlProveedores2, JLabel lblVentana) {
         this.pnlContainer = pnlContainer;
-        this.pnlProveedores = pnlProveedores;
+        this.pnlProveedores2 = pnlProveedores2;
          this.lblVentana = lblVentana;
     }
     
