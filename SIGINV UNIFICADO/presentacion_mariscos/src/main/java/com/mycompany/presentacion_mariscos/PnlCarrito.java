@@ -13,6 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import com.mycompany.dto_mariscos.Carrito;
+import com.mycompany.dto_mariscos.Insumo;
+import com.mycompany.dto_mariscos.Inventario;
+
 
 /**
  *
@@ -21,7 +25,7 @@ import javax.swing.JScrollPane;
 public class PnlCarrito extends javax.swing.JPanel {
     
     private List<ItemCarrito> listaOrden;
-    
+    private Carrito carritoEntidad;
     
     //necesario para desplegar PnlProveedores2
     private JPanel pnlContainer;
@@ -34,7 +38,7 @@ public class PnlCarrito extends javax.swing.JPanel {
     public PnlCarrito() {
         initComponents();
         listaOrden = new ArrayList<>();
-        
+        carritoEntidad = new Carrito();
     }
 
     /**
@@ -192,6 +196,35 @@ public class PnlCarrito extends javax.swing.JPanel {
 
     public void setListaOrden(List<ItemCarrito> listaOrden) {
         this.listaOrden = listaOrden;
+    }
+    
+    public Carrito getCarritoEntidad() {
+        return carritoEntidad;
+    }
+    
+    public void agregarItemAlCarrito(Inventario inventario, double cantidad) {
+        ItemCarrito item = new ItemCarrito(inventario, cantidad, this);
+        item.getLblCantidad().setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
+        listaOrden.add(item);
+        pnlCardsCarrito.add(item);
+        
+        carritoEntidad.agregarInsumo(inventario.getInsumo(), cantidad);
+        
+        revalidate();
+        repaint();
+    }
+    
+    public void eliminarItem(ItemCarrito item, Insumo insumo) {
+        listaOrden.remove(item);
+        pnlCardsCarrito.remove(item);
+        carritoEntidad.quitarInsumo(insumo);
+        revalidate();
+        repaint();
+    }
+    
+    public void actualizarCantidadItem(Insumo insumo, double nuevaCantidad) {
+        carritoEntidad.actualizarCantidad(insumo, nuevaCantidad);
+        // La vista ya se actualiza en ItemCarrito, no necesitamos más
     }
 
     @Override

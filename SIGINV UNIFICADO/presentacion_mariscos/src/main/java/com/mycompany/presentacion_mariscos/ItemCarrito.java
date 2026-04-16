@@ -4,7 +4,6 @@
  */
 package com.mycompany.presentacion_mariscos;
 
-
 import com.mycompany.dto_mariscos.Insumo;
 import com.mycompany.dto_mariscos.Inventario;
 import javax.swing.*;
@@ -14,10 +13,8 @@ import java.awt.*;
  *
  * @author demib
  */
-
-
 public class ItemCarrito extends JPanel {
-    
+
     private Insumo insumo;
     private Inventario inventario;
     private double cantidad;
@@ -34,28 +31,49 @@ public class ItemCarrito extends JPanel {
         this.cantidad = cantidad;
         initComponentes();
 
+        btnMas.addActionListener(e -> {
+            String unidadMedida = inventario.getInsumo().getUnidadMedida();
+            if (unidadMedida.equals("botella") || unidadMedida.equals("paquete")
+                    || unidadMedida.equals("pieza")) {
+                ItemCarrito.this.cantidad += 1;   // uso explícito del campo
+            } else {
+                ItemCarrito.this.cantidad += 0.5;
+            }
+            lblCantidad.setText(ItemCarrito.this.cantidad + " " + inventario.getInsumo().getUnidadMedida());
+            pnlCarrito.actualizarCantidadItem(inventario.getInsumo(), ItemCarrito.this.cantidad);
+        });
+
+        btnMenos.addActionListener(e -> {
+            if (ItemCarrito.this.cantidad > 0) {
+                String unidadMedida = inventario.getInsumo().getUnidadMedida();
+                if (unidadMedida.equals("botella") || unidadMedida.equals("paquete")
+                        || unidadMedida.equals("pieza")) {
+                    ItemCarrito.this.cantidad -= 1;
+                } else {
+                    ItemCarrito.this.cantidad -= 0.5;
+                }
+                lblCantidad.setText(ItemCarrito.this.cantidad + " " + inventario.getInsumo().getUnidadMedida());
+                pnlCarrito.actualizarCantidadItem(inventario.getInsumo(), ItemCarrito.this.cantidad);
+            }
+        });
+
         // al eliminar, quita de la vista Y de la lista
         btnEliminar.addActionListener(e -> {
-            pnlCarrito.getListaOrden().remove(this);  // quita de la lista
-
-            Container padre = getParent();
-            padre.remove(this);                        // quita de la vista
-            padre.revalidate();
-            padre.repaint();
+            pnlCarrito.eliminarItem(this, inventario.getInsumo());
         });
     }
 
     private void initComponentes() {
         setLayout(new BorderLayout(5, 2));
         setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
-            BorderFactory.createEmptyBorder(6, 8, 6, 8)
+                BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
+                BorderFactory.createEmptyBorder(6, 8, 6, 8)
         ));
         setBackground(Color.WHITE);
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
 
         // Label stock (arriba)
-        lblStock = new JLabel("Stock: " + inventario.getStockActual()+ " " + inventario.getInsumo().getUnidadMedida() + " (Bajo)");
+        lblStock = new JLabel("Stock: " + inventario.getStockActual() + " " + inventario.getInsumo().getUnidadMedida() + " (Bajo)");
         lblStock.setFont(new Font("SansSerif", Font.PLAIN, 10));
         lblStock.setForeground(Color.GRAY);
 
@@ -105,41 +123,36 @@ public class ItemCarrito extends JPanel {
         lblCantidad.setHorizontalAlignment(SwingConstants.CENTER);
         lblCantidad.setPreferredSize(new Dimension(50, 32));
 
-        
         // Acciones
         btnMas.addActionListener(e -> {
             //Unidad de Medida del Insumo para validaciones
             String unidadMedida = inventario.getInsumo().getUnidadMedida();
-            
-            
+
             //Validacion para la unidad de medida
-            if(unidadMedida.equals("botella") || unidadMedida.equals("paquete")  || unidadMedida.equals("pieza") ){
+            if (unidadMedida.equals("botella") || unidadMedida.equals("paquete") || unidadMedida.equals("pieza")) {
                 cantidad += 1;
-                
-            }else{
+
+            } else {
                 cantidad += 0.5;
             }
-            
-            
+
             lblCantidad.setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
         });
 
         btnMenos.addActionListener(e -> {
             if (cantidad > 0) {
-                
+
                 //Unidad de Medida del Insumo para validaciones
                 String unidadMedida = inventario.getInsumo().getUnidadMedida();
 
-
                 //Validacion para la unidad de medida
-                if(unidadMedida.equals("botella") || unidadMedida.equals("paquete")  || unidadMedida.equals("pieza")){
+                if (unidadMedida.equals("botella") || unidadMedida.equals("paquete") || unidadMedida.equals("pieza")) {
                     cantidad -= 1;
 
-                }else{
+                } else {
                     cantidad -= 0.5;
                 }
-                
-                
+
                 lblCantidad.setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
             }
         });
@@ -235,5 +248,4 @@ public class ItemCarrito extends JPanel {
         this.btnMas = btnMas;
     }
 
-    
 }

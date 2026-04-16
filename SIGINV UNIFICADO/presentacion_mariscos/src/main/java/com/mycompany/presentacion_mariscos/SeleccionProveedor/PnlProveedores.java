@@ -2,8 +2,10 @@ package com.mycompany.presentacion_mariscos.SeleccionProveedor;
 
 import com.apiproveedores.Producto;
 import com.apiproveedores.ServicioProveedor;
+import com.mycompany.dto_mariscos.Carrito;
 import com.mycompany.presentacion_mariscos.PnlCarrito;
 import com.mycompany.presentacion_mariscos.PnlProductos;
+import com.mycompany.presentacion_mariscos.PnlResumenOrden;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -22,7 +24,6 @@ public class PnlProveedores extends JPanel {
     private JLabel lblVentana;
 
     private Map<String, Set<String>> proveedorProductos;
-
 
     private String proveedorSeleccionado;
     private JPanel tarjetaSeleccionada;
@@ -86,7 +87,6 @@ public class PnlProveedores extends JPanel {
 
         proveedorSeleccionado = DatosOrden.proveedorSeleccionado;
         restaurarSeleccion();
-       
 
     }
 
@@ -146,16 +146,34 @@ public class PnlProveedores extends JPanel {
     }
 
     private void irSiguiente() {
-    if (proveedorSeleccionado == null) {
-        JOptionPane.showMessageDialog(this, 
-            "Selecciona un proveedor antes de continuar");
-        return;
-    }
+        if (proveedorSeleccionado == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecciona un proveedor antes de continuar");
+            return;
+        }
 
+        DatosOrden.proveedorSeleccionado = proveedorSeleccionado;
+        System.out.println("Proveedor seleccionado: " + proveedorSeleccionado);
 
-    DatosOrden.proveedorSeleccionado = proveedorSeleccionado;
+        Carrito carrito = pnlCarrito.getCarritoEntidad();   // Declaración local
+        String responsable = "Encargado de cocina";
 
-    System.out.println("Proveedor seleccionado: " + proveedorSeleccionado);
+        PnlResumenOrden resumen = new PnlResumenOrden(
+                pnlContainer, 
+                this, 
+                pnlCarrito, 
+                pnlProductos, 
+                lblVentana, 
+                carrito, 
+                proveedorSeleccionado, 
+                responsable 
+        );
+
+        pnlContainer.removeAll();
+        pnlContainer.add(resumen, BorderLayout.CENTER);
+        lblVentana.setText("Resumen de la Orden");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
 
     }
 
@@ -172,7 +190,9 @@ public class PnlProveedores extends JPanel {
 
     private void restaurarSeleccion() {
 
-        if (DatosOrden.proveedorSeleccionado == null) return;
+        if (DatosOrden.proveedorSeleccionado == null) {
+            return;
+        }
 
         for (Component comp : getComponents()) {
             buscarYMarcar(comp);
@@ -192,7 +212,7 @@ public class PnlProveedores extends JPanel {
                 }
 
                 tarjetaSeleccionada = panel;
-                panel.setBorder(BorderFactory.createLineBorder(new Color(35,53,74), 3));
+                panel.setBorder(BorderFactory.createLineBorder(new Color(35, 53, 74), 3));
                 proveedorSeleccionado = (String) nombre;
             }
 
@@ -203,13 +223,13 @@ public class PnlProveedores extends JPanel {
     }
 
     public void setReferences(JPanel pnlContainer, PnlProductos pnlProductos,
-                             PnlCarrito pnlCarrito, JLabel lblVentana) {
+            PnlCarrito pnlCarrito, JLabel lblVentana) {
         this.pnlContainer = pnlContainer;
         this.pnlProductos = pnlProductos;
         this.pnlCarrito = pnlCarrito;
         this.lblVentana = lblVentana;
     }
-    
+
     /*
     
     para dar reset al proveedor seleccionado en la orden
@@ -223,5 +243,5 @@ public class PnlProveedores extends JPanel {
     
     restaurarSeleccion();
     
-    */
+     */
 }
