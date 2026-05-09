@@ -22,11 +22,12 @@ public class Inventario {
     public Inventario() {
     }
 
-    public Inventario(Insumo insumo, double stockInicial, double stockActual, double stockMinimo) {
+    public Inventario(Insumo insumo, double stockInicial, double stockActual) {
         this.insumo = insumo;
         this.stockInicial = stockInicial;
         this.stockActual = stockActual;
-        this.stockMinimo = stockMinimo;
+        
+        calcularStockMinimo();
     }
 
     public Insumo getInsumo() {
@@ -59,6 +60,27 @@ public class Inventario {
 
     public void setStockMinimo(double stockMinimo) {
         this.stockMinimo = stockMinimo;
+    }
+    
+    private void calcularStockMinimo(){
+        
+        String unidadMedida = this.getInsumo().getUnidadMedida();
+        
+        if(unidadMedida.equalsIgnoreCase("kg")){
+            this.setStockMinimo(15.0);
+        }
+        
+        if(unidadMedida.equalsIgnoreCase("pieza")){
+            this.setStockMinimo(30.0);
+        }
+        
+        if(unidadMedida.equalsIgnoreCase("paquete")){
+            this.setStockMinimo(35.0);
+        }
+        
+        if(unidadMedida.equalsIgnoreCase("botella")){
+            this.setStockMinimo(15.0);
+        }
     }
 
     @Override

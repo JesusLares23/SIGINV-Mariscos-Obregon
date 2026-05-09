@@ -6,6 +6,8 @@
 package com.mycompany.presentacion_mariscos;
 
 
+import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlProductos;
+import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlCarrito;
 import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
 import java.awt.BorderLayout;
 

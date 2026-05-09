@@ -2,10 +2,16 @@ package com.mycompany.presentacion_mariscos.SeleccionProveedor;
 
 import com.apiproveedores.Producto;
 import com.apiproveedores.ServicioProveedor;
+//<<<<<<< HEAD
 import com.mycompany.dto_mariscos.Carrito;
-import com.mycompany.presentacion_mariscos.PnlCarrito;
-import com.mycompany.presentacion_mariscos.PnlProductos;
+//import com.mycompany.presentacion_mariscos.PnlCarrito;
+//import com.mycompany.presentacion_mariscos.PnlProductos;
+//import com.mycompany.presentacion_mariscos.PnlResumenOrden;
+
+import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlCarrito;
+import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlProductos;
 import com.mycompany.presentacion_mariscos.PnlResumenOrden;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;

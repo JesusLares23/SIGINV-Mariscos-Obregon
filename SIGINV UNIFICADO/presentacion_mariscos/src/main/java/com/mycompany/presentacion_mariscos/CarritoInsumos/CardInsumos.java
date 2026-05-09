@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.presentacion_mariscos;
+package com.mycompany.presentacion_mariscos.CarritoInsumos;
 
 import com.mycompany.dto_mariscos.Insumo;
 import com.mycompany.dto_mariscos.Inventario;
@@ -23,6 +23,8 @@ import javax.swing.SwingConstants;
  *
  * @author demib
  */
+
+// CLASE PARA LA CREACION Y ESTILIZACION DE UN CARD DE INSUMO 
 public class CardInsumos extends JPanel {
 
     private JLabel lblNombre;
@@ -46,12 +48,9 @@ public class CardInsumos extends JPanel {
         String unidad = insumo.getUnidadMedida();
         double stock = inventario.getStockActual();
 
-        String estado;
-        if (stock <= inventario.getStockMinimo()) {
-            estado = "Bajo";
-        } else {
-            estado = "Disponible";
-        }
+        
+        String estado = "Disponible";
+        
 
         setPreferredSize(new Dimension(180, 260));
         setBackground(Color.WHITE);
@@ -63,6 +62,12 @@ public class CardInsumos extends JPanel {
 
         lblEstado = new JLabel("Estado: " + estado);
         lblEstado.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (stock <= inventario.getStockMinimo()) {
+            estado = "Bajo";
+            lblEstado.setText("Estado: " + estado);
+            lblEstado.setForeground(Color.red);
+        }
 
         lblImagen = new JLabel("IMG");
         lblImagen.setOpaque(true);
@@ -103,6 +108,9 @@ public class CardInsumos extends JPanel {
         
         
     }
+    
+    
+    
 
     public JLabel getLblNombre() {
         return lblNombre;

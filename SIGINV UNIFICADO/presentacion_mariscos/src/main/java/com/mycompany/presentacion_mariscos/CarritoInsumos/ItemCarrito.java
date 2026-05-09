@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.presentacion_mariscos;
+package com.mycompany.presentacion_mariscos.CarritoInsumos;
 
 import com.mycompany.dto_mariscos.Insumo;
 import com.mycompany.dto_mariscos.Inventario;
@@ -13,6 +13,9 @@ import java.awt.*;
  *
  * @author demib
  */
+
+
+// CLASE PARA LA CREACION Y ESTILIZACION DE COMO SE MUESTRA UN INSUMO EN EL PANEL CARRITO
 public class ItemCarrito extends JPanel {
 
     private Insumo insumo;
