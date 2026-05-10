@@ -4,25 +4,48 @@
  */
 package com.mycompany.dto_mariscos;
 
+import java.time.Instant;
+import org.bson.types.ObjectId;
+
 /**
  *
  * @author demib
  */
 public class Insumo {
+    private ObjectId _id;
     //Nombre Insumo
     private String nombre;
     //Kg,g,lt,pieza,
     private String unidadMedida;
     //Categoria del producto
     private String categoria;
+    
+    //URL de la imagen alojada en Imgur
+    private String imagenUrl;
+    
+    private Instant createdAt;
+    
+    private Instant updatedAt;
 
     public Insumo() {
     }
 
-    public Insumo(String nombre, String unidadMedida, String categoria) {
+    public Insumo(ObjectId _id, String nombre, String unidadMedida, String categoria, String imagenUrl, Instant createdAt, Instant updatedAt) {
+        this._id = _id;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.categoria = categoria;
+        this.imagenUrl = imagenUrl;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public ObjectId getId() {
+        return _id;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
     }
 
     public String getNombre() {
@@ -49,10 +72,44 @@ public class Insumo {
         this.categoria = categoria;
     }
 
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    
+    
+
+    
+
+    
+
     @Override
     public String toString() {
-        return "Insumo{" + "nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", categoria=" + categoria + '}';
+        return "Insumo{" + "_id=" + _id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", categoria=" + categoria + '}';
     }
+    
+    
+
+    
     
     
     
