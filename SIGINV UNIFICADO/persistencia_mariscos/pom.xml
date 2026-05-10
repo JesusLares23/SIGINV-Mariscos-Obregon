@@ -2,12 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
-    <artifactId>presentacion_mariscos</artifactId>
+    <artifactId>persistencia_mariscos</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>5.6.1</version>
+        </dependency>
         
-        <!-- Deje temporalmente dominio como dependencia para testear el funcionamiento del proyecto en lo que migramos los datos a la db en mongo !-->
         <dependency>
             <groupId>com.mycompany</groupId>
             <artifactId>dominio_mariscos</artifactId>
@@ -16,26 +20,13 @@
         
         <dependency>
             <groupId>com.mycompany</groupId>
-            <artifactId>controller_mariscos</artifactId>
+            <artifactId>exception_mariscos</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        
-        <dependency>
-            <groupId>com</groupId>
-            <artifactId>apiProveedores</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.13.1</version>
-        </dependency>
-        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.mycompany.presentacion_mariscos.Presentacion_mariscos</exec.mainClass>
+        <exec.mainClass>com.mycompany.persistencia_mariscos.Persistencia_mariscos</exec.mainClass>
     </properties>
 </project>
