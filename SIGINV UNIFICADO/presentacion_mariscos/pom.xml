@@ -8,11 +8,6 @@
     <dependencies>
         
         <!-- Deje temporalmente dominio como dependencia para testear el funcionamiento del proyecto en lo que migramos los datos a la db en mongo !-->
-        <dependency>
-            <groupId>com.mycompany</groupId>
-            <artifactId>dominio_mariscos</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         
         <dependency>
             <groupId>com.mycompany</groupId>
@@ -31,7 +26,11 @@
             <artifactId>gson</artifactId>
             <version>2.13.1</version>
         </dependency>
-        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>dominio_mariscos</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
