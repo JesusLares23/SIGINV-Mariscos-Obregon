@@ -86,6 +86,7 @@ public class InsumoDAO implements IInsumoDAO{
                     Updates.set("nombre", entity.getNombre()),
                     Updates.set("unidadMedida", entity.getUnidadMedida()),
                     Updates.set("categoria", entity.getCategoria()),
+                    Updates.set("imagenUrl", entity.getImagenUrl()),
                     Updates.set("updatedAt", entity.getUpdatedAt())
                     
                 )

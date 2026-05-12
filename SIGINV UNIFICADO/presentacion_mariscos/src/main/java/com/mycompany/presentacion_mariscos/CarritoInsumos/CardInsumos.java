@@ -10,14 +10,18 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import java.net.HttpURLConnection;
 
 /**
  *
@@ -35,8 +39,7 @@ public class CardInsumos extends JPanel {
     private JLabel lblUnidad;
     private JButton btnAgregar;
 
-    public CardInsumos() {
-    }
+    
     
     
 
@@ -47,9 +50,11 @@ public class CardInsumos extends JPanel {
         String nombre = insumo.getNombre();
         String unidad = insumo.getUnidadMedida();
         double stock = inventario.getStockActual();
-
+        String imagenUrl = inventario.getInsumo().getImagenUrl();
         
         String estado = "Disponible";
+        
+        System.out.println("Insumo: " + nombre + " | URL: " + imagenUrl);
         
 
         setPreferredSize(new Dimension(180, 260));
@@ -69,15 +74,20 @@ public class CardInsumos extends JPanel {
             lblEstado.setForeground(Color.red);
         }
 
-        lblImagen = new JLabel("IMG");
+        
+        //IMAGEN
+        lblImagen = new JLabel();
         lblImagen.setOpaque(true);
-        lblImagen.setBackground(Color.LIGHT_GRAY);
+        lblImagen.setBackground(Color.WHITE);
         lblImagen.setPreferredSize(new Dimension(90, 90));
         lblImagen.setMaximumSize(new Dimension(90, 90));
         lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
         lblImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        //Llamamos al metodo cargarImagen para que cargue la img alojada en imgur
+        cargarImagen(lblImagen, imagenUrl);
 
-        lblStock = new JLabel("Stock: " + stock + " " + unidad);
+        lblStock = new JLabel("Stock: " + inventario.formatearStock(inventario.getStockActual()));
         lblStock.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         txtCantidad = new JTextField("1");
@@ -109,6 +119,29 @@ public class CardInsumos extends JPanel {
         
     }
     
+    
+    
+    private void cargarImagen(JLabel label, String url) {
+    if (url == null || url.isBlank()) {
+        label.setText("IMG");
+        return;
+    }
+
+    // se hace en hilo separado para no congelar la UI
+    new Thread(() -> {
+        try {
+            URL imageUrl = new URL(url);
+            ImageIcon icon = new ImageIcon(imageUrl);
+            Image scaled = icon.getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                label.setIcon(new ImageIcon(scaled));
+                label.setText(""); // quita el texto IMG
+            });
+        } catch (Exception e) {
+            javax.swing.SwingUtilities.invokeLater(() -> label.setText("Sin img"));
+        }
+    }).start();
+}
     
     
 

@@ -5,6 +5,7 @@
 package com.mycompany.dto_mariscos;
 
 import java.time.Instant;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 /**
@@ -20,12 +21,15 @@ public class Insumo {
     //Categoria del producto
     private String categoria;
     
-    //URL de la imagen alojada en Imgur
-    private String imagenUrl;
+    
     
     private Instant createdAt;
     
     private Instant updatedAt;
+    
+    //URL de la imagen alojada en Imgur
+    @BsonProperty("imagenUrl")
+    private String imagenUrl;
 
     public Insumo() {
     }

@@ -6,6 +6,15 @@
 package com.mycompany.presentacion_mariscos;
 
 
+import com.mycompany.config_mariscos.MongoClientProvider;
+import com.mycompany.controller_mariscos.insumo.IInsumoControl;
+import com.mycompany.controller_mariscos.insumo.InsumoControl;
+import com.mycompany.controller_mariscos.inventario.IInventarioControl;
+import com.mycompany.controller_mariscos.inventario.InventarioControl;
+import com.mycompany.persistencia_mariscos.insumo.IInsumoDAO;
+import com.mycompany.persistencia_mariscos.insumo.InsumoDAO;
+import com.mycompany.persistencia_mariscos.inventario.IInventarioDAO;
+import com.mycompany.persistencia_mariscos.inventario.InventarioDAO;
 import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlProductos;
 import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlCarrito;
 import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
@@ -22,6 +31,17 @@ public class MainFrame extends javax.swing.JFrame {
     PnlProductos pnlProductos = new PnlProductos(pnlCarrito);
     */
     
+    
+    
+    //---DAOS---
+    private IInsumoDAO insumoDAO;
+    private IInventarioDAO inventarioDAO;
+    
+    
+    //---CONTROLLERS---
+    private IInsumoControl insumoControl;
+    private IInventarioControl inventarioControl;
+    
     private PnlCarrito pnlCarrito;
     private PnlProductos pnlProductos;
     private PnlProveedores pnlProveedores2;
@@ -31,11 +51,21 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        MongoClientProvider.INSTANCE.init();
+        
+        insumoDAO = new InsumoDAO();
+        inventarioDAO = new InventarioDAO();
+
+
+        //---CONTROLLERS---
+        insumoControl = new InsumoControl(insumoDAO);
+        inventarioControl = new InventarioControl(inventarioDAO);
+        
         initComponents();
         
                 
         pnlCarrito = new PnlCarrito();
-        pnlProductos = new PnlProductos(pnlCarrito);
+        pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
         pnlProveedores2 = new PnlProveedores();
         
          pnlCarrito.setReferences(pnlContainer, pnlProveedores2,lblVentana);
@@ -288,10 +318,13 @@ public class MainFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new MainFrame().setVisible(true);
             }
         });

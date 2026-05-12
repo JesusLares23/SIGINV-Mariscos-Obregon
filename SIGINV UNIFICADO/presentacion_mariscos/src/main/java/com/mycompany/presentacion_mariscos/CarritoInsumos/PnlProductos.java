@@ -6,11 +6,14 @@
 
 package com.mycompany.presentacion_mariscos.CarritoInsumos;
 
+import com.mycompany.controller_mariscos.inventario.IInventarioControl;
 import com.mycompany.dto_mariscos.Insumo;
 import com.mycompany.dto_mariscos.Inventario;
+import com.mycompany.exception_mariscos.DaoException;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,8 +22,10 @@ import java.util.List;
 public class PnlProductos extends javax.swing.JPanel {
 
     private PnlCarrito pnlCarrito;
+    
+    private IInventarioControl inventarioControl;
 
-    private final List<Insumo> listaInsumos;
+    
 
     private List<Inventario> listaInventario;
 
@@ -29,12 +34,13 @@ public class PnlProductos extends javax.swing.JPanel {
      *
      * @param pnlCarrito
      */
-    public PnlProductos(PnlCarrito pnlCarrito) {
+    public PnlProductos(PnlCarrito pnlCarrito, IInventarioControl inventarioControl) {
         this.pnlCarrito = pnlCarrito;
-        listaInsumos = new ArrayList<>();
+        this.inventarioControl = inventarioControl;
+        
         listaInventario = new ArrayList<>();
-        cargarInsumosMock();
-        cargarInventarioMock();
+
+        cargarInventario();
 
         initComponents();
         generarCardsInsumos();
@@ -148,8 +154,14 @@ public class PnlProductos extends javax.swing.JPanel {
                     System.out.println("El insumo ya esta en el carrito");
                     return; // no agrega duplicado
                 }
+                
+                
 
-                pnlCarrito.agregarItemAlCarrito(inventario, cantidad);
+                
+                
+                    pnlCarrito.agregarItemAlCarrito(inventario, cantidad);
+                
+                
                 card.getTxtCantidad().setText("0");
                 System.out.println("Items en carrito: " + pnlCarrito.getListaOrden().size());
             });
@@ -161,40 +173,50 @@ public class PnlProductos extends javax.swing.JPanel {
         pnlCards.repaint();
 
     }
-
-
-
     
-    
-    private void cargarInsumosMock(){
-        listaInsumos.add(new Insumo("Camarón", "kg", "Mariscos"));
-        listaInsumos.add(new Insumo("Pulpo", "kg", "Mariscos"));
-        listaInsumos.add(new Insumo("Filete de pescado", "kg", "Pescados"));
-        listaInsumos.add(new Insumo("Ostión", "pieza", "Mariscos"));
-        listaInsumos.add(new Insumo("Limón", "kg", "Verduras"));
-        listaInsumos.add(new Insumo("Cebolla morada", "kg", "Verduras"));
-        listaInsumos.add(new Insumo("Chile serrano", "kg", "Verduras"));
-        listaInsumos.add(new Insumo("Aguacate", "pieza", "Verduras"));
-        listaInsumos.add(new Insumo("Salsa inglesa", "botella", "Condimentos"));
-        listaInsumos.add(new Insumo("Catsup", "botella", "Condimentos"));
-        listaInsumos.add(new Insumo("Tostadas", "paquete", "Acompañamientos"));
-        listaInsumos.add(new Insumo("Refresco", "botella", "Bebidas"));
+    private void cargarInventario(){
+        try{
+            listaInventario = inventarioControl.obtenerTodos();
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error al cargar inventario: " + e);
+            
+        }
     }
 
+
+
     
-    private void cargarInventarioMock(){
-        listaInventario.add(new Inventario(listaInsumos.get(0), 20.0, 4.0));   // Camarón
-        listaInventario.add(new Inventario(listaInsumos.get(1), 10.0, 6.0));    // Pulpo
-        listaInventario.add(new Inventario(listaInsumos.get(2), 18.0, 12.5));   // Filete de pescado
-        listaInventario.add(new Inventario(listaInsumos.get(3), 100.0, 65.0)); // Ostión
-        listaInventario.add(new Inventario(listaInsumos.get(4), 25.0, 8.0));    // Limón
-        listaInventario.add(new Inventario(listaInsumos.get(5), 15.0, 7.5));    // Cebolla morada
-        listaInventario.add(new Inventario(listaInsumos.get(6), 8.0, 3.0));     // Chile serrano
-        listaInventario.add(new Inventario(listaInsumos.get(7), 30.0, 12.0));   // Aguacate
-        listaInventario.add(new Inventario(listaInsumos.get(8), 12.0, 5.0));    // Salsa inglesa
-        listaInventario.add(new Inventario(listaInsumos.get(9), 10.0, 4.0));    // Catsup
-        listaInventario.add(new Inventario(listaInsumos.get(10), 40.0, 18.0)); // Tostadas
-        listaInventario.add(new Inventario(listaInsumos.get(11), 24.0, 9.0));   // Refresco
-    }
+    
+//    private void cargarInsumosMock(){
+//        listaInsumos.add(new Insumo("Camarón", "kg", "Mariscos"));
+//        listaInsumos.add(new Insumo("Pulpo", "kg", "Mariscos"));
+//        listaInsumos.add(new Insumo("Filete de pescado", "kg", "Pescados"));
+//        listaInsumos.add(new Insumo("Ostión", "pieza", "Mariscos"));
+//        listaInsumos.add(new Insumo("Limón", "kg", "Verduras"));
+//        listaInsumos.add(new Insumo("Cebolla morada", "kg", "Verduras"));
+//        listaInsumos.add(new Insumo("Chile serrano", "kg", "Verduras"));
+//        listaInsumos.add(new Insumo("Aguacate", "pieza", "Verduras"));
+//        listaInsumos.add(new Insumo("Salsa inglesa", "botella", "Condimentos"));
+//        listaInsumos.add(new Insumo("Catsup", "botella", "Condimentos"));
+//        listaInsumos.add(new Insumo("Tostadas", "paquete", "Acompañamientos"));
+//        listaInsumos.add(new Insumo("Refresco", "botella", "Bebidas"));
+//    }
+//
+//    
+//    private void cargarInventarioMock(){
+//        listaInventario.add(new Inventario(listaInsumos.get(0), 20.0, 4.0));   // Camarón
+//        listaInventario.add(new Inventario(listaInsumos.get(1), 10.0, 6.0));    // Pulpo
+//        listaInventario.add(new Inventario(listaInsumos.get(2), 18.0, 12.5));   // Filete de pescado
+//        listaInventario.add(new Inventario(listaInsumos.get(3), 100.0, 65.0)); // Ostión
+//        listaInventario.add(new Inventario(listaInsumos.get(4), 25.0, 8.0));    // Limón
+//        listaInventario.add(new Inventario(listaInsumos.get(5), 15.0, 7.5));    // Cebolla morada
+//        listaInventario.add(new Inventario(listaInsumos.get(6), 8.0, 3.0));     // Chile serrano
+//        listaInventario.add(new Inventario(listaInsumos.get(7), 30.0, 12.0));   // Aguacate
+//        listaInventario.add(new Inventario(listaInsumos.get(8), 12.0, 5.0));    // Salsa inglesa
+//        listaInventario.add(new Inventario(listaInsumos.get(9), 10.0, 4.0));    // Catsup
+//        listaInventario.add(new Inventario(listaInsumos.get(10), 40.0, 18.0)); // Tostadas
+//        listaInventario.add(new Inventario(listaInsumos.get(11), 24.0, 9.0));   // Refresco
+//    }
 
 }
