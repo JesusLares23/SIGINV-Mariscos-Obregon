@@ -122,10 +122,12 @@ public class Inventario {
         }
         
         if(unidadMedida.equalsIgnoreCase("kg")){
+            
             this.setStockMinimo(15.0);
         } else
         
         if(unidadMedida.equalsIgnoreCase("pieza")){
+            
             this.setStockMinimo(30.0);
         }
         
@@ -140,9 +142,30 @@ public class Inventario {
         else{
             throw new IllegalArgumentException("Unidad de medida no reconocida: " + unidadMedida);
         }
-        
-        
+
     }
+    
+    /**
+    * Formatea un valor de stock segun la unidad de medida del insumo.
+    * Para kg devuelve con decimales, para el resto como entero.
+    *
+    * @param valor El valor de stock a formatear
+    * @return String con el valor formateado
+    */
+   public String formatearStock(Double valor) {
+       if (valor == null) return "0";
+
+       String unidad = this.getInsumo().getUnidadMedida();
+
+       if (unidad.equalsIgnoreCase("kg")) {
+           return valor + " kg";
+       } else if(stockActual > 1){
+           return valor.intValue() + " " + unidad + "s";
+       } else{
+           return valor.intValue() + " " + unidad;
+       }
+   }
+    
 
     @Override
     public String toString() {

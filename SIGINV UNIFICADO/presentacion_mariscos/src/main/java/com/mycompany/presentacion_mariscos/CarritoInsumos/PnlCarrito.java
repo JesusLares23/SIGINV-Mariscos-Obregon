@@ -202,9 +202,15 @@ public class PnlCarrito extends javax.swing.JPanel {
         return carritoEntidad;
     }
     
-    public void agregarItemAlCarrito(Inventario inventario, double cantidad) {
+    public void agregarItemAlCarrito(Inventario inventario, Double cantidad) {
         ItemCarrito item = new ItemCarrito(inventario, cantidad, this);
-        item.getLblCantidad().setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
+        
+        if(inventario.getInsumo().getUnidadMedida().equals("kg")){
+            item.getLblCantidad().setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
+        }else{
+            item.getLblCantidad().setText(cantidad.intValue() + " ");
+        }
+        
         listaOrden.add(item);
         pnlCardsCarrito.add(item);
         
@@ -213,6 +219,8 @@ public class PnlCarrito extends javax.swing.JPanel {
         revalidate();
         repaint();
     }
+    
+    
     
     public void eliminarItem(ItemCarrito item, Insumo insumo) {
         listaOrden.remove(item);

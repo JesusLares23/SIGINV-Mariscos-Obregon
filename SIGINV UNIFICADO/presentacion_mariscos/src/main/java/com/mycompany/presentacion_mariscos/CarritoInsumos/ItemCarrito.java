@@ -20,7 +20,7 @@ public class ItemCarrito extends JPanel {
 
     private Insumo insumo;
     private Inventario inventario;
-    private double cantidad;
+    private Double cantidad;
 
     private JLabel lblStock;
     private JLabel lblNombre;
@@ -34,38 +34,15 @@ public class ItemCarrito extends JPanel {
         this.cantidad = cantidad;
         initComponentes();
 
-        btnMas.addActionListener(e -> {
-            String unidadMedida = inventario.getInsumo().getUnidadMedida();
-            if (unidadMedida.equals("botella") || unidadMedida.equals("paquete")
-                    || unidadMedida.equals("pieza")) {
-                ItemCarrito.this.cantidad += 1;   // uso explícito del campo
-            } else {
-                ItemCarrito.this.cantidad += 0.5;
-            }
-            lblCantidad.setText(ItemCarrito.this.cantidad + " " + inventario.getInsumo().getUnidadMedida());
-            pnlCarrito.actualizarCantidadItem(inventario.getInsumo(), ItemCarrito.this.cantidad);
-        });
-
-        btnMenos.addActionListener(e -> {
-            if (ItemCarrito.this.cantidad > 0) {
-                String unidadMedida = inventario.getInsumo().getUnidadMedida();
-                if (unidadMedida.equals("botella") || unidadMedida.equals("paquete")
-                        || unidadMedida.equals("pieza")) {
-                    ItemCarrito.this.cantidad -= 1;
-                } else {
-                    ItemCarrito.this.cantidad -= 0.5;
-                }
-                lblCantidad.setText(ItemCarrito.this.cantidad + " " + inventario.getInsumo().getUnidadMedida());
-                pnlCarrito.actualizarCantidadItem(inventario.getInsumo(), ItemCarrito.this.cantidad);
-            }
-        });
+        
 
         // al eliminar, quita de la vista Y de la lista
         btnEliminar.addActionListener(e -> {
             pnlCarrito.eliminarItem(this, inventario.getInsumo());
         });
     }
-
+    
+    
     private void initComponentes() {
         setLayout(new BorderLayout(5, 2));
         setBorder(BorderFactory.createCompoundBorder(
@@ -76,7 +53,7 @@ public class ItemCarrito extends JPanel {
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
 
         // Label stock (arriba)
-        lblStock = new JLabel("Stock: " + inventario.getStockActual() + " " + inventario.getInsumo().getUnidadMedida() + " (Bajo)");
+        lblStock = new JLabel("Stock: " + inventario.formatearStock(inventario.getStockActual())+ " (Bajo)");
         lblStock.setFont(new Font("SansSerif", Font.PLAIN, 10));
         lblStock.setForeground(Color.GRAY);
 
@@ -133,13 +110,15 @@ public class ItemCarrito extends JPanel {
 
             //Validacion para la unidad de medida
             if (unidadMedida.equals("botella") || unidadMedida.equals("paquete") || unidadMedida.equals("pieza")) {
+                
                 cantidad += 1;
-
+                lblCantidad.setText(cantidad.intValue() + "");
             } else {
                 cantidad += 0.5;
+                lblCantidad.setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
             }
 
-            lblCantidad.setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
+            
         });
 
         btnMenos.addActionListener(e -> {
@@ -150,13 +129,13 @@ public class ItemCarrito extends JPanel {
 
                 //Validacion para la unidad de medida
                 if (unidadMedida.equals("botella") || unidadMedida.equals("paquete") || unidadMedida.equals("pieza")) {
-                    cantidad -= 1;
 
+                    cantidad -= 1;
+                    lblCantidad.setText(cantidad.intValue() + "");
                 } else {
                     cantidad -= 0.5;
+                    lblCantidad.setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
                 }
-
-                lblCantidad.setText(cantidad + " " + inventario.getInsumo().getUnidadMedida());
             }
         });
 
