@@ -13,23 +13,36 @@ public class Orden {
     private String responsable;       
     private String proveedor;         
     private String estado;            // "Pendiente", "Confirmada", "Pagada", etc.
+    private String estadoFacturacion; // "Sin Facturar" / "Facturada"
     private Map<Insumo, Double> items; // insumo y cantidad solicitada
 
     public Orden() {
         this.items = new LinkedHashMap<>();
         this.fechaCreacion = new Date();
         this.estado = "Pendiente";
+        this.estadoFacturacion = "Sin Facturar";
     }
 
-    public Orden(int numeroOrden, String responsable, String proveedor, Map<Insumo, Double> items) {
-        this();
+    public Orden(int numeroOrden, Date fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<Insumo, Double> items) {
         this.numeroOrden = numeroOrden;
+        this.fechaCreacion = fechaCreacion;
         this.responsable = responsable;
         this.proveedor = proveedor;
+        this.estado = estado;
+        this.estadoFacturacion = estadoFacturacion;
         this.items = items;
     }
 
+
+
+
     // Getters y Setters
+    
+    public String getEstadoFacturacion() {
+    return estadoFacturacion;}
+
+    public void setEstadoFacturacion(String estadoFacturacion) {
+        this.estadoFacturacion = estadoFacturacion;}
     public int getNumeroOrden() { return numeroOrden; }
     public void setNumeroOrden(int numeroOrden) { this.numeroOrden = numeroOrden; }
 
