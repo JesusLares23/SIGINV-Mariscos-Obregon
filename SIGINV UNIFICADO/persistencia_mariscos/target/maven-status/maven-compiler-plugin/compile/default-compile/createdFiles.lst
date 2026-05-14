@@ -1,0 +1,4 @@
+com\mycompany\persistencia_mariscos\inventario\InventarioDAO.class
+com\mycompany\persistencia_mariscos\insumo\IInsumoDAO.class
+com\mycompany\persistencia_mariscos\inventario\IInventarioDAO.class
+com\mycompany\persistencia_mariscos\insumo\InsumoDAO.class

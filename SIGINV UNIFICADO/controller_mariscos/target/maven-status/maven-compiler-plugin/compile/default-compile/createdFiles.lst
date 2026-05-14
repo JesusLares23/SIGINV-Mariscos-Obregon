@@ -1,0 +1,4 @@
+com\mycompany\controller_mariscos\inventario\IInventarioControl.class
+com\mycompany\controller_mariscos\insumo\InsumoControl.class
+com\mycompany\controller_mariscos\inventario\InventarioControl.class
+com\mycompany\controller_mariscos\insumo\IInsumoControl.class
