@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.mycompany</groupId>
-    <artifactId>controller_mariscos</artifactId>
+    <groupId>com</groupId>
+    <artifactId>apiProveedores</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>
-        
         <dependency>
-            <groupId>com.mycompany</groupId>
-            <artifactId>persistencia_mariscos</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.1</version>
+            <type>jar</type>
         </dependency>
-        
-        
-        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.mycompany.controller_mariscos.Controller_mariscos</exec.mainClass>
+        <exec.mainClass>com.apiproveedores.ApiProveedores</exec.mainClass>
     </properties>
 </project>
