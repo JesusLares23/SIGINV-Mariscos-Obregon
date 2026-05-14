@@ -18,7 +18,11 @@ import com.mycompany.persistencia_mariscos.inventario.InventarioDAO;
 import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlProductos;
 import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlCarrito;
 import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
+import com.mycompany.presentacion_mariscos.SolicitudFactura.SeleccionOrden;
+import com.mycompany.presentacion_mariscos.SolicitudFactura.pnlDatosFacturacion;
+
 import java.awt.BorderLayout;
+import javax.swing.JLabel;
 
 /**
  *
@@ -46,7 +50,8 @@ public class MainFrame extends javax.swing.JFrame {
     private PnlProductos pnlProductos;
     private PnlProveedores pnlProveedores2;
     
-    
+    private SeleccionOrden seleccionOrden;
+    private pnlDatosFacturacion pnlDatos;
     /**
      * Creates new form MainFrame
      */
@@ -61,17 +66,21 @@ public class MainFrame extends javax.swing.JFrame {
         insumoControl = new InsumoControl(insumoDAO);
         inventarioControl = new InventarioControl(inventarioDAO);
         
+       
+        
         initComponents();
         
                 
         pnlCarrito = new PnlCarrito();
         pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
         pnlProveedores2 = new PnlProveedores();
-        
+        seleccionOrden = new SeleccionOrden ();
          pnlCarrito.setReferences(pnlContainer, pnlProveedores2,lblVentana);
          
           pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
-        
+          
+          pnlDatos = new pnlDatosFacturacion();
+          seleccionOrden.setReferences( pnlContainer, pnlDatos, lblVentana);
         
     }
 
@@ -94,10 +103,10 @@ public class MainFrame extends javax.swing.JFrame {
         lblCompras = new javax.swing.JLabel();
         btnGenerarOrdenCompra = new javax.swing.JLabel();
         btnRecepcionMercancia = new javax.swing.JTextArea();
-        lblPagosYFacturacion = new javax.swing.JTextArea();
         btnPagosPendientes = new javax.swing.JLabel();
         btnFacturacionOrdenCompra = new javax.swing.JTextArea();
         btnSalir = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         pnlContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -120,7 +129,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addComponent(lblNombreSistema)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 938, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblVentana)
                 .addGap(31, 31, 31))
         );
@@ -179,17 +188,6 @@ public class MainFrame extends javax.swing.JFrame {
         btnRecepcionMercancia.setBorder(null);
         btnRecepcionMercancia.setFocusable(false);
 
-        lblPagosYFacturacion.setEditable(false);
-        lblPagosYFacturacion.setBackground(new java.awt.Color(35, 53, 74));
-        lblPagosYFacturacion.setColumns(2);
-        lblPagosYFacturacion.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
-        lblPagosYFacturacion.setForeground(new java.awt.Color(255, 255, 255));
-        lblPagosYFacturacion.setRows(5);
-        lblPagosYFacturacion.setText("Pagos y\nFacturacion");
-        lblPagosYFacturacion.setToolTipText("");
-        lblPagosYFacturacion.setBorder(null);
-        lblPagosYFacturacion.setFocusable(false);
-
         btnPagosPendientes.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         btnPagosPendientes.setForeground(new java.awt.Color(255, 255, 255));
         btnPagosPendientes.setText("Pagos pendientes");
@@ -209,24 +207,41 @@ public class MainFrame extends javax.swing.JFrame {
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Salir");
 
+        jButton1.setBackground(new java.awt.Color(35, 53, 74));
+        jButton1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Solicitar Factura");
+        jButton1.setToolTipText("");
+        jButton1.setBorder(null);
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlNavbarLayout = new javax.swing.GroupLayout(pnlNavbar);
         pnlNavbar.setLayout(pnlNavbarLayout);
         pnlNavbarLayout.setHorizontalGroup(
             pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlNavbarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblInventario)
-                    .addComponent(btnMermas)
-                    .addComponent(btnRegInsumosAlCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCompras)
-                    .addComponent(btnGenerarOrdenCompra)
-                    .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPagosYFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPagosPendientes)
-                    .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir))
+                .addGroup(pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblInventario, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMermas, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRegInsumosAlCorte, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                    .addComponent(lblCompras, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerarOrdenCompra, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                    .addComponent(btnPagosPendientes, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(pnlNavbarLayout.createSequentialGroup()
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlNavbarLayout.setVerticalGroup(
             pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,8 +258,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPagosYFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
                 .addComponent(btnPagosPendientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -254,18 +269,17 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pnlContainer.setBackground(new java.awt.Color(255, 255, 255));
-        pnlContainer.setPreferredSize(null);
         pnlContainer.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlNavbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,6 +305,15 @@ public class MainFrame extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnGenerarOrdenCompraMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        pnlContainer.removeAll();
+        pnlContainer.add(seleccionOrden, BorderLayout.CENTER);
+        lblVentana.setText("Solicitud de Facturación");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -338,10 +361,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea btnRecepcionMercancia;
     private javax.swing.JTextArea btnRegInsumosAlCorte;
     private javax.swing.JLabel btnSalir;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblCompras;
     private javax.swing.JLabel lblInventario;
     private javax.swing.JLabel lblNombreSistema;
-    private javax.swing.JTextArea lblPagosYFacturacion;
     private javax.swing.JLabel lblVentana;
     private javax.swing.JPanel pnlContainer;
     private javax.swing.JPanel pnlHeader;
