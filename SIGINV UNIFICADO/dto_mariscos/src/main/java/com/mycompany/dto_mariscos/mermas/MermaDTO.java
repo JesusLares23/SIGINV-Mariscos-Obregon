@@ -2,22 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.dto_mariscos;
+package com.mycompany.dto_mariscos.mermas;
 
-import java.time.Instant;
 
-import org.bson.types.ObjectId;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author demib
  */
-public class Merma {
-    private ObjectId _id;
+public class MermaDTO {
+    private String id;
     
-    private Insumo insumo;
+    private String nombreInsumo;
     
     private double cantPerdida;
+    
+    private String unidadMedida;
     
     private String causa;
     
@@ -25,41 +26,38 @@ public class Merma {
     
     private String ubicacion;
     
-    private Instant fechaOcurrido;
+    private LocalDateTime fechaOcurrido;
     
-    private Instant createdAt;
-    
-    private Instant updatedAt;
 
-    public Merma() {
+
+    public MermaDTO() {
     }
 
-    public Merma(ObjectId _id, Insumo insumo, double cantPerdida, String causa, String descripcion, String ubicacion, Instant fechaOcurrido, Instant createdAt, Instant updatedAt) {
-        this._id = _id;
-        this.insumo = insumo;
+    public MermaDTO(String id, String nombreInsumo, double cantPerdida, String unidadMedida, String causa, String descripcion, String ubicacion, LocalDateTime fechaOcurrido) {
+        this.id = id;
+        this.nombreInsumo = nombreInsumo;
         this.cantPerdida = cantPerdida;
+        this.unidadMedida = unidadMedida;
         this.causa = causa;
         this.descripcion = descripcion;
         this.ubicacion = ubicacion;
         this.fechaOcurrido = fechaOcurrido;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
-    public ObjectId getId() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void setId(ObjectId _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Insumo getInsumo() {
-        return insumo;
+    public String getNombreInsumo() {
+        return nombreInsumo;
     }
 
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
+    public void setNombreInsumo(String nombreInsumo) {
+        this.nombreInsumo = nombreInsumo;
     }
 
     public double getCantPerdida() {
@@ -68,6 +66,14 @@ public class Merma {
 
     public void setCantPerdida(double cantPerdida) {
         this.cantPerdida = cantPerdida;
+    }
+
+    public String getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(String unidadMedida) {
+        this.unidadMedida = unidadMedida;
     }
 
     public String getCausa() {
@@ -94,38 +100,17 @@ public class Merma {
         this.ubicacion = ubicacion;
     }
 
-    public Instant getFechaOcurrido() {
+    public LocalDateTime getFechaOcurrido() {
         return fechaOcurrido;
     }
 
-    public void setFechaOcurrido(Instant fechaOcurrido) {
+    public void setFechaOcurrido(LocalDateTime fechaOcurrido) {
         this.fechaOcurrido = fechaOcurrido;
     }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    
     
     
     
     
 
-    
-    
-    
     
 }

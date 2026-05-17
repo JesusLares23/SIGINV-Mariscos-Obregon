@@ -1,8 +1,4 @@
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.presentacion_mariscos;
 
 
@@ -11,17 +7,25 @@ import com.mycompany.controller_mariscos.insumo.IInsumoControl;
 import com.mycompany.controller_mariscos.insumo.InsumoControl;
 import com.mycompany.controller_mariscos.inventario.IInventarioControl;
 import com.mycompany.controller_mariscos.inventario.InventarioControl;
+import com.mycompany.controller_mariscos.merma.IMermaControl;
+import com.mycompany.controller_mariscos.merma.MermaControl;
 import com.mycompany.persistencia_mariscos.insumo.IInsumoDAO;
 import com.mycompany.persistencia_mariscos.insumo.InsumoDAO;
 import com.mycompany.persistencia_mariscos.inventario.IInventarioDAO;
 import com.mycompany.persistencia_mariscos.inventario.InventarioDAO;
+import com.mycompany.persistencia_mariscos.merma.IMermasDAO;
+import com.mycompany.persistencia_mariscos.merma.MermasDAO;
 import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlProductos;
 import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlCarrito;
 import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
 import com.mycompany.presentacion_mariscos.SolicitudFactura.SeleccionOrden;
 import com.mycompany.presentacion_mariscos.SolicitudFactura.pnlDatosFacturacion;
+import com.mycompany.presentacion_mariscos.mermas.PnlTablaMermas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
 /**
@@ -40,11 +44,13 @@ public class MainFrame extends javax.swing.JFrame {
     //---DAOS---
     private IInsumoDAO insumoDAO;
     private IInventarioDAO inventarioDAO;
+    private IMermasDAO mermasDAO;
     
     
     //---CONTROLLERS---
     private IInsumoControl insumoControl;
     private IInventarioControl inventarioControl;
+    private IMermaControl mermaControl;
     
     private PnlCarrito pnlCarrito;
     private PnlProductos pnlProductos;
@@ -52,6 +58,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     private SeleccionOrden seleccionOrden;
     private pnlDatosFacturacion pnlDatos;
+    
+    private PnlTablaMermas pnlTablaMermas;
     /**
      * Creates new form MainFrame
      */
@@ -60,11 +68,12 @@ public class MainFrame extends javax.swing.JFrame {
         
         insumoDAO = new InsumoDAO();
         inventarioDAO = new InventarioDAO();
-
+        mermasDAO = new MermasDAO();
 
         //---CONTROLLERS---
         insumoControl = new InsumoControl(insumoDAO);
         inventarioControl = new InventarioControl(inventarioDAO);
+        mermaControl = new MermaControl(mermasDAO);
         
        
         
@@ -82,6 +91,7 @@ public class MainFrame extends javax.swing.JFrame {
           pnlDatos = new pnlDatosFacturacion();
           seleccionOrden.setReferences( pnlContainer, pnlDatos, lblVentana);
         
+        pnlTablaMermas = new PnlTablaMermas(mermaControl);
     }
 
     /**
@@ -106,7 +116,8 @@ public class MainFrame extends javax.swing.JFrame {
         btnPagosPendientes = new javax.swing.JLabel();
         btnFacturacionOrdenCompra = new javax.swing.JTextArea();
         btnSalir = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSolicitarFactura = new javax.swing.JButton();
+        lblPagos = new javax.swing.JTextArea();
         pnlContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -129,7 +140,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addComponent(lblNombreSistema)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 971, Short.MAX_VALUE)
                 .addComponent(lblVentana)
                 .addGap(31, 31, 31))
         );
@@ -152,6 +163,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnMermas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         btnMermas.setForeground(new java.awt.Color(255, 255, 255));
         btnMermas.setText("Mermas");
+        btnMermas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnMermasMouseClicked(evt);
+            }
+        });
 
         btnRegInsumosAlCorte.setEditable(false);
         btnRegInsumosAlCorte.setBackground(new java.awt.Color(35, 53, 74));
@@ -207,20 +223,31 @@ public class MainFrame extends javax.swing.JFrame {
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Salir");
 
-        jButton1.setBackground(new java.awt.Color(35, 53, 74));
-        jButton1.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Solicitar Factura");
-        jButton1.setToolTipText("");
-        jButton1.setBorder(null);
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSolicitarFactura.setBackground(new java.awt.Color(35, 53, 74));
+        btnSolicitarFactura.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnSolicitarFactura.setForeground(new java.awt.Color(255, 255, 255));
+        btnSolicitarFactura.setText("Solicitar Factura");
+        btnSolicitarFactura.setToolTipText("");
+        btnSolicitarFactura.setBorder(null);
+        btnSolicitarFactura.setBorderPainted(false);
+        btnSolicitarFactura.setContentAreaFilled(false);
+        btnSolicitarFactura.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSolicitarFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSolicitarFacturaActionPerformed(evt);
             }
         });
+
+        lblPagos.setEditable(false);
+        lblPagos.setBackground(new java.awt.Color(35, 53, 74));
+        lblPagos.setColumns(2);
+        lblPagos.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
+        lblPagos.setForeground(new java.awt.Color(255, 255, 255));
+        lblPagos.setRows(5);
+        lblPagos.setText("Pagos");
+        lblPagos.setToolTipText("");
+        lblPagos.setBorder(null);
+        lblPagos.setFocusable(false);
 
         javax.swing.GroupLayout pnlNavbarLayout = new javax.swing.GroupLayout(pnlNavbar);
         pnlNavbar.setLayout(pnlNavbarLayout);
@@ -228,20 +255,20 @@ public class MainFrame extends javax.swing.JFrame {
             pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlNavbarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblInventario, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnMermas, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegInsumosAlCorte, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                    .addComponent(lblCompras, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGenerarOrdenCompra, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                    .addComponent(btnPagosPendientes, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(16, Short.MAX_VALUE))
-            .addGroup(pnlNavbarLayout.createSequentialGroup()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(lblInventario, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnMermas, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnRegInsumosAlCorte, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                        .addComponent(lblCompras, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnGenerarOrdenCompra, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                        .addComponent(btnPagosPendientes, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(lblPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSolicitarFactura))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         pnlNavbarLayout.setVerticalGroup(
             pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,13 +284,15 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(btnGenerarOrdenCompra)
                 .addGap(12, 12, 12)
                 .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblPagos, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnPagosPendientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSolicitarFactura)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
                 .addComponent(btnSalir)
                 .addContainerGap())
         );
@@ -279,7 +308,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlNavbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,15 +335,27 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnGenerarOrdenCompraMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSolicitarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitarFacturaActionPerformed
 
         pnlContainer.removeAll();
         pnlContainer.add(seleccionOrden, BorderLayout.CENTER);
         lblVentana.setText("Solicitud de Facturación");
         pnlContainer.revalidate();
         pnlContainer.repaint();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSolicitarFacturaActionPerformed
 
+    private void btnMermasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMermasMouseClicked
+        // TODO add your handling code here:
+        
+        pnlContainer.removeAll();
+        pnlContainer.add(pnlTablaMermas, BorderLayout.CENTER);
+        lblVentana.setText("Mermas");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+        
+    }//GEN-LAST:event_btnMermasMouseClicked
+
+    
     /**
      * @param args the command line arguments
      */
@@ -352,6 +393,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea btnFacturacionOrdenCompra;
@@ -361,13 +404,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea btnRecepcionMercancia;
     private javax.swing.JTextArea btnRegInsumosAlCorte;
     private javax.swing.JLabel btnSalir;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSolicitarFactura;
     private javax.swing.JLabel lblCompras;
     private javax.swing.JLabel lblInventario;
     private javax.swing.JLabel lblNombreSistema;
+    private javax.swing.JTextArea lblPagos;
     private javax.swing.JLabel lblVentana;
     private javax.swing.JPanel pnlContainer;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlNavbar;
     // End of variables declaration//GEN-END:variables
+
 }
