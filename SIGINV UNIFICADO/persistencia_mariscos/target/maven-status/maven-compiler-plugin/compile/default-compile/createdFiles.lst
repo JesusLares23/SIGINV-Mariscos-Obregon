@@ -1,6 +1,10 @@
-com\mycompany\persistencia_mariscos\inventario\InventarioDAO.class
 com\mycompany\persistencia_mariscos\insumo\IInsumoDAO.class
-com\mycompany\persistencia_mariscos\inventario\IInventarioDAO.class
 com\mycompany\persistencia_mariscos\insumo\InsumoDAO.class
+com\mycompany\persistencia_mariscos\solicitudFactura\SolicitudFacturaDAO.class
+com\mycompany\persistencia_mariscos\inventario\InventarioDAO.class
+com\mycompany\persistencia_mariscos\orden\OrdenDAO.class
+com\mycompany\persistencia_mariscos\inventario\IInventarioDAO.class
+com\mycompany\persistencia_mariscos\orden\IOrdenDAO.class
 com\mycompany\persistencia_mariscos\merma\MermasDAO.class
+com\mycompany\persistencia_mariscos\solicitudFactura\ISolicitudFacturaDAO.class
 com\mycompany\persistencia_mariscos\merma\IMermasDAO.class

@@ -4,29 +4,38 @@
  */
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
-import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlCarrito;
-import com.mycompany.presentacion_mariscos.CarritoInsumos.PnlProductos;
-import java.awt.BorderLayout;
+import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
+
+import com.mycompany.dto_mariscos.SolicitudFacturaDTO;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
 
 /**
  *
  * @author 52644
  */
 public class SeleccionOrden extends javax.swing.JPanel {
-    
+
     private JPanel pnlContainer;
     private pnlDatosFacturacion pnlDatos;
     private JLabel lblVentana;
+
+    private ISolicitudFacturaControl solicitudControl;
+    private List<SolicitudFacturaDTO> solicitudesActuales;
+    private int paginaActual = 1;
+    private final int REGISTROS_POR_PAGINA = 20;
+    private SolicitudFacturaDTO solicitudSeleccionada;
 
     /**
      * Creates new form SeleccionOrden
      */
     public SeleccionOrden() {
-        
+
         initComponents();
     }
 
@@ -39,28 +48,28 @@ public class SeleccionOrden extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        lblTitulo = new javax.swing.JLabel();
+        tablaOrdenesTableScrollPane = new javax.swing.JScrollPane();
+        tablaOrdenesTable = new javax.swing.JTable();
+        btnSiguientePaginaTabla = new javax.swing.JButton();
+        btnAnteriorPaginaTabla = new javax.swing.JButton();
         BtnSeleccionar = new javax.swing.JButton();
         BtnRegresar = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        ordenarRecienteAntiguoComboBox = new javax.swing.JComboBox<>();
+        lblOrdenarRecienteAntiguo = new javax.swing.JLabel();
+        lblPedidosRealizadosPorAno = new javax.swing.JLabel();
+        pedidosRealizadosPorAnoComboBox = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(772, 1331));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Seleccione un pedido");
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
+        lblTitulo.setText("Seleccione un pedido");
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setForeground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaOrdenesTable.setBackground(new java.awt.Color(255, 255, 255));
+        tablaOrdenesTable.setForeground(new java.awt.Color(255, 255, 255));
+        tablaOrdenesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -68,28 +77,39 @@ public class SeleccionOrden extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "", "", "", "", ""
+                "N° Orden", "Proveedor", "Estado", "Fecha Creación", "Estado Facturación"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tablaOrdenesTable.getTableHeader().setReorderingAllowed(false);
+        tablaOrdenesTableScrollPane.setViewportView(tablaOrdenesTable);
 
-        jButton1.setBackground(new java.awt.Color(35, 53, 74));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Siguiente");
+        btnSiguientePaginaTabla.setBackground(new java.awt.Color(35, 53, 74));
+        btnSiguientePaginaTabla.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnSiguientePaginaTabla.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiguientePaginaTabla.setText("Siguiente");
+        btnSiguientePaginaTabla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguientePaginaTablaActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(35, 53, 74));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Anterior");
+        btnAnteriorPaginaTabla.setBackground(new java.awt.Color(35, 53, 74));
+        btnAnteriorPaginaTabla.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnAnteriorPaginaTabla.setForeground(new java.awt.Color(255, 255, 255));
+        btnAnteriorPaginaTabla.setText("Anterior");
+        btnAnteriorPaginaTabla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnteriorPaginaTablaActionPerformed(evt);
+            }
+        });
 
         BtnSeleccionar.setBackground(new java.awt.Color(35, 53, 74));
         BtnSeleccionar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -111,21 +131,26 @@ public class SeleccionOrden extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "lo mas reciente", "lo mas antiguo" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        ordenarRecienteAntiguoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "lo mas reciente", "lo mas antiguo" }));
+        ordenarRecienteAntiguoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                ordenarRecienteAntiguoComboBoxActionPerformed(evt);
             }
         });
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Ordenar por : ");
+        lblOrdenarRecienteAntiguo.setForeground(new java.awt.Color(0, 0, 0));
+        lblOrdenarRecienteAntiguo.setText("Ordenar por : ");
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("¨Pedidos Realizados en : ");
+        lblPedidosRealizadosPorAno.setForeground(new java.awt.Color(0, 0, 0));
+        lblPedidosRealizadosPorAno.setText("¨Pedidos Realizados en : ");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setPreferredSize(new java.awt.Dimension(114, 22));
+        pedidosRealizadosPorAnoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2026", "2025", "2024", "2023" }));
+        pedidosRealizadosPorAnoComboBox.setPreferredSize(new java.awt.Dimension(114, 22));
+        pedidosRealizadosPorAnoComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pedidosRealizadosPorAnoComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -137,51 +162,53 @@ public class SeleccionOrden extends javax.swing.JPanel {
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(lblTitulo)
                                 .addGap(380, 380, 380))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1087, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(BtnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(54, 54, 54))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(629, 629, 629)))
-                                    .addComponent(BtnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(BtnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(54, 54, 54))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnAnteriorPaginaTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnSiguientePaginaTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(629, 629, 629)))
+                                .addComponent(BtnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addComponent(jLabel2)
+                        .addComponent(lblOrdenarRecienteAntiguo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ordenarRecienteAntiguoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70)
-                        .addComponent(jLabel3)
+                        .addComponent(lblPedidosRealizadosPorAno)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addComponent(pedidosRealizadosPorAnoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(224, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(tablaOrdenesTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jLabel1)
+                .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ordenarRecienteAntiguoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOrdenarRecienteAntiguo)
+                    .addComponent(lblPedidosRealizadosPorAno)
+                    .addComponent(pedidosRealizadosPorAnoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tablaOrdenesTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSiguientePaginaTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAnteriorPaginaTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(44, 44, 44)
@@ -195,37 +222,68 @@ public class SeleccionOrden extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeleccionarActionPerformed
-        // TODO add your handling code here:
-    pnlContainer.removeAll();
-    pnlContainer.add(pnlDatos, BorderLayout.CENTER);
-    lblVentana.setText("Datos de Facturación");
-    pnlContainer.revalidate();
-    pnlContainer.repaint();
+        int filaSeleccionada = tablaOrdenesTable.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una orden para continuar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        solicitudSeleccionada = solicitudesActuales.get(filaSeleccionada);
+        pnlDatos.setSolicitudFactura(solicitudSeleccionada);
+
+        pnlContainer.removeAll();
+        pnlContainer.add(pnlDatos, BorderLayout.CENTER);
+        lblVentana.setText("Datos de Facturación");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
     }//GEN-LAST:event_BtnSeleccionarActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void ordenarRecienteAntiguoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenarRecienteAntiguoComboBoxActionPerformed
+        paginaActual = 1;
+        cargarOrdenes();
+    }//GEN-LAST:event_ordenarRecienteAntiguoComboBoxActionPerformed
 
     private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnRegresarActionPerformed
 
+    private void pedidosRealizadosPorAnoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pedidosRealizadosPorAnoComboBoxActionPerformed
+        // TODO add your handling code here:
+        paginaActual = 1;
+        cargarOrdenes();
+    }//GEN-LAST:event_pedidosRealizadosPorAnoComboBoxActionPerformed
+
+    private void btnSiguientePaginaTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguientePaginaTablaActionPerformed
+        int totalPaginas = (int) Math.ceil((double) solicitudesActuales.size() / REGISTROS_POR_PAGINA);
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            cargarTabla();
+        }
+    }//GEN-LAST:event_btnSiguientePaginaTablaActionPerformed
+
+    private void btnAnteriorPaginaTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorPaginaTablaActionPerformed
+        if (paginaActual > 1) {
+            paginaActual--;
+            cargarTabla();
+        }
+    }//GEN-LAST:event_btnAnteriorPaginaTablaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnRegresar;
     private javax.swing.JButton BtnSeleccionar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton btnAnteriorPaginaTabla;
+    private javax.swing.JButton btnSiguientePaginaTabla;
+    private javax.swing.JLabel lblOrdenarRecienteAntiguo;
+    private javax.swing.JLabel lblPedidosRealizadosPorAno;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JComboBox<String> ordenarRecienteAntiguoComboBox;
+    private javax.swing.JComboBox<String> pedidosRealizadosPorAnoComboBox;
+    private javax.swing.JTable tablaOrdenesTable;
+    private javax.swing.JScrollPane tablaOrdenesTableScrollPane;
     // End of variables declaration//GEN-END:variables
-    
+/*
     public void setReferences(
             JPanel pnlContainer,
             pnlDatosFacturacion pnlDatos,
@@ -235,6 +293,46 @@ public class SeleccionOrden extends javax.swing.JPanel {
         this.pnlDatos = pnlDatos;
         this.lblVentana = lblVentana;
     }
+     */
+    public void setSolicitudControl(ISolicitudFacturaControl control) {
+        this.solicitudControl = control;
+        cargarOrdenes();
+    }
 
+    public void setReferences(JPanel pnlContainer, pnlDatosFacturacion pnlDatos, JLabel lblVentana) {
+        this.pnlContainer = pnlContainer;
+        this.pnlDatos = pnlDatos;
+        this.lblVentana = lblVentana;
+    }
+
+    private void cargarOrdenes() {
+        try {
+            int ano = Integer.parseInt((String) pedidosRealizadosPorAnoComboBox.getSelectedItem());
+            String ordenamiento = ordenarRecienteAntiguoComboBox.getSelectedIndex() == 0 ? "nuevo" : "antiguo";
+
+            solicitudesActuales = solicitudControl.obtenerOrdenesFacturables(ano, ordenamiento);
+            cargarTabla();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarTabla() {
+        DefaultTableModel model = (DefaultTableModel) tablaOrdenesTable.getModel();
+        model.setRowCount(0);
+
+        List<SolicitudFacturaDTO> pagina = solicitudControl.paginarOrdenesFacturables(solicitudesActuales, paginaActual, REGISTROS_POR_PAGINA);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        for (SolicitudFacturaDTO solicitud : pagina) {
+            model.addRow(new Object[]{
+                solicitud.getNumeroOrden(),
+                "", // Proveedor (obtener de Orden si es necesario)
+                "Revisado", // Estado (obtener de Orden si es necesario)
+                sdf.format(solicitud.getFechaSolicitud()),
+                solicitud.getEstadoFactura()
+            });
+        }
+    }
 
 }

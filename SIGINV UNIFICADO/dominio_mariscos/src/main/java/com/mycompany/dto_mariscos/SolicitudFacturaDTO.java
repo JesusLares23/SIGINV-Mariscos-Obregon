@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.dto_mariscos.solicitudFacturas;
+package com.mycompany.dto_mariscos;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 
 public class SolicitudFacturaDTO {
-
+    
     private String id;
     private int numeroOrden;
     private String estadoFactura;
@@ -30,8 +30,8 @@ public class SolicitudFacturaDTO {
     public SolicitudFacturaDTO() {
     }
 
-    public SolicitudFacturaDTO(int numeroOrden, String estadoFactura, Date fechaSolicitud,
-            String usoCFDI, String rfc, String razonSocial, String regimenFiscal,
+    public SolicitudFacturaDTO(int numeroOrden, String estadoFactura, Date fechaSolicitud, 
+            String usoCFDI, String rfc, String razonSocial, String regimenFiscal, 
             String calle, String codigoPostal, String correo) {
         this.numeroOrden = numeroOrden;
         this.estadoFactura = estadoFactura;
