@@ -126,13 +126,17 @@
                           <Component id="btnGenerarOrdenCompra" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="btnRecepcionMercancia" alignment="1" pref="234" max="32767" attributes="0"/>
                           <Component id="btnPagosPendientes" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnFacturacionOrdenCompra" alignment="1" pref="234" max="32767" attributes="0"/>
+                          <Component id="btnFacturacionOrdenCompra1" alignment="1" pref="234" max="32767" attributes="0"/>
                           <Component id="btnSalir" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="lblPagos" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="btnSolicitarFactura" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="34" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="jButton1" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -155,10 +159,12 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnPagosPendientes" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="btnFacturacionOrdenCompra" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="btnFacturacionOrdenCompra1" min="-2" pref="25" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSolicitarFactura" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="323" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="282" max="32767" attributes="0"/>
                   <Component id="btnSalir" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -271,7 +277,7 @@
             <Property name="text" type="java.lang.String" value="Pagos pendientes"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextArea" name="btnFacturacionOrdenCompra">
+        <Component class="javax.swing.JTextArea" name="btnFacturacionOrdenCompra1">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -349,6 +355,14 @@
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Facturacion de la Orden de compra"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
