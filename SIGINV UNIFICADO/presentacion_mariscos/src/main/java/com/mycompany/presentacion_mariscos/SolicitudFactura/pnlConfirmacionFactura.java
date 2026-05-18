@@ -1,19 +1,30 @@
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
-
+import com.mycompany.controller_mariscos.orden.IOrdenControl;
+import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
 import com.mycompany.dto_mariscos.Orden;
 import com.mycompany.dto_mariscos.solicitudFactura.SolicitudFacturaDTO;
-import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
-import javax.swing.*;
-import java.awt.*;
+import static java.awt.AWTEventMulticaster.add;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 public class pnlConfirmacionFactura extends JPanel {
+
     private SolicitudFacturaDTO solicitud;
     private ISolicitudFacturaControl control;
     private JTextArea area;
     private JButton btnConfirmar;
-    private JPasswordField txtPassword;   // campo de contraseña
-    private Orden orden;                  // referencia a la orden seleccionada
+    private JPasswordField txtPassword;
+    private Orden orden;
+    private int idOrden;
+    private IOrdenControl ordenControl;
 
     public pnlConfirmacionFactura() {
         setLayout(new BorderLayout());
@@ -37,8 +48,8 @@ public class pnlConfirmacionFactura extends JPanel {
 
     public void setSolicitudDTO(SolicitudFacturaDTO solicitud) {
         this.solicitud = solicitud;
-        String texto =
-                "RFC: " + solicitud.getRfc() + "\n\n"
+        String texto
+                = "RFC: " + solicitud.getRfc() + "\n\n"
                 + "Razón Social: " + solicitud.getRazonSocial() + "\n\n"
                 + "Uso CFDI: " + solicitud.getUsoCFDI() + "\n\n"
                 + "Régimen Fiscal: " + solicitud.getRegimenFiscal() + "\n\n"
@@ -59,20 +70,33 @@ public class pnlConfirmacionFactura extends JPanel {
         this.control = control;
     }
 
+    public void setIdOrden(int idOrden) {
+        this.idOrden = idOrden;
+    }
+
+    public void setOrdenControl(IOrdenControl control) {
+        this.ordenControl = control;  // ⬅️ AGREGAR
+    }
+
     private void confirmar() {
         String password = new String(txtPassword.getPassword());
-        if (!"1234".equals(password)) { // ejemplo de validación
+        if (!"1234".equals(password)) {
             JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         try {
             control.guardar(solicitud);
-            if (orden != null) {
+
+            // ⬅️ AGREGAR: Actualizar el estado de la orden en la BD
+            if (ordenControl != null && idOrden > 0) {
+                Orden orden = ordenControl.obtenerOrdenPorNumero(idOrden);
                 orden.setEstadoFacturacion("Facturado");
+                ordenControl.actualizarOrden(orden);
+                System.out.println("DEBUG: Orden #" + idOrden + " actualizada a Facturado");
             }
+
             JOptionPane.showMessageDialog(this, "Factura registrada correctamente");
-            SwingUtilities.getWindowAncestor(this).dispose(); // cerrar el diálogo
+            SwingUtilities.getWindowAncestor(this).dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
