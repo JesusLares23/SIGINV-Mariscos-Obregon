@@ -94,6 +94,7 @@ public class MainFrame extends javax.swing.JFrame {
     seleccionOrden = new SeleccionOrden();
     pnlDatos = new pnlDatosFacturacion();
     pnlTablaMermas = new PnlTablaMermas(mermaControl);
+    pnlDatos.setOrdenControl(ordenControl); 
 
     //pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
     //pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
