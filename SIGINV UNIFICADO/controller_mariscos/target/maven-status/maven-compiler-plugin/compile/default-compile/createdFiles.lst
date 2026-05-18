@@ -1,6 +1,10 @@
 com\mycompany\controller_mariscos\merma\MermaControl.class
+com\mycompany\controller_mariscos\orden\IOrdenControl.class
+com\mycompany\controller_mariscos\insumo\InsumoControl.class
+com\mycompany\controller_mariscos\insumo\IInsumoControl.class
+com\mycompany\controller_mariscos\solicitudFactura\SolicitudFacturaControl.class
 com\mycompany\controller_mariscos\inventario\IInventarioControl.class
 com\mycompany\controller_mariscos\merma\IMermaControl.class
-com\mycompany\controller_mariscos\insumo\InsumoControl.class
+com\mycompany\controller_mariscos\solicitudFactura\ISolicitudFacturaControl.class
 com\mycompany\controller_mariscos\inventario\InventarioControl.class
-com\mycompany\controller_mariscos\insumo\IInsumoControl.class
+com\mycompany\controller_mariscos\orden\OrdenControl.class
