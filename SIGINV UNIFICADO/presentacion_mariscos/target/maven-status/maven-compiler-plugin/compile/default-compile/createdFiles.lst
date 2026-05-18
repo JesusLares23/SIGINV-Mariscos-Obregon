@@ -1,6 +1,5 @@
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion$4.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$3.class
-com\mycompany\presentacion_mariscos\SolicitudFactura\pnlConfirmacionFactura$2.class
 com\mycompany\presentacion_mariscos\MainFrame$4.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion$2.class
@@ -15,7 +14,6 @@ com\mycompany\presentacion_mariscos\SolicitudFactura\pnlConfirmacionFactura.clas
 com\mycompany\presentacion_mariscos\CarritoInsumos\ItemCarrito.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$7.class
-com\mycompany\presentacion_mariscos\SolicitudFactura\pnlConfirmacionFactura$1.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$4.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$2.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\CardInsumos.class
