@@ -5,8 +5,8 @@
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
 import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
-import com.mycompany.dto_mariscos.SolicitudFacturaDTO;
-import java.awt.BorderLayout;
+
+import com.mycompany.dto_mariscos.solicitudFactura.SolicitudFacturaDTO;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.SimpleDateFormat;
@@ -61,6 +61,8 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         btnEnviar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         cfdiComboBox = new javax.swing.JComboBox<>();
+        lblsituacionFiscal = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1331, 772));
@@ -191,6 +193,12 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
             }
         });
 
+        lblsituacionFiscal.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblsituacionFiscal.setForeground(new java.awt.Color(0, 0, 0));
+        lblsituacionFiscal.setText("Situación Fiscal");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "601 General de Ley Personas Morales", "603 Personas Morales con Fines no Lucrativos", "605 Sueldos y Salarios e Ingresos Asimilados", "606 Arrendamiento", "607 Régimen de Enajenación o Adquisición de Bienes", "608 Demás ingresos", "610 Residentes en el Extranjero sin Establecimiento Permanente", "611 Ingresos por Dividendos", "612 Personas Físicas con Actividades Empresariales y Profesionales", "614 Ingresos por intereses", "615 Régimen de los ingresos por obtención de premios", "616 Sin obligaciones fiscales", "621 Incorporación Fiscal", "625 Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas", "626 Régimen Simplificado de Confianza" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -199,31 +207,14 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(codigoPostalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCorreo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(calleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(ciudadTextField)
+                        .addGap(296, 296, 296)
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(146, 146, 146)
                         .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(173, 173, 173))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblCodigoPostal)
-                        .addContainerGap(1204, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(calleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCalle))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblCiudad)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(ciudadTextField))
-                        .addGap(921, 921, 921))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TextFieldrazonSocial, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
@@ -236,13 +227,29 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                                         .addComponent(rfcTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(46, 46, 46)
                                         .addComponent(BtnLimpiarEspacios))
-                                    .addComponent(lblDireccion)
                                     .addComponent(lblCFDI)
                                     .addComponent(lblRazonSocial))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(113, 113, 113)
                         .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69))))
+                        .addGap(69, 69, 69))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCorreo)
+                            .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblCalle)
+                                .addGap(112, 112, 112)
+                                .addComponent(lblCiudad))
+                            .addComponent(codigoPostalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblsituacionFiscal)
+                            .addComponent(lblDireccion)
+                            .addComponent(lblCodigoPostal)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(634, 634, 634))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,25 +281,29 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                             .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblsituacionFiscal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDireccion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblCalle)
-                            .addComponent(lblCiudad))
+                            .addComponent(lblCiudad)
+                            .addComponent(lblCalle))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(calleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ciudadTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblCodigoPostal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(codigoPostalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblCorreo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(codigoPostalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCorreo)
+                        .addGap(18, 18, 18)
                         .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(329, 329, 329))))
+                        .addGap(240, 240, 240))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -314,7 +325,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     solicitudFacturaDTO.setRazonSocial(TextFieldrazonSocial.getText());
     solicitudFacturaDTO.setUsoCFDI((String) cfdiComboBox.getSelectedItem());
     solicitudFacturaDTO.setCalle(calleTextField.getText());
-    solicitudFacturaDTO.setCodigoPostal(codigoPostalTextField.getText());
+    solicitudFacturaDTO.setCp(codigoPostalTextField.getText());
     solicitudFacturaDTO.setCorreo(correoTextField.getText());
  
     pnlConfirmacion = new pnlConfirmacionFactura();
@@ -364,6 +375,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     private javax.swing.JTextField codigoPostalTextField;
     private javax.swing.JTextField correoTextField;
     private javax.swing.JTextArea datosPedidoTextArea;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCFDI;
     private javax.swing.JLabel lblCalle;
@@ -375,6 +387,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     private javax.swing.JLabel lblRazonSocial;
     private javax.swing.JLabel lblRfc;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblsituacionFiscal;
     private javax.swing.JPanel pnlDatosPedido;
     private javax.swing.JTextField rfcTextField;
     // End of variables declaration//GEN-END:variables
@@ -401,16 +414,17 @@ public void setSolicitudControl(ISolicitudFacturaControl control) {
 public void setSolicitudFactura(SolicitudFacturaDTO solicitud) {
     this.solicitudFacturaDTO = solicitud;
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    
+
     String datosText = String.format(
-        "N° de Pedido: %d\n\n" +
-        "Proveedor: \n\n" +
+        "N° de Pedido: %s\n\n" +
+        "Proveedor: %s\n\n" +
         "Monto: \n\n" +
         "Fecha: %s",
-        solicitud.getNumeroOrden(),
+        solicitud.getIdPedido(),
+        solicitud.getRazonSocial(),
         sdf.format(solicitud.getFechaSolicitud())
     );
-    
+
     datosPedidoTextArea.setText(datosText);
 }
  
