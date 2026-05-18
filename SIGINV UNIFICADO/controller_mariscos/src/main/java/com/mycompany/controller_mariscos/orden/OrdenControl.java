@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package com.mycompany.controller_mariscos.orden;
-
 import com.mycompany.dto_mariscos.Orden;
 import com.mycompany.exception_mariscos.DaoException;
 import com.mycompany.exception_mariscos.EntityNotFoundException;
 import com.mycompany.persistencia_mariscos.orden.IOrdenDAO;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,4 +71,36 @@ public class OrdenControl implements IOrdenControl {
         orden.setEstadoFacturacion(nuevoEstado);
         actualizarOrden(orden);
     }
+    
+
+    
+    
+@Override
+public List<Orden> obtenerOrdenesFacturables(int ano, String ordenamiento) throws DaoException {
+    try {
+        List<Orden> ordenes = ordenDAO.findByAno(ano);
+        
+        List<Orden> facturables = new ArrayList<>();
+        for (Orden orden : ordenes) {
+            String estado = orden.getEstadoFacturacion();
+            if (estado != null && 
+                (estado.equalsIgnoreCase("pendiente") || 
+                 estado.equalsIgnoreCase("sin facturar") ||
+                 estado.equalsIgnoreCase("por facturar"))) {
+                facturables.add(orden);
+            }
+        }
+        
+        if ("nuevo".equalsIgnoreCase(ordenamiento)) {
+            facturables.sort((o1, o2) -> o2.getFechaCreacion().compareTo(o1.getFechaCreacion()));
+        } else {
+            facturables.sort((o1, o2) -> o1.getFechaCreacion().compareTo(o2.getFechaCreacion()));
+        }
+        
+        return facturables;
+    } catch (Exception ex) {
+        throw new DaoException("Error al obtener órdenes facturables: " + ex.getMessage(), ex);
+    }
+}
+    
 }
