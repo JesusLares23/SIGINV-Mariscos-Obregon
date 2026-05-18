@@ -27,39 +27,15 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="correoTextField" min="-2" pref="352" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="codigoPostalTextField" min="-2" pref="149" max="-2" attributes="0"/>
-                          <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="calleTextField" min="-2" pref="127" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="ciudadTextField" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="296" max="-2" attributes="0"/>
                       <Component id="btnRegresar" min="-2" pref="150" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
                       <Component id="btnEnviar" min="-2" pref="150" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="lblCodigoPostal" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="1204" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="calleTextField" alignment="0" min="-2" pref="127" max="-2" attributes="0"/>
-                          <Component id="lblCalle" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lblCiudad" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="ciudadTextField" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="921" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -74,7 +50,6 @@
                                       <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                                       <Component id="BtnLimpiarEspacios" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="lblDireccion" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblCFDI" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblRazonSocial" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -84,6 +59,28 @@
                       <EmptySpace min="113" pref="113" max="-2" attributes="0"/>
                       <Component id="pnlDatosPedido" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
+                          <Component id="correoTextField" min="-2" pref="352" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="lblCalle" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                              <Component id="lblCiudad" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="codigoPostalTextField" min="-2" pref="149" max="-2" attributes="0"/>
+                          <Component id="lblsituacionFiscal" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblDireccion" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCodigoPostal" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="634" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -124,12 +121,16 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblsituacionFiscal" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jComboBox1" pref="46" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblDireccion" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblCalle" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblCiudad" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCalle" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -138,13 +139,13 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblCodigoPostal" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="codigoPostalTextField" min="-2" pref="40" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="codigoPostalTextField" min="-2" pref="40" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="correoTextField" min="-2" pref="35" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="329" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="240" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -422,6 +423,43 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cfdiComboBoxActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblsituacionFiscal">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="0"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Situaci&#xf3;n Fiscal"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBox1">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="15">
+            <StringItem index="0" value="601 General de Ley Personas Morales"/>
+            <StringItem index="1" value="603 Personas Morales con Fines no Lucrativos"/>
+            <StringItem index="2" value="605 Sueldos y Salarios e Ingresos Asimilados"/>
+            <StringItem index="3" value="606 Arrendamiento"/>
+            <StringItem index="4" value="607 R&#xe9;gimen de Enajenaci&#xf3;n o Adquisici&#xf3;n de Bienes"/>
+            <StringItem index="5" value="608 Dem&#xe1;s ingresos"/>
+            <StringItem index="6" value="610 Residentes en el Extranjero sin Establecimiento Permanente"/>
+            <StringItem index="7" value="611 Ingresos por Dividendos"/>
+            <StringItem index="8" value="612 Personas F&#xed;sicas con Actividades Empresariales y Profesionales"/>
+            <StringItem index="9" value="614 Ingresos por intereses"/>
+            <StringItem index="10" value="615 R&#xe9;gimen de los ingresos por obtenci&#xf3;n de premios"/>
+            <StringItem index="11" value="616 Sin obligaciones fiscales"/>
+            <StringItem index="12" value="621 Incorporaci&#xf3;n Fiscal"/>
+            <StringItem index="13" value="625 R&#xe9;gimen de las Actividades Empresariales con ingresos a trav&#xe9;s de Plataformas Tecnol&#xf3;gicas"/>
+            <StringItem index="14" value="626 R&#xe9;gimen Simplificado de Confianza"/>
+          </StringArray>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
