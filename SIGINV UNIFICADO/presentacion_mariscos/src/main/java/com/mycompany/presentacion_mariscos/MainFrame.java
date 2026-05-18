@@ -1,6 +1,4 @@
-
 package com.mycompany.presentacion_mariscos;
-
 
 import com.mycompany.config_mariscos.MongoClientProvider;
 import com.mycompany.controller_mariscos.insumo.IInsumoControl;
@@ -21,6 +19,12 @@ import com.mycompany.presentacion_mariscos.SeleccionProveedor.PnlProveedores;
 import com.mycompany.presentacion_mariscos.SolicitudFactura.SeleccionOrden;
 import com.mycompany.presentacion_mariscos.SolicitudFactura.pnlDatosFacturacion;
 import com.mycompany.presentacion_mariscos.mermas.PnlTablaMermas;
+import com.mycompany.controller_mariscos.orden.IOrdenControl;
+import com.mycompany.controller_mariscos.orden.OrdenControl;
+import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
+import com.mycompany.controller_mariscos.solicitudFactura.SolicitudFacturaControl;
+import com.mycompany.persistencia_mariscos.orden.IOrdenDAO;
+import com.mycompany.persistencia_mariscos.orden.OrdenDAO;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,65 +37,73 @@ import javax.swing.JLabel;
  * @author demib
  */
 public class MainFrame extends javax.swing.JFrame {
-    
-        /* moviendo por pruebas
+
+    /* moviendo por pruebas
     PnlCarrito pnlCarrito = new PnlCarrito();
     PnlProductos pnlProductos = new PnlProductos(pnlCarrito);
-    */
-    
-    
-    
+     */
+    private IOrdenDAO ordenDAO;
+
+    private IOrdenControl ordenControl;
+    private ISolicitudFacturaControl solicitudFacturaControl;
+
     //---DAOS---
     private IInsumoDAO insumoDAO;
     private IInventarioDAO inventarioDAO;
     private IMermasDAO mermasDAO;
-    
-    
+
     //---CONTROLLERS---
     private IInsumoControl insumoControl;
     private IInventarioControl inventarioControl;
     private IMermaControl mermaControl;
-    
+
     private PnlCarrito pnlCarrito;
     private PnlProductos pnlProductos;
     private PnlProveedores pnlProveedores2;
-    
+
     private SeleccionOrden seleccionOrden;
     private pnlDatosFacturacion pnlDatos;
-    
+
     private PnlTablaMermas pnlTablaMermas;
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-        MongoClientProvider.INSTANCE.init();
-        
-        insumoDAO = new InsumoDAO();
-        inventarioDAO = new InventarioDAO();
-        mermasDAO = new MermasDAO();
+   MongoClientProvider.INSTANCE.init();
 
-        //---CONTROLLERS---
-        insumoControl = new InsumoControl(insumoDAO);
-        inventarioControl = new InventarioControl(inventarioDAO);
-        mermaControl = new MermaControl(mermasDAO);
-        
-       
-        
-        initComponents();
-        
-                
-        pnlCarrito = new PnlCarrito();
-        pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
-        pnlProveedores2 = new PnlProveedores();
-        seleccionOrden = new SeleccionOrden ();
-         pnlCarrito.setReferences(pnlContainer, pnlProveedores2,lblVentana);
-         
-          pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
-          
-          pnlDatos = new pnlDatosFacturacion();
-          seleccionOrden.setReferences( pnlContainer, pnlDatos, lblVentana);
-        
-        pnlTablaMermas = new PnlTablaMermas(mermaControl);
+   MongoClientProvider.INSTANCE.init();
+
+    insumoDAO = new InsumoDAO();
+    inventarioDAO = new InventarioDAO();
+    mermasDAO = new MermasDAO();
+    ordenDAO = new OrdenDAO();
+
+    insumoControl = new InsumoControl(insumoDAO);
+    inventarioControl = new InventarioControl(inventarioDAO);
+    mermaControl = new MermaControl(mermasDAO);
+    ordenControl = new OrdenControl(ordenDAO);
+    solicitudFacturaControl = new SolicitudFacturaControl();
+
+    initComponents();
+
+    pnlCarrito = new PnlCarrito();
+    pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
+    pnlProveedores2 = new PnlProveedores();
+    seleccionOrden = new SeleccionOrden();
+    pnlDatos = new pnlDatosFacturacion();
+    pnlTablaMermas = new PnlTablaMermas(mermaControl);
+
+    // referencias
+    pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
+    pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
+    seleccionOrden.setReferences(pnlContainer, pnlDatos, lblVentana);
+
+    // inyección de control
+    seleccionOrden.setOrdenControl(ordenControl);
+    seleccionOrden.setSolicitudControl(solicitudFacturaControl);
+    pnlDatos.setSolicitudControl(solicitudFacturaControl);
+
     }
 
     /**
@@ -331,8 +343,8 @@ public class MainFrame extends javax.swing.JFrame {
         lblVentana.setText("Generar Orden De Compra");
         pnlContainer.revalidate();
         pnlContainer.repaint();
-        
-        
+
+
     }//GEN-LAST:event_btnGenerarOrdenCompraMouseClicked
 
     private void btnSolicitarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitarFacturaActionPerformed
@@ -346,16 +358,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnMermasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMermasMouseClicked
         // TODO add your handling code here:
-        
+
         pnlContainer.removeAll();
         pnlContainer.add(pnlTablaMermas, BorderLayout.CENTER);
         lblVentana.setText("Mermas");
         pnlContainer.revalidate();
         pnlContainer.repaint();
-        
+
     }//GEN-LAST:event_btnMermasMouseClicked
 
-    
     /**
      * @param args the command line arguments
      */
@@ -382,19 +393,16 @@ public class MainFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new MainFrame().setVisible(true);
             }
         });
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea btnFacturacionOrdenCompra;
