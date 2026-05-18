@@ -4,33 +4,41 @@
  */
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
+import com.mycompany.controller_mariscos.orden.IOrdenControl;
 import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
-
-import com.mycompany.dto_mariscos.SolicitudFacturaDTO;
+import com.mycompany.dto_mariscos.Orden;
+import java.awt.BorderLayout;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
+
+
+
+
+
 
 /**
  *
  * @author 52644
  */
 public class SeleccionOrden extends javax.swing.JPanel {
+    private ISolicitudFacturaControl solicitudControl;
+
+
+
+    private IOrdenControl ordenControl;
+    private List<Orden> ordenesActuales;
+    private Orden ordenSeleccionada;
 
     private JPanel pnlContainer;
     private pnlDatosFacturacion pnlDatos;
     private JLabel lblVentana;
 
-    private ISolicitudFacturaControl solicitudControl;
-    private List<SolicitudFacturaDTO> solicitudesActuales;
     private int paginaActual = 1;
     private final int REGISTROS_POR_PAGINA = 20;
-    private SolicitudFacturaDTO solicitudSeleccionada;
-
     /**
      * Creates new form SeleccionOrden
      */
@@ -184,7 +192,7 @@ public class SeleccionOrden extends javax.swing.JPanel {
                         .addComponent(lblPedidosRealizadosPorAno)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pedidosRealizadosPorAnoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(224, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(tablaOrdenesTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1261, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -222,21 +230,32 @@ public class SeleccionOrden extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeleccionarActionPerformed
-        int filaSeleccionada = tablaOrdenesTable.getSelectedRow();
+    int filaSeleccionada = tablaOrdenesTable.getSelectedRow();
 
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar una orden para continuar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una orden", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        solicitudSeleccionada = solicitudesActuales.get(filaSeleccionada);
-        pnlDatos.setSolicitudFactura(solicitudSeleccionada);
+    int indiceReal = ((paginaActual - 1) * REGISTROS_POR_PAGINA) + filaSeleccionada;
+    ordenSeleccionada = ordenesActuales.get(indiceReal);
 
-        pnlContainer.removeAll();
-        pnlContainer.add(pnlDatos, BorderLayout.CENTER);
-        lblVentana.setText("Datos de Facturación");
-        pnlContainer.revalidate();
-        pnlContainer.repaint();
+    // Crear DTO con setters
+    com.mycompany.dto_mariscos.solicitudFactura.SolicitudFacturaDTO dto =
+            new com.mycompany.dto_mariscos.solicitudFactura.SolicitudFacturaDTO();
+
+    dto.setIdPedido(String.valueOf(ordenSeleccionada.getNumeroOrden())); // conversión int → String
+    dto.setRazonSocial(ordenSeleccionada.getProveedor());
+    dto.setFechaSolicitud(ordenSeleccionada.getFechaCreacion());
+    dto.setEstadoFactura(ordenSeleccionada.getEstadoFacturacion());
+
+    pnlDatos.setSolicitudFactura(dto);
+
+    pnlContainer.removeAll();
+    pnlContainer.add(pnlDatos, BorderLayout.CENTER);
+    lblVentana.setText("Datos de Facturación");
+    pnlContainer.revalidate();
+    pnlContainer.repaint();
     }//GEN-LAST:event_BtnSeleccionarActionPerformed
 
     private void ordenarRecienteAntiguoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenarRecienteAntiguoComboBoxActionPerformed
@@ -255,7 +274,7 @@ public class SeleccionOrden extends javax.swing.JPanel {
     }//GEN-LAST:event_pedidosRealizadosPorAnoComboBoxActionPerformed
 
     private void btnSiguientePaginaTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguientePaginaTablaActionPerformed
-        int totalPaginas = (int) Math.ceil((double) solicitudesActuales.size() / REGISTROS_POR_PAGINA);
+  int totalPaginas = (int) Math.ceil((double) ordenesActuales.size() / REGISTROS_POR_PAGINA);
         if (paginaActual < totalPaginas) {
             paginaActual++;
             cargarTabla();
@@ -299,10 +318,14 @@ public class SeleccionOrden extends javax.swing.JPanel {
         cargarOrdenes();
     }
 
-    public void setReferences(JPanel pnlContainer, pnlDatosFacturacion pnlDatos, JLabel lblVentana) {
+ public void setReferences(JPanel pnlContainer, pnlDatosFacturacion pnlDatos, JLabel lblVentana) {
         this.pnlContainer = pnlContainer;
         this.pnlDatos = pnlDatos;
         this.lblVentana = lblVentana;
+    }
+    public void setOrdenControl(IOrdenControl control) {
+        this.ordenControl = control;
+        cargarOrdenes();
     }
 
     private void cargarOrdenes() {
@@ -310,7 +333,7 @@ public class SeleccionOrden extends javax.swing.JPanel {
             int ano = Integer.parseInt((String) pedidosRealizadosPorAnoComboBox.getSelectedItem());
             String ordenamiento = ordenarRecienteAntiguoComboBox.getSelectedIndex() == 0 ? "nuevo" : "antiguo";
 
-            solicitudesActuales = solicitudControl.obtenerOrdenesFacturables(ano, ordenamiento);
+            ordenesActuales = ordenControl.obtenerOrdenesFacturables(ano, ordenamiento);
             cargarTabla();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -321,16 +344,19 @@ public class SeleccionOrden extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tablaOrdenesTable.getModel();
         model.setRowCount(0);
 
-        List<SolicitudFacturaDTO> pagina = solicitudControl.paginarOrdenesFacturables(solicitudesActuales, paginaActual, REGISTROS_POR_PAGINA);
+        int inicio = (paginaActual - 1) * REGISTROS_POR_PAGINA;
+        int fin = Math.min(inicio + REGISTROS_POR_PAGINA, ordenesActuales.size());
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        for (SolicitudFacturaDTO solicitud : pagina) {
+        for (int i = inicio; i < fin; i++) {
+            Orden orden = ordenesActuales.get(i);
             model.addRow(new Object[]{
-                solicitud.getNumeroOrden(),
-                "", // Proveedor (obtener de Orden si es necesario)
-                "Revisado", // Estado (obtener de Orden si es necesario)
-                sdf.format(solicitud.getFechaSolicitud()),
-                solicitud.getEstadoFactura()
+                orden.getNumeroOrden(),
+                orden.getProveedor(),
+                orden.getEstado(),
+                sdf.format(orden.getFechaCreacion()),
+                orden.getEstadoFacturacion()
             });
         }
     }
