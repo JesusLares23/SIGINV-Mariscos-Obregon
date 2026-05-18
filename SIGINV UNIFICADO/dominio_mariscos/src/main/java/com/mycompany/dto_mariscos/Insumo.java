@@ -30,6 +30,9 @@ public class Insumo {
     //URL de la imagen alojada en Imgur
     @BsonProperty("imagenUrl")
     private String imagenUrl;
+    
+    @BsonProperty("qrUrl")
+    private String qrUrl; // ruta local o URL de la imagen del QR
 
     public Insumo() {
     }
@@ -42,6 +45,17 @@ public class Insumo {
         this.imagenUrl = imagenUrl;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Insumo(ObjectId _id, String nombre, String unidadMedida, String categoria, Instant createdAt, Instant updatedAt, String imagenUrl, String qrUrl) {
+        this._id = _id;
+        this.nombre = nombre;
+        this.unidadMedida = unidadMedida;
+        this.categoria = categoria;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.imagenUrl = imagenUrl;
+        this.qrUrl = qrUrl;
     }
 
     public ObjectId getId() {
@@ -76,14 +90,6 @@ public class Insumo {
         this.categoria = categoria;
     }
 
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
-    }
-
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -99,6 +105,27 @@ public class Insumo {
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
+    public String getQrUrl() {
+        return qrUrl;
+    }
+
+    public void setQrUrl(String qrUrl) {
+        this.qrUrl = qrUrl;
+    }
+    
+    
+
+    
+    
     
     
 

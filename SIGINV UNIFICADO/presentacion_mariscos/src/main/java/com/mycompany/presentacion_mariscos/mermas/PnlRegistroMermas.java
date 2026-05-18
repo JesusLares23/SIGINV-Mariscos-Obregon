@@ -4,6 +4,13 @@
  */
 package com.mycompany.presentacion_mariscos.mermas;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import com.mycompany.controller_mariscos.insumo.IInsumoControl;
 import com.mycompany.controller_mariscos.insumo.InsumoControl;
 import com.mycompany.controller_mariscos.inventario.IInventarioControl;
@@ -18,11 +25,15 @@ import com.mycompany.persistencia_mariscos.insumo.InsumoDAO;
 import com.mycompany.persistencia_mariscos.inventario.IInventarioDAO;
 import com.mycompany.persistencia_mariscos.inventario.InventarioDAO;
 import com.mycompany.presentacion_mariscos.NavegadorUI;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -107,6 +118,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         lblPagina = new javax.swing.JLabel();
         btnAnterior = new javax.swing.JButton();
         btnSiguiente = new javax.swing.JButton();
+        btnSeleccionarQR = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -257,9 +269,9 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         pnlInformacionLayout.setVerticalGroup(
             pnlInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInformacionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(lblInformacion)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(pnlDatosInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -309,6 +321,18 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             }
         });
 
+        btnSeleccionarQR.setBackground(new java.awt.Color(35, 52, 75));
+        btnSeleccionarQR.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnSeleccionarQR.setForeground(new java.awt.Color(255, 255, 255));
+        btnSeleccionarQR.setText("Seleccionar por QR");
+        btnSeleccionarQR.setBorderPainted(false);
+        btnSeleccionarQR.setFocusPainted(false);
+        btnSeleccionarQR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarQRActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -322,15 +346,17 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                             .addComponent(lblTablaMermas))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSeleccionarQR)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblPagina)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                        .addGap(18, 91, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlInformacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -344,21 +370,26 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                 .addComponent(lblTablaMermas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTablaLeyend)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(56, 56, 56)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegistrarMerma, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAnterior)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnSiguiente)
-                        .addComponent(lblPagina)))
-                .addGap(27, 27, 27))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegistrarMerma, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAnterior)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnSiguiente)
+                                .addComponent(lblPagina)))
+                        .addGap(27, 27, 27))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSeleccionarQR)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -422,10 +453,26 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
+    private void btnSeleccionarQRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarQRActionPerformed
+        // TODO add your handling code here:
+        //Le pasamos la carpeta al filechooser para que este al dar clic en el boton se abra justo en la carpeta
+        File carpetaQR = new File("qrs");
+        JFileChooser fileChooser = new JFileChooser(carpetaQR);
+        
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Imagenes", "png", "jpg"));
+
+        int resultado = fileChooser.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            leerQR(archivo);
+        }
+    }//GEN-LAST:event_btnSeleccionarQRActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnRegistrarMerma;
+    private javax.swing.JButton btnSeleccionarQR;
     private javax.swing.JButton btnSiguiente;
     private com.toedter.calendar.JDateChooser chooserFecha;
     private javax.swing.JComboBox<String> comboCausa;
@@ -478,7 +525,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     int fila = tblInsumos.getSelectedRow();
                     if (fila >= 0) {
-                        // Calcular índice real según página actual
+                        // Calcular índice real segun pagina actual
                         int indiceReal = paginaActual * REGISTROS_POR_PAGINA + fila;
                         Inventario inventario = listaInventario.get(indiceReal);
 
@@ -511,6 +558,30 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
         int totalPaginas = (int) Math.ceil((double) listaInventario.size() / REGISTROS_POR_PAGINA);
         lblPagina.setText("Página " + (pagina + 1) + " de " + totalPaginas);
+    }
+    
+    private void leerQR(File archivo) {
+        try {
+            BufferedImage imagen = ImageIO.read(archivo);
+            LuminanceSource source = new BufferedImageLuminanceSource(imagen);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+            Result result = new MultiFormatReader().decode(bitmap);
+            String contenidoQR = result.getText(); // el nombre del insumo puesto en el metodo generarQR
+
+            // buscar el insumo por el contenido del QR
+            Insumo insumo = insumoControl.obtenerInsumoPorNombre(contenidoQR);
+
+            // rellenar campos
+            txtInsumo.setText(insumo.getNombre());
+            txtUnidadMedida.setText(insumo.getUnidadMedida());
+
+        } catch (NotFoundException e) {
+            JOptionPane.showMessageDialog(this, "No se encontro ningun QR en la imagen");
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(this, "Error al leer QR: " + e.getMessage());
+        }
     }
 
     

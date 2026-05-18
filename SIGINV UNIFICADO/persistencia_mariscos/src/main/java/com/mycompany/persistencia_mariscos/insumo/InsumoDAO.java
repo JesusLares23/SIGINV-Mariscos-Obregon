@@ -58,7 +58,7 @@ public class InsumoDAO implements IInsumoDAO{
     @Override
     public Optional<Insumo> findByNombre(String nombre) throws DaoException {
         try {
-            return Optional.ofNullable(col.find(Filters.eq("title", nombre)).first());
+            return Optional.ofNullable(col.find(Filters.eq("nombre", nombre)).first());
         } catch (MongoException e) {
             throw new DaoException("Error consultando curso por Insumo", e);
         }

@@ -3,6 +3,7 @@ com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$3.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas.class
 com\mycompany\presentacion_mariscos\MainFrame$4.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas.class
+com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$6.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas$3.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion$2.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$4.class
@@ -22,6 +23,7 @@ com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$2.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\CardInsumos.class
 com\mycompany\presentacion_mariscos\MainFrame$3.class
 com\mycompany\presentacion_mariscos\PnlResumenOrden.class
+com\mycompany\presentacion_mariscos\util\GeneradorQR.class
 com\mycompany\presentacion_mariscos\SeleccionProveedor\DatosOrden.class
 com\mycompany\presentacion_mariscos\SeleccionProveedor\PnlProveedores.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\PnlProductos.class
