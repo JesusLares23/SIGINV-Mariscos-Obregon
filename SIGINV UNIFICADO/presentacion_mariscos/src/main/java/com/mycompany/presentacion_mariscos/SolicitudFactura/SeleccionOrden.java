@@ -333,7 +333,7 @@ public class SeleccionOrden extends javax.swing.JPanel {
             int ano = Integer.parseInt((String) pedidosRealizadosPorAnoComboBox.getSelectedItem());
             String ordenamiento = ordenarRecienteAntiguoComboBox.getSelectedIndex() == 0 ? "nuevo" : "antiguo";
 
-            ordenesActuales = ordenControl.obtenerOrdenesFacturables(ano, ordenamiento);
+            ordenesActuales = ordenControl.obtenerOrdenesPorAno(ano);
             cargarTabla();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
