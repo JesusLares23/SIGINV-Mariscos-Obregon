@@ -7,6 +7,7 @@ package com.mycompany.presentacion_mariscos.SolicitudFactura;
 import com.mycompany.controller_mariscos.orden.IOrdenControl;
 import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
 import com.mycompany.dto_mariscos.Orden;
+
 import java.awt.BorderLayout;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -76,7 +77,7 @@ public class SeleccionOrden extends javax.swing.JPanel {
         lblTitulo.setText("Seleccione un pedido");
 
         tablaOrdenesTable.setBackground(new java.awt.Color(255, 255, 255));
-        tablaOrdenesTable.setForeground(new java.awt.Color(255, 255, 255));
+        tablaOrdenesTable.setForeground(new java.awt.Color(0, 0, 0));
         tablaOrdenesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -329,36 +330,49 @@ public class SeleccionOrden extends javax.swing.JPanel {
     }
 
     private void cargarOrdenes() {
-        try {
-            int ano = Integer.parseInt((String) pedidosRealizadosPorAnoComboBox.getSelectedItem());
-            String ordenamiento = ordenarRecienteAntiguoComboBox.getSelectedIndex() == 0 ? "nuevo" : "antiguo";
+try {
+        int ano = Integer.parseInt((String) pedidosRealizadosPorAnoComboBox.getSelectedItem());
+        String ordenamiento = ordenarRecienteAntiguoComboBox.getSelectedIndex() == 0 ? "nuevo" : "antiguo";
 
-            ordenesActuales = ordenControl.obtenerOrdenesFacturables(ano, ordenamiento);
-            cargarTabla();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        System.out.println("DEBUG: Cargando órdenes para año: " + ano + ", ordenamiento: " + ordenamiento);
+        
+        ordenesActuales = ordenControl.obtenerOrdenesFacturables(ano, ordenamiento);
+        
+        System.out.println("DEBUG: Órdenes cargadas: " + ordenesActuales.size());
+        
+        cargarTabla();
+    } catch (Exception ex) {
+        System.err.println("ERROR al cargar órdenes: " + ex.getMessage());
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
 
     private void cargarTabla() {
-        DefaultTableModel model = (DefaultTableModel) tablaOrdenesTable.getModel();
-        model.setRowCount(0);
+      
+    DefaultTableModel model = (DefaultTableModel) tablaOrdenesTable.getModel();
+    model.setRowCount(0);
+    int inicio = (paginaActual - 1) * REGISTROS_POR_PAGINA;
+    int fin = Math.min(inicio + REGISTROS_POR_PAGINA, ordenesActuales.size());
 
-        int inicio = (paginaActual - 1) * REGISTROS_POR_PAGINA;
-        int fin = Math.min(inicio + REGISTROS_POR_PAGINA, ordenesActuales.size());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-        for (int i = inicio; i < fin; i++) {
-            Orden orden = ordenesActuales.get(i);
-            model.addRow(new Object[]{
-                orden.getNumeroOrden(),
-                orden.getProveedor(),
-                orden.getEstado(),
-                sdf.format(orden.getFechaCreacion()),
-                orden.getEstadoFacturacion()
-            });
-        }
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ System.out.println("DEBUG cargarTabla: Mostrando filas de " + inicio + " a " + fin);
+    
+    for (int i = inicio; i < fin; i++) {
+        Orden orden = ordenesActuales.get(i);
+        System.out.println("DEBUG: Orden #" + orden.getNumeroOrden() + " - " + orden.getProveedor());
+        
+        model.addRow(new Object[]{
+            orden.getNumeroOrden(),
+            orden.getProveedor(),
+            orden.getEstado(),
+            sdf.format(orden.getFechaCreacion()),
+            orden.getEstadoFacturacion()
+        });
+    }
+    
+    System.out.println("DEBUG: Total de filas en tabla: " + model.getRowCount());
+    
     }
 
 }
