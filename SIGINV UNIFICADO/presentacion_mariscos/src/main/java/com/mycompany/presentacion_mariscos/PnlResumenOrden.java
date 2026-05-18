@@ -2,6 +2,7 @@ package com.mycompany.presentacion_mariscos;
 
 import com.mycompany.dto_mariscos.Carrito;
 import com.mycompany.dto_mariscos.Insumo;
+import com.mycompany.dto_mariscos.ItemOrden;
 import com.mycompany.dto_mariscos.Orden;
 import com.mycompany.presentacion_mariscos.GestorOrden;
 import java.awt.BorderLayout;
@@ -13,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -220,28 +222,27 @@ public class PnlResumenOrden extends JPanel {
     }
 
     private void cargarDatosOrden() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        lblNumeroOrden.setText(String.valueOf(ordenActual.getNumeroOrden()));
-        lblFecha.setText(sdf.format(ordenActual.getFechaCreacion()));
-        lblResponsable.setText(ordenActual.getResponsable());
-        lblEstado.setText(ordenActual.getEstado());
-        lblNombreProveedor.setText(ordenActual.getProveedor());
+SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    lblNumeroOrden.setText(String.valueOf(ordenActual.getNumeroOrden()));
+    lblFecha.setText(sdf.format(ordenActual.getFechaCreacion()));
+    lblResponsable.setText(ordenActual.getResponsable());
+    lblEstado.setText(ordenActual.getEstado());
+    lblNombreProveedor.setText(ordenActual.getProveedor());
 
-        // Cargar tabla de insumos
-        Map<Insumo, Double> items = ordenActual.getItems();
-        modeloTabla.setRowCount(0);
-        int total = 0;
-        for (Map.Entry<Insumo, Double> entry : items.entrySet()) {
-            Insumo insumo = entry.getKey();
-            Double cantidad = entry.getValue();
-            modeloTabla.addRow(new Object[]{
-                insumo.getNombre(),
-                cantidad,
-                insumo.getUnidadMedida()
-            });
-            total++;
-        }
-        lblTotalInsumos.setText("Total de Insumos: " + total);
+    // Cargar tabla de insumos
+    List<ItemOrden> items = ordenActual.getItems();  // ⬅️ CAMBIAR A List<ItemOrden>
+    modeloTabla.setRowCount(0);
+    int total = 0;
+    
+    for (ItemOrden item : items) {  // ⬅️ CAMBIAR EL LOOP
+        modeloTabla.addRow(new Object[]{
+            item.getNombre(),           // ⬅️ El nombre del insumo
+            item.getCantidad(),         // ⬅️ La cantidad
+            "kg"                        // ⬅️ Unidad por defecto
+        });
+        total++;
+    }
+    lblTotalInsumos.setText("Total de Insumos: " + total);
     }
 
     private void editarOrden() {
