@@ -4,6 +4,7 @@
  */
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
+import com.mycompany.controller_mariscos.orden.IOrdenControl;
 import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
 
 import com.mycompany.dto_mariscos.solicitudFactura.SolicitudFacturaDTO;
@@ -22,6 +23,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     private ISolicitudFacturaControl solicitudControl;
     private SolicitudFacturaDTO solicitudFacturaDTO;
     private pnlConfirmacionFactura pnlConfirmacion;
+      private IOrdenControl ordenControl;
 
 
     public pnlDatosFacturacion() {
@@ -326,32 +328,32 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     }//GEN-LAST:event_rfcTextFieldActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-     if (!validarCampos()) {
-        return;
-    }
- 
-    solicitudFacturaDTO.setRfc(rfcTextField.getText());
-    solicitudFacturaDTO.setRazonSocial(TextFieldrazonSocial.getText());
-    solicitudFacturaDTO.setUsoCFDI((String) cfdiComboBox.getSelectedItem());
-    solicitudFacturaDTO.setCalle(calleTextField.getText());
-    solicitudFacturaDTO.setCp(codigoPostalTextField.getText());
-    solicitudFacturaDTO.setCorreo(correoTextField.getText());
- 
-    pnlConfirmacion = new pnlConfirmacionFactura();
-    pnlConfirmacion.setSolicitudDTO(solicitudFacturaDTO);
-    pnlConfirmacion.setControl(solicitudControl);  // ⬅️ AGREGAR ESTA LÍNEA
+  if (!validarCampos()) {
+            return;
+        }
+     
+        solicitudFacturaDTO.setRfc(rfcTextField.getText());
+        solicitudFacturaDTO.setRazonSocial(TextFieldrazonSocial.getText());
+        solicitudFacturaDTO.setUsoCFDI((String) cfdiComboBox.getSelectedItem());
+        solicitudFacturaDTO.setCalle(calleTextField.getText());
+        solicitudFacturaDTO.setCp(codigoPostalTextField.getText());
+        solicitudFacturaDTO.setCorreo(correoTextField.getText());
+     
+        pnlConfirmacion = new pnlConfirmacionFactura();
+        pnlConfirmacion.setSolicitudDTO(solicitudFacturaDTO);
+        pnlConfirmacion.setControl(solicitudControl);
+        pnlConfirmacion.setOrdenControl(ordenControl);  // ⬅️ PASAR AQUÍ
+        pnlConfirmacion.setIdOrden(Integer.parseInt(solicitudFacturaDTO.getIdPedido()));
 
-    JDialog dialogo = new JDialog();
-    dialogo.setUndecorated(true);
-    dialogo.setModal(true);
-    dialogo.setTitle("Confirmación");
-    dialogo.add(pnlConfirmacion);
-    dialogo.setPreferredSize(new Dimension(600, 400));
-    dialogo.pack();
-    dialogo.setLocationRelativeTo(this);
-    dialogo.setVisible(true);
- 
-
+        JDialog dialogo = new JDialog();
+        dialogo.setUndecorated(true);
+        dialogo.setModal(true);
+        dialogo.setTitle("Confirmación");
+        dialogo.add(pnlConfirmacion);
+        dialogo.setPreferredSize(new Dimension(600, 400));
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
 
     }//GEN-LAST:event_btnEnviarActionPerformed
 
@@ -495,5 +497,9 @@ private void limpiarErrores() {
     codigoPostalTextField.setForeground(Color.BLACK);
     correoTextField.setForeground(Color.BLACK);
 }
+
+    public void setOrdenControl(IOrdenControl control) {  // ⬅️ AGREGAR
+        this.ordenControl = control;
+    }
  
 }
