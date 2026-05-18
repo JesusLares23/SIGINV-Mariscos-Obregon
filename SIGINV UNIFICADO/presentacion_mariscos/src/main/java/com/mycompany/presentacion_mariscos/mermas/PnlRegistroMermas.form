@@ -75,9 +75,9 @@
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnRegistrarMerma" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                  <Component id="btnAnterior" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnSiguiente" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnAnterior" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lblPagina" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
