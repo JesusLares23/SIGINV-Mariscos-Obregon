@@ -1,21 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package com.mycompany.controller_mariscos.orden;
-
-
-
 import com.mycompany.dto_mariscos.Orden;
 import com.mycompany.exception_mariscos.DaoException;
 import com.mycompany.exception_mariscos.EntityNotFoundException;
 import java.util.List;
-
 /**
  *
  * @author 52644
  */
-
 public interface IOrdenControl {
     
     int crearOrden(Orden orden) throws DaoException;
@@ -27,6 +18,10 @@ public interface IOrdenControl {
     List<Orden> obtenerOrdenesPorEstadoFacturacion(String estadoFacturacion) throws DaoException;
     
     List<Orden> obtenerOrdenesPorAno(int ano) throws DaoException;
+    
+
+    
+    List<Orden> obtenerOrdenesFacturables(int ano, String ordenamiento) throws DaoException;
     
     void actualizarOrden(Orden orden) throws DaoException, EntityNotFoundException;
     
