@@ -64,7 +64,7 @@ public class MermaControl implements IMermaControl {
     public MermaDTO obtenerMermaPorId(ObjectId id) throws Exception {
         
         Merma merma = mermaDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Inventario no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Merma no encontrada"));
         return convertirEntidadDTO(merma);
                 
     }
@@ -72,7 +72,7 @@ public class MermaControl implements IMermaControl {
     @Override
     public MermaDTO obtenerMermaPorNombreInsumo(String nombre) throws Exception {
         Merma merma = mermaDAO.findByNombre(nombre)
-            .orElseThrow(() -> new RuntimeException("Inventario no encontrado con nombre: " + nombre));
+            .orElseThrow(() -> new RuntimeException("Merma no encontrada con nombre: " + nombre));
             
         return convertirEntidadDTO(merma);
                 

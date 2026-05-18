@@ -7,6 +7,7 @@ package com.mycompany.presentacion_mariscos.mermas;
 import com.mycompany.controller_mariscos.merma.IMermaControl;
 import com.mycompany.controller_mariscos.merma.MermaControl;
 import com.mycompany.dto_mariscos.mermas.MermaDTO;
+import com.mycompany.presentacion_mariscos.NavegadorUI;
 
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,10 +20,14 @@ import javax.swing.table.DefaultTableModel;
 public class PnlTablaMermas extends javax.swing.JPanel {
     
     
-    
+    //Controller
     private IMermaControl mermaControl;
     
+    //Lista Mermas
     private List<MermaDTO> listaMermas;
+    
+    //Panel de Registro de Mermas
+    PnlRegistroMermas pnlRegistroMermas;
     
 
     /**
@@ -31,6 +36,10 @@ public class PnlTablaMermas extends javax.swing.JPanel {
     public PnlTablaMermas(IMermaControl mermaControl) {
         this.mermaControl = mermaControl;
         initComponents();
+        
+        
+        pnlRegistroMermas = new PnlRegistroMermas(mermaControl);
+        
         configurarTabla();
         cargarMermas();
     }
@@ -52,97 +61,100 @@ public class PnlTablaMermas extends javax.swing.JPanel {
         lblInsumo = new javax.swing.JLabel();
         lblCantPerdida = new javax.swing.JLabel();
         lblUnidadMedida = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtInsumo = new javax.swing.JTextField();
+        txtCantPerdida = new javax.swing.JTextField();
+        txtUnidadMedida = new javax.swing.JTextField();
         lblCausaMerma = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtCausa = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescripcion = new javax.swing.JTextArea();
         lblFecha = new javax.swing.JLabel();
         lblUbicacion = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        txtUbicacion = new javax.swing.JTextField();
+        txtFecha = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMermas = new javax.swing.JTable();
+        btnCrearMerma = new javax.swing.JButton();
+        lblTablaLeyend1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        lblTablaMermas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTablaMermas.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblTablaMermas.setForeground(new java.awt.Color(0, 0, 0));
         lblTablaMermas.setText("Tabla de Mermas");
 
-        lblTablaLeyend.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTablaLeyend.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblTablaLeyend.setForeground(new java.awt.Color(0, 0, 0));
         lblTablaLeyend.setText("Seleccione la merma en la tabla para ver los detalles.");
 
         pnlInformacion.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblInformacion.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblInformacion.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblInformacion.setForeground(new java.awt.Color(0, 0, 0));
         lblInformacion.setText("Informacion");
 
         pnlDatosInfo.setBackground(new java.awt.Color(255, 255, 255));
         pnlDatosInfo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lblInsumo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblInsumo.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblInsumo.setForeground(new java.awt.Color(0, 0, 0));
         lblInsumo.setText("Insumo");
 
-        lblCantPerdida.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblCantPerdida.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblCantPerdida.setForeground(new java.awt.Color(0, 0, 0));
         lblCantPerdida.setText("Cantidad Perdida (kg, gr, pzs)");
 
-        lblUnidadMedida.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUnidadMedida.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblUnidadMedida.setForeground(new java.awt.Color(0, 0, 0));
         lblUnidadMedida.setText("Unidad de Medida");
 
-        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
-        jTextField1.setFocusable(false);
+        txtInsumo.setBackground(new java.awt.Color(204, 204, 204));
+        txtInsumo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtInsumo.setFocusable(false);
 
-        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
-        jTextField2.setFocusable(false);
+        txtCantPerdida.setBackground(new java.awt.Color(204, 204, 204));
+        txtCantPerdida.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtCantPerdida.setFocusable(false);
 
-        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
-        jTextField3.setFocusable(false);
+        txtUnidadMedida.setBackground(new java.awt.Color(204, 204, 204));
+        txtUnidadMedida.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtUnidadMedida.setFocusable(false);
 
-        lblCausaMerma.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblCausaMerma.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblCausaMerma.setForeground(new java.awt.Color(0, 0, 0));
         lblCausaMerma.setText("Causa de Merma");
 
-        jTextField4.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
-        jTextField4.setFocusable(false);
+        txtCausa.setBackground(new java.awt.Color(204, 204, 204));
+        txtCausa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtCausa.setFocusable(false);
 
-        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblDescripcion.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblDescripcion.setForeground(new java.awt.Color(0, 0, 0));
         lblDescripcion.setText("Descripcion");
 
-        jTextArea1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDescripcion.setBackground(new java.awt.Color(204, 204, 204));
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        txtDescripcion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setViewportView(txtDescripcion);
 
-        lblFecha.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblFecha.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblFecha.setForeground(new java.awt.Color(0, 0, 0));
         lblFecha.setText("Fecha");
 
-        lblUbicacion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUbicacion.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lblUbicacion.setForeground(new java.awt.Color(0, 0, 0));
         lblUbicacion.setText("Ubicacion");
 
-        jTextField5.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
-        jTextField5.setFocusable(false);
+        txtUbicacion.setBackground(new java.awt.Color(204, 204, 204));
+        txtUbicacion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtUbicacion.setFocusable(false);
 
-        jTextField6.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField6.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
-        jTextField6.setFocusable(false);
+        txtFecha.setBackground(new java.awt.Color(204, 204, 204));
+        txtFecha.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtFecha.setFocusable(false);
+        txtFecha.setOpaque(true);
 
         javax.swing.GroupLayout pnlDatosInfoLayout = new javax.swing.GroupLayout(pnlDatosInfo);
         pnlDatosInfo.setLayout(pnlDatosInfoLayout);
@@ -154,21 +166,21 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                     .addComponent(lblInsumo)
                     .addComponent(lblCantPerdida)
                     .addComponent(lblUnidadMedida)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCantPerdida, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCausaMerma)
                     .addComponent(lblDescripcion)
                     .addGroup(pnlDatosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(txtCausa, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(pnlDatosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDatosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lblFecha)
                         .addComponent(lblUbicacion)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         pnlDatosInfoLayout.setVerticalGroup(
@@ -180,24 +192,24 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                     .addComponent(lblFecha))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlDatosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlDatosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantPerdida)
                     .addComponent(lblUbicacion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlDatosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCantPerdida, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(lblUnidadMedida)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblCausaMerma)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCausa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblDescripcion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,9 +235,10 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                 .addComponent(lblInformacion)
                 .addGap(18, 18, 18)
                 .addComponent(pnlDatosInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
+                .addContainerGap())
         );
 
+        tblMermas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tblMermas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -239,22 +252,43 @@ public class PnlTablaMermas extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(tblMermas);
 
+        btnCrearMerma.setBackground(new java.awt.Color(35, 52, 75));
+        btnCrearMerma.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        btnCrearMerma.setForeground(new java.awt.Color(255, 255, 255));
+        btnCrearMerma.setText("Crear Merma");
+        btnCrearMerma.setBorderPainted(false);
+        btnCrearMerma.setFocusPainted(false);
+        btnCrearMerma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearMermaActionPerformed(evt);
+            }
+        });
+
+        lblTablaLeyend1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblTablaLeyend1.setForeground(new java.awt.Color(0, 0, 0));
+        lblTablaLeyend1.setText("Para registrar una merma presione el boton Crear Merma.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                        .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTablaLeyend)
                             .addComponent(lblTablaMermas))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTablaLeyend1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCrearMerma)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -264,28 +298,28 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                 .addComponent(lblTablaMermas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTablaLeyend)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                        .addComponent(lblTablaLeyend1)
+                        .addGap(49, 49, 49)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCrearMerma, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCrearMermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMermaActionPerformed
+        NavegadorUI.navegar(pnlRegistroMermas, "Registro Mermas");
+    }//GEN-LAST:event_btnCrearMermaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCrearMerma;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblCantPerdida;
     private javax.swing.JLabel lblCausaMerma;
     private javax.swing.JLabel lblDescripcion;
@@ -293,12 +327,20 @@ public class PnlTablaMermas extends javax.swing.JPanel {
     private javax.swing.JLabel lblInformacion;
     private javax.swing.JLabel lblInsumo;
     private javax.swing.JLabel lblTablaLeyend;
+    private javax.swing.JLabel lblTablaLeyend1;
     private javax.swing.JLabel lblTablaMermas;
     private javax.swing.JLabel lblUbicacion;
     private javax.swing.JLabel lblUnidadMedida;
     private javax.swing.JPanel pnlDatosInfo;
     private javax.swing.JPanel pnlInformacion;
     private javax.swing.JTable tblMermas;
+    private javax.swing.JTextField txtCantPerdida;
+    private javax.swing.JTextField txtCausa;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtInsumo;
+    private javax.swing.JTextField txtUbicacion;
+    private javax.swing.JTextField txtUnidadMedida;
     // End of variables declaration//GEN-END:variables
 
     private void configurarTabla(){
@@ -333,6 +375,29 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                     fecha
                 });
             }
+            
+            // Clic en fila para rellenar los campos de la derecha
+            tblMermas.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    int fila = tblMermas.getSelectedRow();
+                    if (fila >= 0) {
+                        MermaDTO merma = listaMermas.get(fila);
+
+                        String fecha = merma.getFechaOcurrido()
+                            .atZone(java.time.ZoneId.systemDefault())
+                            .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                        txtInsumo.setText(merma.getNombreInsumo());
+                        txtCantPerdida.setText(String.valueOf(merma.getCantPerdida()));
+                        txtUnidadMedida.setText(merma.getUnidadMedida());
+                        txtCausa.setText(merma.getCausa());
+                        txtUbicacion.setText(merma.getUbicacion());
+                        txtFecha.setText(fecha);
+                        txtDescripcion.setText(merma.getDescripcion());
+                    }
+                }
+            });
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar mermas: " + e.getMessage());
         }

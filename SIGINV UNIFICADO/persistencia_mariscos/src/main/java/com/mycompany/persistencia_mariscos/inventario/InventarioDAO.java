@@ -58,9 +58,10 @@ public class InventarioDAO implements IInventarioDAO {
     @Override
     public Optional<Inventario> findByNombre(String nombre) throws DaoException {
         try {
-            return Optional.ofNullable(col.find(Filters.eq("title", nombre)).first());
+            return Optional.ofNullable
+                (col.find(Filters.eq("insumo.nombre", nombre)).first());
         } catch (MongoException e) {
-            throw new DaoException("Error consultando curso por Inventario", e);
+            throw new DaoException("Error consultando Inventario por nombre", e);
         }
     }
 

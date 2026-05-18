@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 /**
  *
@@ -64,6 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        
         MongoClientProvider.INSTANCE.init();
         
         insumoDAO = new InsumoDAO();
@@ -79,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         initComponents();
         
+        //Inicaliza navegador solo una vez
+        NavegadorUI.init(pnlContainer, lblVentana);
                 
         pnlCarrito = new PnlCarrito();
         pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
@@ -140,7 +144,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addComponent(lblNombreSistema)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 971, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblVentana)
                 .addGap(31, 31, 31))
         );
@@ -308,7 +312,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlNavbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,6 +364,7 @@ public class MainFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -372,6 +377,8 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
+             
+             
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -414,5 +421,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlNavbar;
     // End of variables declaration//GEN-END:variables
+    
+    
 
+    
 }

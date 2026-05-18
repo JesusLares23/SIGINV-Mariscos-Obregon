@@ -30,7 +30,7 @@
           <Group type="102" attributes="0">
               <Component id="pnlNavbar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnlContainer" max="32767" attributes="0"/>
+              <Component id="pnlContainer" min="-2" pref="1131" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -61,7 +61,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                   <Component id="lblNombreSistema" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="971" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="lblVentana" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               </Group>

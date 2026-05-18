@@ -42,7 +42,7 @@ public class MermasDAO implements IMermasDAO{
                     col.insertOne(entity);
                     return entity.getId();
                 } catch (MongoException e) {
-                    throw new DaoException("Error insertando Inventario", e);
+                    throw new DaoException("Error insertando Merma", e);
                 }
     }
 
@@ -51,16 +51,16 @@ public class MermasDAO implements IMermasDAO{
         try {
                     return Optional.ofNullable(col.find(Filters.eq("_id", _id)).first());
                 } catch (MongoException e) {
-                    throw new DaoException("Error consultando Inventario por ID", e);
+                    throw new DaoException("Error consultando merma por ID", e);
                 }
     }
 
     @Override
     public Optional<Merma> findByNombre(String nombre) throws DaoException {
         try {
-            return Optional.ofNullable(col.find(Filters.eq("title", nombre)).first());
+            return Optional.ofNullable(col.find(Filters.eq("nombre", nombre)).first());
         } catch (MongoException e) {
-            throw new DaoException("Error consultando curso por Inventario", e);
+            throw new DaoException("Error consultando por el nombre de la merma", e);
         }
     }
 
@@ -71,7 +71,7 @@ public class MermasDAO implements IMermasDAO{
         try {
             return col.find().into(new ArrayList<>());
         } catch (MongoException e) {
-            throw new DaoException("Error consultando todos los Inventarios", e);
+            throw new DaoException("Error consultando todas las Mermas", e);
         }
     }
 
@@ -94,12 +94,12 @@ public class MermasDAO implements IMermasDAO{
                 )
             );
             if (result.getMatchedCount() == 0)
-                throw new EntityNotFoundException("Inventario no encontrado: " + entity.getId());
+                throw new EntityNotFoundException("Merma no encontrado: " + entity.getId());
             
             return result.getModifiedCount() > 0;
             
         } catch (MongoException e) {
-            throw new DaoException("Error actualizando Inventario", e);
+            throw new DaoException("Error actualizando Merma", e);
         }
     }
 
@@ -108,10 +108,10 @@ public class MermasDAO implements IMermasDAO{
         try {
             var result = col.deleteOne(Filters.eq("_id", _id));
             if (result.getDeletedCount() == 0)
-                throw new EntityNotFoundException("Inventario no encontrado: " + _id);
+                throw new EntityNotFoundException("Merma no encontrada: " + _id);
             return true;
         } catch (MongoException e) {
-            throw new DaoException("Error eliminando Inventario", e);
+            throw new DaoException("Error eliminando Merma", e);
         }
     }
 
@@ -120,7 +120,7 @@ public class MermasDAO implements IMermasDAO{
         try {
             return col.deleteMany(Filters.exists("_id")).getDeletedCount();
         } catch (MongoException e) {
-            throw new DaoException("Error eliminando los inventarios de todos los insumos", e);
+            throw new DaoException("Error eliminando todas las Mermas", e);
         }
     }
 }
