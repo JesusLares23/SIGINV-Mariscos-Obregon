@@ -70,8 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-   MongoClientProvider.INSTANCE.init();
-
+ MongoClientProvider.INSTANCE.init();
    MongoClientProvider.INSTANCE.init();
 
     insumoDAO = new InsumoDAO();
@@ -87,22 +86,30 @@ public class MainFrame extends javax.swing.JFrame {
 
     initComponents();
 
-    pnlCarrito = new PnlCarrito();
-    pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
-    pnlProveedores2 = new PnlProveedores();
+   // pnlCarrito = new PnlCarrito();
+   // pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
+    //pnlProveedores2 = new PnlProveedores();
+    
+    
     seleccionOrden = new SeleccionOrden();
     pnlDatos = new pnlDatosFacturacion();
     pnlTablaMermas = new PnlTablaMermas(mermaControl);
 
-    // referencias
-    pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
-    pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
+    //pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
+    //pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
     seleccionOrden.setReferences(pnlContainer, pnlDatos, lblVentana);
 
-    // inyección de control
     seleccionOrden.setOrdenControl(ordenControl);
     seleccionOrden.setSolicitudControl(solicitudFacturaControl);
     pnlDatos.setSolicitudControl(solicitudFacturaControl);
+
+    // Panel inicial para que no arranque vacío
+    pnlContainer.add(new JLabel("Bienvenido a SIGINV"), BorderLayout.CENTER);
+
+    // tamaño y visibilidad
+    setSize(1200, 800);
+    setLocationRelativeTo(null);
+    setVisible(true);
 
     }
 
@@ -126,10 +133,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnGenerarOrdenCompra = new javax.swing.JLabel();
         btnRecepcionMercancia = new javax.swing.JTextArea();
         btnPagosPendientes = new javax.swing.JLabel();
-        btnFacturacionOrdenCompra = new javax.swing.JTextArea();
+        btnFacturacionOrdenCompra1 = new javax.swing.JTextArea();
         btnSalir = new javax.swing.JLabel();
         btnSolicitarFactura = new javax.swing.JButton();
         lblPagos = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         pnlContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -220,16 +228,16 @@ public class MainFrame extends javax.swing.JFrame {
         btnPagosPendientes.setForeground(new java.awt.Color(255, 255, 255));
         btnPagosPendientes.setText("Pagos pendientes");
 
-        btnFacturacionOrdenCompra.setEditable(false);
-        btnFacturacionOrdenCompra.setBackground(new java.awt.Color(35, 53, 74));
-        btnFacturacionOrdenCompra.setColumns(2);
-        btnFacturacionOrdenCompra.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        btnFacturacionOrdenCompra.setForeground(new java.awt.Color(255, 255, 255));
-        btnFacturacionOrdenCompra.setRows(5);
-        btnFacturacionOrdenCompra.setText("Facturacion de la Orden de compra");
-        btnFacturacionOrdenCompra.setToolTipText("");
-        btnFacturacionOrdenCompra.setBorder(null);
-        btnFacturacionOrdenCompra.setFocusable(false);
+        btnFacturacionOrdenCompra1.setEditable(false);
+        btnFacturacionOrdenCompra1.setBackground(new java.awt.Color(35, 53, 74));
+        btnFacturacionOrdenCompra1.setColumns(2);
+        btnFacturacionOrdenCompra1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnFacturacionOrdenCompra1.setForeground(new java.awt.Color(255, 255, 255));
+        btnFacturacionOrdenCompra1.setRows(5);
+        btnFacturacionOrdenCompra1.setText("Facturacion de la Orden de compra");
+        btnFacturacionOrdenCompra1.setToolTipText("");
+        btnFacturacionOrdenCompra1.setBorder(null);
+        btnFacturacionOrdenCompra1.setFocusable(false);
 
         btnSalir.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
@@ -261,6 +269,13 @@ public class MainFrame extends javax.swing.JFrame {
         lblPagos.setBorder(null);
         lblPagos.setFocusable(false);
 
+        jButton1.setText("Facturacion de la Orden de compra");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlNavbarLayout = new javax.swing.GroupLayout(pnlNavbar);
         pnlNavbar.setLayout(pnlNavbarLayout);
         pnlNavbarLayout.setHorizontalGroup(
@@ -276,11 +291,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(btnGenerarOrdenCompra, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(btnRecepcionMercancia, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                         .addComponent(btnPagosPendientes, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                        .addComponent(btnFacturacionOrdenCompra1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                         .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(lblPagos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSolicitarFactura))
                 .addContainerGap(34, Short.MAX_VALUE))
+            .addGroup(pnlNavbarLayout.createSequentialGroup()
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlNavbarLayout.setVerticalGroup(
             pnlNavbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,10 +319,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnPagosPendientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnFacturacionOrdenCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnFacturacionOrdenCompra1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSolicitarFactura)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
                 .addComponent(btnSalir)
                 .addContainerGap())
         );
@@ -349,11 +369,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnSolicitarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitarFacturaActionPerformed
 
-        pnlContainer.removeAll();
-        pnlContainer.add(seleccionOrden, BorderLayout.CENTER);
-        lblVentana.setText("Solicitud de Facturación");
-        pnlContainer.revalidate();
-        pnlContainer.repaint();
     }//GEN-LAST:event_btnSolicitarFacturaActionPerformed
 
     private void btnMermasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMermasMouseClicked
@@ -366,6 +381,16 @@ public class MainFrame extends javax.swing.JFrame {
         pnlContainer.repaint();
 
     }//GEN-LAST:event_btnMermasMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        pnlContainer.removeAll();
+        pnlContainer.add(seleccionOrden, BorderLayout.CENTER);
+        lblVentana.setText("Solicitud de Facturación");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,6 +421,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            
             public void run() {
 
                 new MainFrame().setVisible(true);
@@ -405,7 +431,7 @@ public class MainFrame extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea btnFacturacionOrdenCompra;
+    private javax.swing.JTextArea btnFacturacionOrdenCompra1;
     private javax.swing.JLabel btnGenerarOrdenCompra;
     private javax.swing.JLabel btnMermas;
     private javax.swing.JLabel btnPagosPendientes;
@@ -413,6 +439,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea btnRegInsumosAlCorte;
     private javax.swing.JLabel btnSalir;
     private javax.swing.JButton btnSolicitarFactura;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblCompras;
     private javax.swing.JLabel lblInventario;
     private javax.swing.JLabel lblNombreSistema;
