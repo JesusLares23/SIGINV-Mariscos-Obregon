@@ -1,9 +1,11 @@
 package com.mycompany.presentacion_mariscos;
-
 import com.mycompany.dto_mariscos.Carrito;
 import com.mycompany.dto_mariscos.Insumo;
 import com.mycompany.dto_mariscos.Orden;
+import com.mycompany.dto_mariscos.ItemOrden;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,14 +36,24 @@ public class GestorOrden {
             throw new IllegalArgumentException("Debe seleccionar un proveedor");
         }
         
-        // Copiar los items del carrito a un nuevo mapa para la orden
-        Map<Insumo, Double> itemsOrden = new HashMap<>(carrito.getItems());
+        // Convertir los items del carrito (Map<Insumo, Double>) a List<ItemOrden>
+        List<ItemOrden> itemsOrden = new ArrayList<>();
+        Map<Insumo, Double> itemsCarrito = carrito.getItems();
+        
+        for (Map.Entry<Insumo, Double> entry : itemsCarrito.entrySet()) {
+            Insumo insumo = entry.getKey();
+            Double cantidad = entry.getValue();
+            
+            // Crear ItemOrden con el nombre del insumo y la cantidad
+            ItemOrden item = new ItemOrden(insumo.getNombre(), cantidad);
+            itemsOrden.add(item);
+        }
         
         Orden orden = new Orden();
         orden.setNumeroOrden(contadorOrdenes++);
         orden.setResponsable(responsable);
         orden.setProveedor(proveedor);
-        orden.setItems(itemsOrden);
+        orden.setItems(itemsOrden);  // ⬅️ Ahora setea List<ItemOrden>
         orden.setEstado("Pendiente");
         // La fecha de creación ya se asigna en el constructor de Orden
         
