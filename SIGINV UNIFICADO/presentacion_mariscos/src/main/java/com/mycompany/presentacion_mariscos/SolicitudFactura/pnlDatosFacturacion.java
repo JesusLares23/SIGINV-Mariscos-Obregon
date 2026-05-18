@@ -23,9 +23,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     private SolicitudFacturaDTO solicitudFacturaDTO;
     private pnlConfirmacionFactura pnlConfirmacion;
 
-    /**
-     * Creates new form pnlDatosFacturacion
-     */
+
     public pnlDatosFacturacion() {
         initComponents();
         inicializarComboBoxes();
@@ -62,7 +60,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         datosPedidoTextArea = new javax.swing.JTextArea();
         btnEnviar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
-        cfdiTextField = new javax.swing.JTextField();
+        cfdiComboBox = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1331, 772));
@@ -185,6 +183,14 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
             }
         });
 
+        cfdiComboBox.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cfdiComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Adquisición de mercancías", "Devoluciones", "descuentos o bonificaciones", "Gastos en general", "Construcciones", "Equipo de transporte", "Equipo de cómputo" }));
+        cfdiComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cfdiComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -221,16 +227,19 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TextFieldrazonSocial, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
-                            .addComponent(lblRfc)
-                            .addComponent(lblTitulo)
+                            .addComponent(cfdiComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(rfcTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(BtnLimpiarEspacios))
-                            .addComponent(lblDireccion)
-                            .addComponent(lblCFDI)
-                            .addComponent(lblRazonSocial)
-                            .addComponent(cfdiTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblRfc)
+                                    .addComponent(lblTitulo)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rfcTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(46, 46, 46)
+                                        .addComponent(BtnLimpiarEspacios))
+                                    .addComponent(lblDireccion)
+                                    .addComponent(lblCFDI)
+                                    .addComponent(lblRazonSocial))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(113, 113, 113)
                         .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(69, 69, 69))))
@@ -243,7 +252,6 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                 .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lblRfc)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -256,7 +264,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblCFDI)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cfdiTextField))
+                        .addComponent(cfdiComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -301,22 +309,22 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         return;
     }
  
-    // Llenar el DTO con los datos del formulario
+
     solicitudFacturaDTO.setRfc(rfcTextField.getText());
     solicitudFacturaDTO.setRazonSocial(TextFieldrazonSocial.getText());
-    solicitudFacturaDTO.setUsoCFDI((String) cfdiTextField.getSelectedItem());
+    solicitudFacturaDTO.setUsoCFDI((String) cfdiComboBox.getSelectedItem());
     solicitudFacturaDTO.setCalle(calleTextField.getText());
     solicitudFacturaDTO.setCodigoPostal(codigoPostalTextField.getText());
     solicitudFacturaDTO.setCorreo(correoTextField.getText());
  
     pnlConfirmacion = new pnlConfirmacionFactura();
     pnlConfirmacion.setSolicitudDTO(solicitudFacturaDTO);
-    pnlConfirmacion.setSolicitudControl(solicitudControl);
+
  
     JDialog dialogo = new JDialog();
     dialogo.setModal(true);
     dialogo.setTitle("Confirmación");
-    dialogo.setContentPane(pnlConfirmacion);
+    dialogo.add(pnlConfirmacion);
     dialogo.setPreferredSize(new Dimension(600, 400));
     dialogo.pack();
     dialogo.setLocationRelativeTo(this);
@@ -340,6 +348,10 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
 
     }//GEN-LAST:event_BtnLimpiarEspaciosActionPerformed
 
+    private void cfdiComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cfdiComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cfdiComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLimpiarEspacios;
@@ -347,7 +359,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JTextField calleTextField;
-    private javax.swing.JTextField cfdiTextField;
+    private javax.swing.JComboBox<String> cfdiComboBox;
     private javax.swing.JTextField ciudadTextField;
     private javax.swing.JTextField codigoPostalTextField;
     private javax.swing.JTextField correoTextField;
@@ -378,7 +390,7 @@ private void inicializarComboBoxes() {
     };
  
     for (String item : usoCFDI) {
-        cfdiTextField.addItem(item);  // Si cfdiTextField es JComboBox
+        cfdiComboBox.addItem(item);  
     }
 }
  
