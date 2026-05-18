@@ -99,12 +99,16 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         lblCalle.setForeground(new java.awt.Color(0, 0, 0));
         lblCalle.setText("Calle:");
 
-        rfcTextField.setForeground(new java.awt.Color(255, 255, 255));
+        rfcTextField.setForeground(new java.awt.Color(0, 0, 0));
         rfcTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rfcTextFieldActionPerformed(evt);
             }
         });
+
+        TextFieldrazonSocial.setForeground(new java.awt.Color(0, 0, 0));
+
+        calleTextField.setForeground(new java.awt.Color(0, 0, 0));
 
         ciudadTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,6 +119,10 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         lblCiudad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblCiudad.setForeground(new java.awt.Color(0, 0, 0));
         lblCiudad.setText("Ciudad:");
+
+        codigoPostalTextField.setForeground(new java.awt.Color(0, 0, 0));
+
+        correoTextField.setForeground(new java.awt.Color(0, 0, 0));
 
         BtnLimpiarEspacios.setBackground(new java.awt.Color(35, 53, 74));
         BtnLimpiarEspacios.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
@@ -186,6 +194,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         });
 
         cfdiComboBox.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cfdiComboBox.setForeground(new java.awt.Color(0, 0, 0));
         cfdiComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Adquisición de mercancías", "Devoluciones", "descuentos o bonificaciones", "Gastos en general", "Construcciones", "Equipo de transporte", "Equipo de cómputo" }));
         cfdiComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,6 +206,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
         lblsituacionFiscal.setForeground(new java.awt.Color(0, 0, 0));
         lblsituacionFiscal.setText("Situación Fiscal");
 
+        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "601 General de Ley Personas Morales", "603 Personas Morales con Fines no Lucrativos", "605 Sueldos y Salarios e Ingresos Asimilados", "606 Arrendamiento", "607 Régimen de Enajenación o Adquisición de Bienes", "608 Demás ingresos", "610 Residentes en el Extranjero sin Establecimiento Permanente", "611 Ingresos por Dividendos", "612 Personas Físicas con Actividades Empresariales y Profesionales", "614 Ingresos por intereses", "615 Régimen de los ingresos por obtención de premios", "616 Sin obligaciones fiscales", "621 Incorporación Fiscal", "625 Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas", "626 Régimen Simplificado de Confianza" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -284,7 +294,7 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblsituacionFiscal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                        .addComponent(jComboBox1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDireccion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -316,11 +326,10 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     }//GEN-LAST:event_rfcTextFieldActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-    if (!validarCampos()) {
+     if (!validarCampos()) {
         return;
     }
  
-
     solicitudFacturaDTO.setRfc(rfcTextField.getText());
     solicitudFacturaDTO.setRazonSocial(TextFieldrazonSocial.getText());
     solicitudFacturaDTO.setUsoCFDI((String) cfdiComboBox.getSelectedItem());
@@ -330,17 +339,19 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
  
     pnlConfirmacion = new pnlConfirmacionFactura();
     pnlConfirmacion.setSolicitudDTO(solicitudFacturaDTO);
+    pnlConfirmacion.setControl(solicitudControl);  // ⬅️ AGREGAR ESTA LÍNEA
 
- 
     JDialog dialogo = new JDialog();
+    dialogo.setUndecorated(true);
     dialogo.setModal(true);
     dialogo.setTitle("Confirmación");
     dialogo.add(pnlConfirmacion);
     dialogo.setPreferredSize(new Dimension(600, 400));
     dialogo.pack();
     dialogo.setLocationRelativeTo(this);
-    dialogo.setUndecorated(true);
     dialogo.setVisible(true);
+ 
+
 
     }//GEN-LAST:event_btnEnviarActionPerformed
 
