@@ -1,6 +1,7 @@
 com\mycompany\dto_mariscos\Carrito.class
 com\mycompany\dto_mariscos\Insumo.class
-com\mycompany\dto_mariscos\Merma.class
-com\mycompany\dto_mariscos\Inventario.class
 com\mycompany\dto_mariscos\Orden.class
 com\mycompany\dto_mariscos\SolicitudFactura.class
+com\mycompany\dto_mariscos\SolicitudFacturaDTO.class
+com\mycompany\dto_mariscos\Merma.class
+com\mycompany\dto_mariscos\Inventario.class
