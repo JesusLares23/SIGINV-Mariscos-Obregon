@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-
 
 package com.mycompany.presentacion_mariscos.CarritoInsumos;
 
@@ -22,10 +17,8 @@ import javax.swing.JOptionPane;
 public class PnlProductos extends javax.swing.JPanel {
 
     private PnlCarrito pnlCarrito;
-    
-    private IInventarioControl inventarioControl;
 
-    
+    private IInventarioControl inventarioControl;
 
     private List<Inventario> listaInventario;
 
@@ -37,7 +30,7 @@ public class PnlProductos extends javax.swing.JPanel {
     public PnlProductos(PnlCarrito pnlCarrito, IInventarioControl inventarioControl) {
         this.pnlCarrito = pnlCarrito;
         this.inventarioControl = inventarioControl;
-        
+
         listaInventario = new ArrayList<>();
 
         cargarInventario();
@@ -128,7 +121,6 @@ public class PnlProductos extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField barraBusqueda;
     private javax.swing.JScrollPane jScrollPane1;
@@ -154,14 +146,9 @@ public class PnlProductos extends javax.swing.JPanel {
                     System.out.println("El insumo ya esta en el carrito");
                     return; // no agrega duplicado
                 }
-                
-                
 
-                
-                
-                    pnlCarrito.agregarItemAlCarrito(inventario, cantidad);
-                
-                
+                pnlCarrito.agregarItemAlCarrito(inventario, cantidad);
+
                 card.getTxtCantidad().setText("0");
                 System.out.println("Items en carrito: " + pnlCarrito.getListaOrden().size());
             });
@@ -173,21 +160,16 @@ public class PnlProductos extends javax.swing.JPanel {
         pnlCards.repaint();
 
     }
-    
-    private void cargarInventario(){
-        try{
+
+    private void cargarInventario() {
+        try {
             listaInventario = inventarioControl.obtenerTodos();
-            
-        }catch(Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar inventario: " + e);
-            
+
         }
     }
 
-
-
-    
-    
 //    private void cargarInsumosMock(){
 //        listaInsumos.add(new Insumo("Camarón", "kg", "Mariscos"));
 //        listaInsumos.add(new Insumo("Pulpo", "kg", "Mariscos"));
@@ -218,5 +200,4 @@ public class PnlProductos extends javax.swing.JPanel {
 //        listaInventario.add(new Inventario(listaInsumos.get(10), 40.0, 18.0)); // Tostadas
 //        listaInventario.add(new Inventario(listaInsumos.get(11), 24.0, 9.0));   // Refresco
 //    }
-
 }

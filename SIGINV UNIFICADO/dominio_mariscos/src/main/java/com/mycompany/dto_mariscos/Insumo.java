@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.dto_mariscos;
 
 import java.time.Instant;
@@ -13,6 +10,7 @@ import org.bson.types.ObjectId;
  * @author demib
  */
 public class Insumo {
+
     private ObjectId _id;
     //Nombre Insumo
     private String nombre;
@@ -20,13 +18,11 @@ public class Insumo {
     private String unidadMedida;
     //Categoria del producto
     private String categoria;
-    
-    
-    
+
     private Instant createdAt;
-    
+
     private Instant updatedAt;
-    
+
     //URL de la imagen alojada en Imgur
     @BsonProperty("imagenUrl")
     private String imagenUrl;
@@ -34,7 +30,9 @@ public class Insumo {
     public Insumo() {
     }
 
-    public Insumo(ObjectId _id, String nombre, String unidadMedida, String categoria, String imagenUrl, Instant createdAt, Instant updatedAt) {
+    public Insumo(ObjectId _id, String nombre, String unidadMedida, 
+            String categoria, String imagenUrl, Instant createdAt, 
+            Instant updatedAt) {
         this._id = _id;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
@@ -99,27 +97,10 @@ public class Insumo {
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
-    
-
-    
-
-    
 
     @Override
     public String toString() {
         return "Insumo{" + "_id=" + _id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", categoria=" + categoria + '}';
     }
-    
-    
 
-    
-    
-    
-    
-    
-
-    
-    
-    
 }

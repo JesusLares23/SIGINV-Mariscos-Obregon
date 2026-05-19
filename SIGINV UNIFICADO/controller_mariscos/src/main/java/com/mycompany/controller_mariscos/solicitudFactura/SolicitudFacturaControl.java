@@ -41,10 +41,9 @@ public class SolicitudFacturaControl implements ISolicitudFacturaControl {
     @Override
     public void actualizar(SolicitudFacturaDTO dto) throws DaoException, EntityNotFoundException {
         SolicitudFactura solicitud = convertirADominio(dto);
-        solicitud.setId(new ObjectId(dto.getId())); 
+        solicitud.setId(new ObjectId(dto.getId()));
         dao.actualizar(solicitud);
     }
-
 
     private SolicitudFactura convertirADominio(SolicitudFacturaDTO dto) {
         SolicitudFactura solicitud = new SolicitudFactura();
@@ -60,10 +59,9 @@ public class SolicitudFacturaControl implements ISolicitudFacturaControl {
         solicitud.setEstado(dto.getEstadoFactura());
         solicitud.setFechaSolicitud(dto.getFechaSolicitud());
 
-   
         Direccion direccion = new Direccion();
         direccion.setCalle(dto.getCalle());
-        direccion.setCiudad(dto.getColonia()); 
+        direccion.setCiudad(dto.getColonia());
         direccion.setCp(dto.getCp());
         solicitud.setDireccion(direccion);
 
@@ -82,7 +80,6 @@ public class SolicitudFacturaControl implements ISolicitudFacturaControl {
         dto.setEstadoFactura(solicitud.getEstado());
         dto.setFechaSolicitud(solicitud.getFechaSolicitud());
 
-    
         if (solicitud.getDireccion() != null) {
             dto.setCalle(solicitud.getDireccion().getCalle());
             dto.setColonia(solicitud.getDireccion().getCiudad());

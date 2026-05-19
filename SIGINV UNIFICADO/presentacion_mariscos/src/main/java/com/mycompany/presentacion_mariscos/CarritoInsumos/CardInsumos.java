@@ -27,7 +27,6 @@ import java.net.HttpURLConnection;
  *
  * @author demib
  */
-
 // CLASE PARA LA CREACION Y ESTILIZACION DE UN CARD DE INSUMO 
 public class CardInsumos extends JPanel {
 
@@ -39,23 +38,17 @@ public class CardInsumos extends JPanel {
     private JLabel lblUnidad;
     private JButton btnAgregar;
 
-    
-    
-    
-
     public CardInsumos(Inventario inventario) {
 
         Insumo insumo = inventario.getInsumo();
-
         String nombre = insumo.getNombre();
         String unidad = insumo.getUnidadMedida();
         double stock = inventario.getStockActual();
         String imagenUrl = inventario.getInsumo().getImagenUrl();
-        
+
         String estado = "Disponible";
-        
+
         System.out.println("Insumo: " + nombre + " | URL: " + imagenUrl);
-        
 
         setPreferredSize(new Dimension(180, 260));
         setBackground(Color.WHITE);
@@ -67,14 +60,13 @@ public class CardInsumos extends JPanel {
 
         lblEstado = new JLabel("Estado: " + estado);
         lblEstado.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (stock <= inventario.getStockMinimo()) {
             estado = "Bajo";
             lblEstado.setText("Estado: " + estado);
             lblEstado.setForeground(Color.red);
         }
 
-        
         //IMAGEN
         lblImagen = new JLabel();
         lblImagen.setOpaque(true);
@@ -83,7 +75,7 @@ public class CardInsumos extends JPanel {
         lblImagen.setMaximumSize(new Dimension(90, 90));
         lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
         lblImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         //Llamamos al metodo cargarImagen para que cargue la img alojada en imgur
         cargarImagen(lblImagen, imagenUrl);
 
@@ -114,36 +106,29 @@ public class CardInsumos extends JPanel {
         add(Box.createVerticalGlue());
         add(pnlInferior);
         add(Box.createVerticalStrut(10));
-        
-        
-        
-    }
-    
-    
-    
-    private void cargarImagen(JLabel label, String url) {
-    if (url == null || url.isBlank()) {
-        label.setText("IMG");
-        return;
     }
 
-    // se hace en hilo separado para no congelar la UI
-    new Thread(() -> {
-        try {
-            URL imageUrl = new URL(url);
-            ImageIcon icon = new ImageIcon(imageUrl);
-            Image scaled = icon.getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                label.setIcon(new ImageIcon(scaled));
-                label.setText(""); // quita el texto IMG
-            });
-        } catch (Exception e) {
-            javax.swing.SwingUtilities.invokeLater(() -> label.setText("Sin img"));
+    private void cargarImagen(JLabel label, String url) {
+        if (url == null || url.isBlank()) {
+            label.setText("IMG");
+            return;
         }
-    }).start();
-}
-    
-    
+
+        // se hace en hilo separado para no congelar la UI
+        new Thread(() -> {
+            try {
+                URL imageUrl = new URL(url);
+                ImageIcon icon = new ImageIcon(imageUrl);
+                Image scaled = icon.getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    label.setIcon(new ImageIcon(scaled));
+                    label.setText(""); // quita el texto IMG
+                });
+            } catch (Exception e) {
+                javax.swing.SwingUtilities.invokeLater(() -> label.setText("Sin img"));
+            }
+        }).start();
+    }
 
     public JLabel getLblNombre() {
         return lblNombre;
@@ -200,6 +185,5 @@ public class CardInsumos extends JPanel {
     public void setBtnAgregar(JButton btnAgregar) {
         this.btnAgregar = btnAgregar;
     }
-    
-    
+
 }
