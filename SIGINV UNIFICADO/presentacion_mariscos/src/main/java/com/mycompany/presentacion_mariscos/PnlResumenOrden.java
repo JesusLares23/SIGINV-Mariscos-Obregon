@@ -228,11 +228,12 @@ public class PnlResumenOrden extends JPanel {
         lblNombreProveedor.setText(ordenActual.getProveedor());
 
         // Cargar tabla de insumos
-        Map<Insumo, Double> items = ordenActual.getItems();
+        Map<String, Double> items = ordenActual.getItems();
         modeloTabla.setRowCount(0);
         int total = 0;
-        for (Map.Entry<Insumo, Double> entry : items.entrySet()) {
-            Insumo insumo = entry.getKey();
+        for (Map.Entry<String, Double> entry : items.entrySet()) {
+            Insumo insumo = new Insumo();
+            //insumo = entry.getKey();
             Double cantidad = entry.getValue();
             modeloTabla.addRow(new Object[]{
                 insumo.getNombre(),
