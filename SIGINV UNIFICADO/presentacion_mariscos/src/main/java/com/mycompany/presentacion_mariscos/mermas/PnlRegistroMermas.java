@@ -118,7 +118,6 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         btnAnterior = new javax.swing.JButton();
         btnSiguiente = new javax.swing.JButton();
         btnSeleccionarQR = new javax.swing.JButton();
-        barraBusqueda = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -340,10 +339,6 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             }
         });
 
-        barraBusqueda.setBackground(new java.awt.Color(255, 255, 255));
-        barraBusqueda.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        barraBusqueda.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -366,8 +361,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(lblPagina)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 91, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlInformacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -385,9 +379,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(56, 56, 56)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,10 +403,6 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         try{
             
             String nombre = txtInsumo.getText();
-            
-//            Insumo insumo = insumoControl.obtenerInsumoPorNombre(nombre);
-//            String id = insumo.getId().toHexString();
-            
             double cantPerdida = Double.parseDouble(txtCantPerdida.getText());
             String unidadMedida = txtUnidadMedida.getText();
             String causaMerma = comboCausa.getSelectedItem().toString();
@@ -427,6 +415,19 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             if (chooserFecha.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Seleccione una fecha");
                 return;
+            }
+            
+            // Confirmacion antes de registrar
+            int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea registrar la merma?",
+                "Confirmar registro",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return; // El usuario cancelo
             }
         
             //Convertir Date a LocalDateTime
@@ -443,7 +444,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
                     
         }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido");
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser un numero valido");
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "Error al registrar merma: " + e.getMessage());
 
@@ -495,7 +496,6 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField barraBusqueda;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnRegistrarMerma;
     private javax.swing.JButton btnSeleccionarQR;

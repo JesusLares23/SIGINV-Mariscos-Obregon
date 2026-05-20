@@ -1,9 +1,13 @@
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion$4.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$3.class
+presentacion_mariscos\RecepcionMercancia\PnlRecepcionMercancia$BotonEstadoEditor$1.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas.class
+presentacion_mariscos\RecepcionMercancia\PnlRecepcionMercancia$1.class
 com\mycompany\presentacion_mariscos\MainFrame$4.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas.class
+presentacion_mariscos\RecepcionMercancia\PnlRecepcionMercancia$BotonEstadoEditor.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$6.class
+presentacion_mariscos\RecepcionMercancia\PnlRecepcionMercancia.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas$3.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion$2.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$4.class
@@ -18,8 +22,10 @@ com\mycompany\presentacion_mariscos\MainFrame$2.class
 com\mycompany\presentacion_mariscos\NavegadorUI.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\ItemCarrito.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion.class
+presentacion_mariscos\RecepcionMercancia\PnlRecepcionMercancia$BotonEstadoRenderer.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$7.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$5.class
+com\mycompany\presentacion_mariscos\MainFrame$5.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas$2.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$4.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$2.class
