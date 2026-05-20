@@ -8,6 +8,8 @@ com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas$3.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion$2.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$4.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden.class
+com\mycompany\presentacion_mariscos\CarritoInsumos\PnlProductos$1.class
+com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$MyDecimalFilter.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\PnlCarrito$1.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$1.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$2.class
@@ -16,6 +18,7 @@ com\mycompany\presentacion_mariscos\MainFrame$2.class
 com\mycompany\presentacion_mariscos\NavegadorUI.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\ItemCarrito.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\pnlDatosFacturacion.class
+com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$7.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$5.class
 com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas$2.class
 com\mycompany\presentacion_mariscos\SolicitudFactura\SeleccionOrden$4.class
@@ -27,6 +30,7 @@ com\mycompany\presentacion_mariscos\util\GeneradorQR.class
 com\mycompany\presentacion_mariscos\SeleccionProveedor\DatosOrden.class
 com\mycompany\presentacion_mariscos\SeleccionProveedor\PnlProveedores.class
 com\mycompany\presentacion_mariscos\CarritoInsumos\PnlProductos.class
+com\mycompany\presentacion_mariscos\mermas\PnlTablaMermas$4.class
 com\mycompany\presentacion_mariscos\MainFrame$1.class
 com\mycompany\presentacion_mariscos\mermas\PnlRegistroMermas$1.class
 com\mycompany\presentacion_mariscos\GestorOrden.class

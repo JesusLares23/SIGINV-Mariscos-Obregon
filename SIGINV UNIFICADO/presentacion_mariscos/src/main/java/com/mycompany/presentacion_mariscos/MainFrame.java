@@ -66,7 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         
-        MongoClientProvider.INSTANCE.init();
+        
         
         insumoDAO = new InsumoDAO();
         inventarioDAO = new InventarioDAO();
@@ -85,8 +85,11 @@ public class MainFrame extends javax.swing.JFrame {
         NavegadorUI.init(pnlContainer, lblVentana);
                 
         pnlCarrito = new PnlCarrito();
+        
         pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
+        
         pnlProveedores2 = new PnlProveedores();
+        
         seleccionOrden = new SeleccionOrden ();
          pnlCarrito.setReferences(pnlContainer, pnlProveedores2,lblVentana);
          
@@ -95,7 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
           pnlDatos = new pnlDatosFacturacion();
           seleccionOrden.setReferences( pnlContainer, pnlDatos, lblVentana);
         
-        pnlTablaMermas = new PnlTablaMermas(mermaControl);
+        pnlTablaMermas = new PnlTablaMermas(mermaControl, inventarioControl, insumoControl);
     }
 
     /**
@@ -364,6 +367,7 @@ public class MainFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        MongoClientProvider.INSTANCE.init();
         
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

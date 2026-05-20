@@ -46,41 +46,40 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
     
     //DAO Y CONTROLLER
     private IMermaControl mermaControl;
+   
     
-    private IInsumoDAO insumoDAO;
-    private IInsumoControl insumoControl;
-    
-    private IInventarioDAO inventarioDAO;
     private IInventarioControl inventarioControl;
     
     
-    //Lista Mermas
+    private IInsumoControl insumoControl;
+    
+    //Lista inventario
     private List<Inventario> listaInventario;
     
-    //Panel de Registro de Mermas
-    PnlRegistroMermas pnlRegistroMermas;
+    
+    
+    
     
 
     /**
      * Creates new form pnlTablaMermas
      */
-    public PnlRegistroMermas(IMermaControl mermaControl) {
+    public PnlRegistroMermas(IMermaControl mermaControl, IInventarioControl inventarioControl, IInsumoControl insumoControl) {
         this.mermaControl = mermaControl;
+        this.inventarioControl = inventarioControl;
+        this.insumoControl = insumoControl;
         
         
-        insumoDAO = new InsumoDAO();
-        insumoControl = new InsumoControl(insumoDAO);
         
-        inventarioDAO = new InventarioDAO();
-        inventarioControl = new InventarioControl(inventarioDAO);
         
         initComponents();
         
-        
-        
-        
         configurarTabla();
         cargarInsumos();
+        
+        ((javax.swing.text.AbstractDocument) txtCantPerdida.getDocument()).setDocumentFilter(new MyDecimalFilter());
+        
+        
     }
 
     /**
@@ -119,6 +118,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         btnAnterior = new javax.swing.JButton();
         btnSiguiente = new javax.swing.JButton();
         btnSeleccionarQR = new javax.swing.JButton();
+        barraBusqueda = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -153,6 +153,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
         txtInsumo.setBackground(new java.awt.Color(204, 204, 204));
         txtInsumo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtInsumo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtInsumo.setFocusable(false);
 
         txtCantPerdida.setBackground(new java.awt.Color(255, 255, 255));
@@ -160,6 +161,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
         txtUnidadMedida.setBackground(new java.awt.Color(204, 204, 204));
         txtUnidadMedida.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtUnidadMedida.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtUnidadMedida.setFocusable(false);
 
         lblCausaMerma.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -289,6 +291,11 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             }
         ));
         tblInsumos.setSelectionBackground(new java.awt.Color(35, 52, 75));
+        tblInsumos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInsumosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblInsumos);
 
         btnRegistrarMerma.setBackground(new java.awt.Color(35, 52, 75));
@@ -333,6 +340,10 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             }
         });
 
+        barraBusqueda.setBackground(new java.awt.Color(255, 255, 255));
+        barraBusqueda.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        barraBusqueda.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -355,7 +366,8 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(lblPagina)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 91, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlInformacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -373,7 +385,9 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
+                        .addGap(19, 19, 19)
+                        .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,8 +482,20 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSeleccionarQRActionPerformed
 
+    private void tblInsumosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInsumosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblInsumos.getSelectedRow();
+        if (fila >= 0) {
+            int indiceReal = paginaActual * REGISTROS_POR_PAGINA + fila;
+            Inventario inventario = listaInventario.get(indiceReal); // ✅
+            txtInsumo.setText(inventario.getInsumo().getNombre());
+            txtUnidadMedida.setText(inventario.getInsumo().getUnidadMedida());
+        }
+    }//GEN-LAST:event_tblInsumosMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField barraBusqueda;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnRegistrarMerma;
     private javax.swing.JButton btnSeleccionarQR;
@@ -581,6 +607,27 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         } catch (Exception e) {
             
             JOptionPane.showMessageDialog(this, "Error al leer QR: " + e.getMessage());
+        }
+    }
+    
+    //Filtro para txtCantPerdida para que solo acepte numeros enteros y decimales
+    class MyDecimalFilter extends javax.swing.text.DocumentFilter {
+        private static final String REGEX = "^[0-9]*\\.?[0-9]*$";
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) 
+                throws javax.swing.text.BadLocationException {
+            String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+            String nextText = currentText.substring(0, offset) + string + currentText.substring(offset);
+            if (nextText.matches(REGEX)) { super.insertString(fb, offset, string, attr); }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                throws javax.swing.text.BadLocationException {
+            String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+            String nextText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
+            if (nextText.matches(REGEX)) { super.replace(fb, offset, length, text, attrs); }
         }
     }
 
