@@ -4,7 +4,7 @@
  */
 package com.mycompany.dto_mariscos.mermas;
 
-import com.mycompany.dto_mariscos.Insumo;
+
 import java.time.Instant;
 import java.util.Map;
 
