@@ -39,7 +39,6 @@ public class GestorOrden {
         
         Orden orden = new Orden();
         orden.setNumeroOrden(contadorOrdenes++);
-        orden.setResponsable(responsable);
         orden.setProveedor(proveedor);
         orden.setItems(itemsOrden);
         orden.setEstado("Pendiente");

@@ -1,29 +1,29 @@
-package com.mycompany.dto_mariscos;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.dto_mariscos.mermas;
 
+import com.mycompany.dto_mariscos.Insumo;
 import java.time.Instant;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
 
 /**
- * Entidad que representa una orden de compra ya generada.
+ *
+ * @author joser
  */
-public class Orden {
-    @BsonId
-    private ObjectId _id;
-    
+public class OrdenDTO {
+    private String id;
     private int numeroOrden;
     private Instant fechaCreacion;
     private String responsable;       
     private String proveedor;         
     private String estado;            // "Pendiente", "Confirmada", "Pagada", etc.
     private String estadoFacturacion; // "Sin Facturar" / "Facturada"
-    private Map<Insumo, Double> items; // insumo y cantidad solicitada
+    private Map<Insumo, Double> items;
 
-    public Orden(ObjectId _id, int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<Insumo, Double> items) {
-        this._id = _id;
+    public OrdenDTO(String id, int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<Insumo, Double> items) {
+        this.id = id;
         this.numeroOrden = numeroOrden;
         this.fechaCreacion = fechaCreacion;
         this.responsable = responsable;
@@ -33,27 +33,15 @@ public class Orden {
         this.items = items;
     }
 
-    
-    
-    public Orden(int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<Insumo, Double> items) {
-        this.numeroOrden = numeroOrden;
-        this.fechaCreacion = fechaCreacion;
-        this.responsable = responsable;
-        this.proveedor = proveedor;
-        this.estado = estado;
-        this.estadoFacturacion = estadoFacturacion;
-        this.items = items;
+    public OrdenDTO() {
     }
 
-    public Orden() {
+    public String getId() {
+        return id;
     }
 
-    public ObjectId getId() {
-        return _id;
-    }
-
-    public void setId(ObjectId _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getNumeroOrden() {
@@ -114,8 +102,7 @@ public class Orden {
 
     @Override
     public String toString() {
-        return "Orden{" + "numeroOrden=" + numeroOrden + ", fechaCreacion=" + fechaCreacion + ", responsable=" + responsable + ", proveedor=" + proveedor + ", estado=" + estado + ", estadoFacturacion=" + estadoFacturacion + ", items=" + items + '}';
+        return "OrdenDTO{" + "id=" + id + ", numeroOrden=" + numeroOrden + ", fechaCreacion=" + fechaCreacion + ", responsable=" + responsable + ", proveedor=" + proveedor + ", estado=" + estado + ", estadoFacturacion=" + estadoFacturacion + ", items=" + items + '}';
     }
-
     
 }

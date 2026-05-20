@@ -28,6 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+import presentacion_mariscos.RecepcionMercancia.PnlRecepcionMercancia;
 
 /**
  *
@@ -61,6 +62,8 @@ public class MainFrame extends javax.swing.JFrame {
     private pnlDatosFacturacion pnlDatos;
     
     private PnlTablaMermas pnlTablaMermas;
+    
+    private PnlRecepcionMercancia pnlRecepcionMerca;
     /**
      * Creates new form MainFrame
      */
@@ -80,22 +83,23 @@ public class MainFrame extends javax.swing.JFrame {
        
         
         initComponents();
-        
+
         //Inicaliza navegador solo una vez
         NavegadorUI.init(pnlContainer, lblVentana);
-                
+
         pnlCarrito = new PnlCarrito();
         pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
         pnlProveedores2 = new PnlProveedores();
-        seleccionOrden = new SeleccionOrden ();
-         pnlCarrito.setReferences(pnlContainer, pnlProveedores2,lblVentana);
-         
-          pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
-          
-          pnlDatos = new pnlDatosFacturacion();
-          seleccionOrden.setReferences( pnlContainer, pnlDatos, lblVentana);
-        
+        seleccionOrden = new SeleccionOrden();
+        pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
+
+        pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
+
+        pnlDatos = new pnlDatosFacturacion();
+        seleccionOrden.setReferences(pnlContainer, pnlDatos, lblVentana);
+
         pnlTablaMermas = new PnlTablaMermas(mermaControl);
+        pnlRecepcionMerca = new PnlRecepcionMercancia();
     }
 
     /**
@@ -130,11 +134,9 @@ public class MainFrame extends javax.swing.JFrame {
         pnlHeader.setBackground(new java.awt.Color(194, 232, 255));
 
         lblNombreSistema.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
-        lblNombreSistema.setForeground(new java.awt.Color(0, 0, 0));
         lblNombreSistema.setText("SIGINV");
 
         lblVentana.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
-        lblVentana.setForeground(new java.awt.Color(0, 0, 0));
         lblVentana.setText("Menu Principal");
 
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
@@ -207,6 +209,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnRecepcionMercancia.setToolTipText("");
         btnRecepcionMercancia.setBorder(null);
         btnRecepcionMercancia.setFocusable(false);
+        btnRecepcionMercancia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRecepcionMercanciaMouseClicked(evt);
+            }
+        });
 
         btnPagosPendientes.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         btnPagosPendientes.setForeground(new java.awt.Color(255, 255, 255));
@@ -358,6 +365,17 @@ public class MainFrame extends javax.swing.JFrame {
         pnlContainer.repaint();
         
     }//GEN-LAST:event_btnMermasMouseClicked
+
+    private void btnRecepcionMercanciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRecepcionMercanciaMouseClicked
+        // TODO add your handling code here:
+        //inicializar aqui
+        pnlContainer.removeAll();
+        pnlContainer.add(pnlRecepcionMerca, BorderLayout.CENTER);
+        lblVentana.setText("Recepción de Mercancía");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+
+    }//GEN-LAST:event_btnRecepcionMercanciaMouseClicked
 
     
     /**

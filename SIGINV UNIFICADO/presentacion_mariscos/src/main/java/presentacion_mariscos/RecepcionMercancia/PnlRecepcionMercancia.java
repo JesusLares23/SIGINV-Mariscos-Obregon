@@ -4,17 +4,61 @@
  */
 package presentacion_mariscos.RecepcionMercancia;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author joser
  */
 public class PnlRecepcionMercancia extends javax.swing.JPanel {
 
+    private final Color COLOR_AZUL_CLARO = new Color(209, 236, 252);
+    private final Color COLOR_VERDE_OK = new Color(165, 231, 191);
+    private final Color COLOR_ROJO_FAIL = new Color(255, 204, 201);
+    private final Color COLOR_BTN_FINALIZAR = new Color(74, 184, 102);
+
+    private JComboBox<String> cbOrdenes;
+    private JLabel lblProveedor, lblFecha, lblEstado;
+    private JTable tablaDetalles;
+    private DefaultTableModel modeloTabla;
+    private JPanel pnlListaResumen;
+    private JLabel lblSubtotal, lblIVA, lblTotal;
+
     /**
      * Creates new form PnlRecepcionMercancia
      */
     public PnlRecepcionMercancia() {
         initComponents();
+        iniciarComponentes();
+        configurarEventos();
     }
 
     /**
@@ -26,17 +70,290 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setPreferredSize(new java.awt.Dimension(1131, 772));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 1131, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 772, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void iniciarComponentes() {
+        setLayout(new GridBagLayout());
+        setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // --- COLUMNA IZQUIERDA (70%) ---
+        JPanel pnlIzquierdo = new JPanel(new GridBagLayout());
+        pnlIzquierdo.setOpaque(false);
+        GridBagConstraints gbcIzq = new GridBagConstraints();
+        gbcIzq.fill = GridBagConstraints.BOTH;
+        gbcIzq.insets = new Insets(5, 5, 5, 5);
+
+        // 1. Selector y Datos Proveedor
+        JPanel pnlHeader = new JPanel(new GridLayout(1, 2, 20, 0));
+        pnlHeader.setBackground(COLOR_AZUL_CLARO);
+        pnlHeader.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JPanel pnlCombo = new JPanel(new BorderLayout(0, 5));
+        pnlCombo.setOpaque(false);
+        pnlCombo.add(new JLabel("Seleccionar orden de compra:"), BorderLayout.NORTH);
+        cbOrdenes = new JComboBox<>(new String[]{"Seleccione una...", "OC-20260215-015", "OC-20260215-016"});
+        pnlCombo.add(cbOrdenes, BorderLayout.CENTER);
+
+        JPanel pnlInfoProv = new JPanel(new GridLayout(3, 1));
+        pnlInfoProv.setOpaque(false);
+        lblProveedor = new JLabel("Proveedor: -");
+        lblFecha = new JLabel("Fecha: -");
+        lblEstado = new JLabel("Estado: -");
+        pnlInfoProv.add(lblProveedor);
+        pnlInfoProv.add(lblFecha);
+        pnlInfoProv.add(lblEstado);
+
+        pnlHeader.add(pnlCombo);
+        pnlHeader.add(pnlInfoProv);
+        gbcIzq.gridy = 0;
+        gbcIzq.weightx = 1;
+        gbcIzq.weighty = 0.15;
+        pnlIzquierdo.add(pnlHeader, gbcIzq);
+
+        // 2. Tabla
+        modeloTabla = new DefaultTableModel(new Object[]{"Ítem", "Pedida", "Recibida", "Unidad", "Validación", "Aprobar", "PrecioHidden"}, 0) {
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return c == 2 || c == 4 || c == 5; // Solo recibida, botón validación y checkbox
+            }
+
+            @Override
+            public Class<?> getColumnClass(int c) {
+                if (c == 5) {
+                    return Boolean.class;
+                }
+                return Object.class;
+            }
+        };
+        tablaDetalles = new JTable(modeloTabla);
+        tablaDetalles.setRowHeight(45);
+        personalizarTabla();
+
+        JScrollPane scroll = new JScrollPane(tablaDetalles);
+        scroll.setBorder(BorderFactory.createTitledBorder("Detalles de orden a recibir"));
+        gbcIzq.gridy = 1;
+        gbcIzq.weighty = 0.7;
+        pnlIzquierdo.add(scroll, gbcIzq);
+
+        // 3. Notas
+        JTextArea txtNotas = new JTextArea(3, 20);
+        JScrollPane scrollNotas = new JScrollPane(txtNotas);
+        scrollNotas.setBorder(BorderFactory.createTitledBorder("Notas de recepción"));
+        gbcIzq.gridy = 2;
+        gbcIzq.weighty = 0.15;
+        pnlIzquierdo.add(scrollNotas, gbcIzq);
+
+        // --- COLUMNA DERECHA (Resumen) ---
+        JPanel pnlDerecho = crearPanelDerecho();
+
+        // Agregar al principal
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.weightx = 0.7;
+        add(pnlIzquierdo, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 0.3;
+        add(pnlDerecho, gbc);
+    }
+
+    private JPanel crearPanelDerecho() {
+        JPanel pnl = new JPanel(new BorderLayout());
+        pnl.setBackground(Color.WHITE);
+        pnl.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
+
+        JLabel titulo = new JLabel("Resumen de recepción", SwingConstants.CENTER);
+        titulo.setFont(new Font("SansSerif", Font.BOLD, 18));
+        titulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        pnl.add(titulo, BorderLayout.NORTH);
+
+        pnlListaResumen = new JPanel();
+        pnlListaResumen.setLayout(new BoxLayout(pnlListaResumen, BoxLayout.Y_AXIS));
+        pnlListaResumen.setBackground(Color.WHITE);
+        pnl.add(new JScrollPane(pnlListaResumen), BorderLayout.CENTER);
+
+        JPanel pnlFooter = new JPanel(new GridLayout(4, 1, 0, 5));
+        pnlFooter.setBackground(Color.WHITE);
+        pnlFooter.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+
+        lblSubtotal = new JLabel("Subtotal: $0.00");
+        lblIVA = new JLabel("IVA (16%): $0.00");
+        lblTotal = new JLabel("Total: $0.00");
+        lblTotal.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        JButton btnFinalizar = new JButton("Finalizar recepción y actualizar stock");
+        btnFinalizar.setBackground(COLOR_BTN_FINALIZAR);
+        btnFinalizar.setForeground(Color.WHITE);
+        btnFinalizar.setFocusPainted(false);
+
+        pnlFooter.add(lblSubtotal);
+        pnlFooter.add(lblIVA);
+        pnlFooter.add(lblTotal);
+        pnlFooter.add(btnFinalizar);
+        pnl.add(pnlFooter, BorderLayout.SOUTH);
+
+        return pnl;
+    }
+
+    private void personalizarTabla() {
+        // Ocultar columna de precio (índice 6)
+        tablaDetalles.getColumnModel().getColumn(6).setMinWidth(0);
+        tablaDetalles.getColumnModel().getColumn(6).setMaxWidth(0);
+
+        // Renderer y Editor para el botón de Validación (Columna 4)
+        TableColumn colValidacion = tablaDetalles.getColumnModel().getColumn(4);
+        colValidacion.setCellRenderer(new BotonEstadoRenderer());
+        colValidacion.setCellEditor(new BotonEstadoEditor(new JCheckBox()));
+    }
+
+    private void configurarEventos() {
+        // Evento Combo Box
+        cbOrdenes.addActionListener(e -> {
+            String selected = (String) cbOrdenes.getSelectedItem();
+            if (selected.equals("Seleccione una...")) {
+                limpiarTodo();
+            } else {
+                cargarDatosSimulados(selected);
+            }
+        });
+
+        // Evento de cambio en la tabla (para el Checkbox y Cantidad)
+        modeloTabla.addTableModelListener(e -> {
+            if (e.getColumn() == 5 || e.getColumn() == 2) {
+                actualizarResumen();
+            }
+        });
+    }
+
+    private void cargarDatosSimulados(String oc) {
+        limpiarTodo();
+        lblProveedor.setText("Proveedor: Mariscos del Yaqui");
+        lblFecha.setText("Fecha: 15/02/2026");
+        lblEstado.setText("Estado: Pendiente");
+
+        // Simulamos datos de persistencia: {Nombre, CantPedida, CantRecibida, Unidad, Estado, Check, PrecioUnitario}
+        modeloTabla.addRow(new Object[]{"Filete de pescado", 30, 30, "KG", "Buen estado", false, 25.20});
+        modeloTabla.addRow(new Object[]{"Tomate fresco", 25, 0, "KG", "Buen estado", false, 8.00});
+        modeloTabla.addRow(new Object[]{"Sal de grano", 5, 5, "KG", "Buen estado", false, 40.00});
+    }
+
+    private void actualizarResumen() {
+        pnlListaResumen.removeAll();
+        double subtotal = 0;
+
+        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+            boolean aprobado = (boolean) modeloTabla.getValueAt(i, 5);
+            if (aprobado) {
+                String nombre = (String) modeloTabla.getValueAt(i, 0);
+                int cant = Integer.parseInt(modeloTabla.getValueAt(i, 2).toString());
+                double precioU = (double) modeloTabla.getValueAt(i, 6);
+                double parcial = cant * precioU;
+                subtotal += parcial;
+
+                JLabel lblItem = new JLabel("• " + nombre + "  $" + String.format("%.2f", parcial));
+                lblItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                pnlListaResumen.add(lblItem);
+            }
+        }
+
+        double iva = subtotal * 0.16;
+        lblSubtotal.setText("Subtotal: $" + String.format("%.2f", subtotal));
+        lblIVA.setText("IVA (16%): $" + String.format("%.2f", iva));
+        lblTotal.setText("Total: $" + String.format("%.2f", (subtotal + iva)));
+
+        pnlListaResumen.revalidate();
+        pnlListaResumen.repaint();
+    }
+
+    private void limpiarTodo() {
+        modeloTabla.setRowCount(0);
+        pnlListaResumen.removeAll();
+        lblProveedor.setText("Proveedor: -");
+        lblSubtotal.setText("Subtotal: $0.00");
+        lblTotal.setText("Total: $0.00");
+        pnlListaResumen.revalidate();
+        pnlListaResumen.repaint();
+    }
+
+    // --- CLASES PARA EL BOTÓN DINÁMICO EN LA TABLA ---
+    class BotonEstadoRenderer extends JButton implements TableCellRenderer {
+
+        public BotonEstadoRenderer() {
+            setOpaque(true);
+            setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            String texto = (value != null) ? value.toString() : "Buen estado";
+            setText(texto);
+
+            if (texto.equalsIgnoreCase("Buen estado")) {
+                setBackground(COLOR_VERDE_OK);
+            } else {
+                setBackground(COLOR_ROJO_FAIL);
+            }
+            return this;
+        }
+    }
+
+    class BotonEstadoEditor extends DefaultCellEditor {
+    private JButton btn;
+    private String label;
+
+        public BotonEstadoEditor(JCheckBox checkBox) {
+            super(checkBox);
+            btn = new JButton();
+            btn.setOpaque(true);
+            btn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // 1. Cambiamos el estado lógicamente
+                    label = label.equals("Buen estado") ? "Mal estado" : "Buen estado";
+
+                    // 2. Actualizamos el aspecto visual del botón del editor inmediatamente
+                    btn.setText(label);
+                    btn.setBackground(label.equals("Buen estado") ? COLOR_VERDE_OK : COLOR_ROJO_FAIL);
+
+                    // 3. Importante: Detenemos la edición para que el JTable guarde el nuevo String en el modelo
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            // Al iniciar el clic, recuperamos el valor actual de la celda
+            label = (value != null) ? value.toString() : "Buen estado";
+            btn.setText(label);
+            btn.setBackground(label.equals("Buen estado") ? COLOR_VERDE_OK : COLOR_ROJO_FAIL);
+            return btn;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return label; // Este es el valor que se guardará en el TableModel
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            return super.stopCellEditing();
+        }
+
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
