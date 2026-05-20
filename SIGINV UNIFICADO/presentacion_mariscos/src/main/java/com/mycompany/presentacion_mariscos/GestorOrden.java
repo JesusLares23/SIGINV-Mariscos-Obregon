@@ -40,7 +40,7 @@ public class GestorOrden {
         Orden orden = new Orden();
         orden.setNumeroOrden(contadorOrdenes++);
         orden.setProveedor(proveedor);
-        orden.setItems(itemsOrden);
+        //orden.setItems(itemsOrden);
         orden.setEstado("Pendiente");
         // La fecha de creación ya se asigna en el constructor de Orden
         
