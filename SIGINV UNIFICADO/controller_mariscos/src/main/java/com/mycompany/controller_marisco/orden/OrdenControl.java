@@ -60,31 +60,33 @@ public class OrdenControl implements IOrdenControl{
             throw new Exception("Error en control al actualizar estado: " + e.getMessage());
         }
     }
-    
+
     /**
      * Método auxiliar para mapear de Entidad (Mongo) a DTO (UI)
      */
     private OrdenDTO convertirADTO(Orden entidad) {
         OrdenDTO dto = new OrdenDTO();
-        
-        if (entidad.getId()!= null) {
+
+        // Mapeo de campos simples
+        if (entidad.getId() != null) {
             dto.setId(entidad.getId().toHexString());
         }
-        
         dto.setNumeroOrden(entidad.getNumeroOrden());
         dto.setFechaCreacion(entidad.getFechaCreacion());
         dto.setResponsable(entidad.getResponsable());
         dto.setProveedor(entidad.getProveedor());
         dto.setEstado(entidad.getEstado());
         dto.setEstadoFacturacion(entidad.getEstadoFacturacion());
-        
+
+        // Mapeo del nuevo Map<String, Double>
+        // Llave: String (ID del Insumo), Valor: Double (Cantidad)
         if (entidad.getItems() != null) {
             dto.setItems(new HashMap<>(entidad.getItems()));
         } else {
             dto.setItems(new HashMap<>());
         }
-        
+
         return dto;
     }
-    
+
 }

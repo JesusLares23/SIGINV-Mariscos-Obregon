@@ -20,9 +20,9 @@ public class OrdenDTO {
     private String proveedor;         
     private String estado;            // "Pendiente", "Confirmada", "Pagada", etc.
     private String estadoFacturacion; // "Sin Facturar" / "Facturada"
-    private Map<Insumo, Double> items;
+    private Map<String, Double> items;
 
-    public OrdenDTO(String id, int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<Insumo, Double> items) {
+    public OrdenDTO(String id, int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<String, Double> items) {
         this.id = id;
         this.numeroOrden = numeroOrden;
         this.fechaCreacion = fechaCreacion;
@@ -32,6 +32,8 @@ public class OrdenDTO {
         this.estadoFacturacion = estadoFacturacion;
         this.items = items;
     }
+
+    
 
     public OrdenDTO() {
     }
@@ -92,13 +94,15 @@ public class OrdenDTO {
         this.estadoFacturacion = estadoFacturacion;
     }
 
-    public Map<Insumo, Double> getItems() {
+    public Map<String, Double> getItems() {
         return items;
     }
 
-    public void setItems(Map<Insumo, Double> items) {
+    public void setItems(Map<String, Double> items) {
         this.items = items;
     }
+
+    
 
     @Override
     public String toString() {
