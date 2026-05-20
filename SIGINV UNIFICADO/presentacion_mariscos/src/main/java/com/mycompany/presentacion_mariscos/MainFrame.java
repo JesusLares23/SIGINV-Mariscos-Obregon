@@ -31,6 +31,8 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
+import presentacion_mariscos.RecepcionMercancia.PnlRecepcionMercancia;
 
 /**
  *
@@ -65,45 +67,44 @@ public class MainFrame extends javax.swing.JFrame {
     private pnlDatosFacturacion pnlDatos;
 
     private PnlTablaMermas pnlTablaMermas;
-
+    
+    private PnlRecepcionMercancia pnlRecepcionMerca;
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-   MongoClientProvider.INSTANCE.init();
+        
+        MongoClientProvider.INSTANCE.init();
+        
+        insumoDAO = new InsumoDAO();
+        inventarioDAO = new InventarioDAO();
+        mermasDAO = new MermasDAO();
 
-   MongoClientProvider.INSTANCE.init();
+        //---CONTROLLERS---
+        insumoControl = new InsumoControl(insumoDAO);
+        inventarioControl = new InventarioControl(inventarioDAO);
+        mermaControl = new MermaControl(mermasDAO);
+        
+       
+        
+        initComponents();
 
-    insumoDAO = new InsumoDAO();
-    inventarioDAO = new InventarioDAO();
-    mermasDAO = new MermasDAO();
-    ordenDAO = new OrdenDAO();
+        //Inicaliza navegador solo una vez
+        NavegadorUI.init(pnlContainer, lblVentana);
 
-    insumoControl = new InsumoControl(insumoDAO);
-    inventarioControl = new InventarioControl(inventarioDAO);
-    mermaControl = new MermaControl(mermasDAO);
-    ordenControl = new OrdenControl(ordenDAO);
-    solicitudFacturaControl = new SolicitudFacturaControl();
+        pnlCarrito = new PnlCarrito();
+        pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
+        pnlProveedores2 = new PnlProveedores();
+        seleccionOrden = new SeleccionOrden();
+        pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
 
-    initComponents();
+        pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
 
-    pnlCarrito = new PnlCarrito();
-    pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
-    pnlProveedores2 = new PnlProveedores();
-    seleccionOrden = new SeleccionOrden();
-    pnlDatos = new pnlDatosFacturacion();
-    pnlTablaMermas = new PnlTablaMermas(mermaControl);
+        pnlDatos = new pnlDatosFacturacion();
+        seleccionOrden.setReferences(pnlContainer, pnlDatos, lblVentana);
 
-    // referencias
-    pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
-    pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
-    seleccionOrden.setReferences(pnlContainer, pnlDatos, lblVentana);
-
-    // inyección de control
-    seleccionOrden.setOrdenControl(ordenControl);
-    seleccionOrden.setSolicitudControl(solicitudFacturaControl);
-    pnlDatos.setSolicitudControl(solicitudFacturaControl);
-
+        pnlTablaMermas = new PnlTablaMermas(mermaControl);
+        pnlRecepcionMerca = new PnlRecepcionMercancia();
     }
 
     /**
@@ -138,11 +139,9 @@ public class MainFrame extends javax.swing.JFrame {
         pnlHeader.setBackground(new java.awt.Color(194, 232, 255));
 
         lblNombreSistema.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
-        lblNombreSistema.setForeground(new java.awt.Color(0, 0, 0));
         lblNombreSistema.setText("SIGINV");
 
         lblVentana.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
-        lblVentana.setForeground(new java.awt.Color(0, 0, 0));
         lblVentana.setText("Menu Principal");
 
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
@@ -152,7 +151,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addComponent(lblNombreSistema)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 971, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblVentana)
                 .addGap(31, 31, 31))
         );
@@ -215,6 +214,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnRecepcionMercancia.setToolTipText("");
         btnRecepcionMercancia.setBorder(null);
         btnRecepcionMercancia.setFocusable(false);
+        btnRecepcionMercancia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRecepcionMercanciaMouseClicked(evt);
+            }
+        });
 
         btnPagosPendientes.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         btnPagosPendientes.setForeground(new java.awt.Color(255, 255, 255));
@@ -320,7 +324,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlNavbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,10 +371,23 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnMermasMouseClicked
 
+    private void btnRecepcionMercanciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRecepcionMercanciaMouseClicked
+        // TODO add your handling code here:
+        //inicializar aqui
+        pnlContainer.removeAll();
+        pnlContainer.add(pnlRecepcionMerca, BorderLayout.CENTER);
+        lblVentana.setText("Recepción de Mercancía");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+
+    }//GEN-LAST:event_btnRecepcionMercanciaMouseClicked
+
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -383,6 +400,8 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
+             
+             
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -422,5 +441,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlNavbar;
     // End of variables declaration//GEN-END:variables
+    
+    
 
+    
 }

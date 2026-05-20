@@ -1,52 +1,34 @@
-
-package com.mycompany.dto_mariscos;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.dto_mariscos.mermas;
 
 import java.time.Instant;
-import org.bson.codecs.pojo.annotations.BsonProperty;
-import org.bson.types.ObjectId;
 
 /**
  *
- * @author demib
+ * @author joser
  */
-public class Insumo {
-
-    private ObjectId _id;
+public class InsumoDTO {
+    private String id;
     //Nombre Insumo
     private String nombre;
     //Kg,g,lt,pieza,
     private String unidadMedida;
     //Categoria del producto
     private String categoria;
-
-    private Instant createdAt;
-
-    private Instant updatedAt;
-
-    //URL de la imagen alojada en Imgur
-    @BsonProperty("imagenUrl")
-    private String imagenUrl;
     
-    @BsonProperty("qrUrl")
-    private String qrUrl; // ruta local o URL de la imagen del QR
+    private Instant createdAt;
+    
+    private Instant updatedAt;
+    
+    private String imagenUrl;
 
-    public Insumo() {
-    }
+    private String qrUrl;
 
-    public Insumo(ObjectId _id, String nombre, String unidadMedida, 
-            String categoria, String imagenUrl, Instant createdAt, 
-            Instant updatedAt) {
-        this._id = _id;
-        this.nombre = nombre;
-        this.unidadMedida = unidadMedida;
-        this.categoria = categoria;
-        this.imagenUrl = imagenUrl;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Insumo(ObjectId _id, String nombre, String unidadMedida, String categoria, Instant createdAt, Instant updatedAt, String imagenUrl, String qrUrl) {
-        this._id = _id;
+    public InsumoDTO(String id, String nombre, String unidadMedida, String categoria, Instant createdAt, Instant updatedAt, String imagenUrl, String qrUrl) {
+        this.id = id;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.categoria = categoria;
@@ -56,12 +38,15 @@ public class Insumo {
         this.qrUrl = qrUrl;
     }
 
-    public ObjectId getId() {
-        return _id;
+    public InsumoDTO() {
     }
 
-    public void setId(ObjectId _id) {
-        this._id = _id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -119,21 +104,15 @@ public class Insumo {
     public void setQrUrl(String qrUrl) {
         this.qrUrl = qrUrl;
     }
-    
-    
-
-    
-    
-    
-    
-
-    
-
-    
 
     @Override
     public String toString() {
-        return "Insumo{" + "_id=" + _id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", categoria=" + categoria + '}';
+        return "InsumoDTO{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", categoria=" + categoria + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", imagenUrl=" + imagenUrl + ", qrUrl=" + qrUrl + '}';
     }
-
+    
+    
+    
+    
+    
+    
 }
