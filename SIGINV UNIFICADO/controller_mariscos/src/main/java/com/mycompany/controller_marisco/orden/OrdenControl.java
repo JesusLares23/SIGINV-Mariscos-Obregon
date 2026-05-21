@@ -81,9 +81,10 @@ public class OrdenControl implements IOrdenControl{
         // Mapeo del nuevo Map<String, Double>
         // Llave: String (ID del Insumo), Valor: Double (Cantidad)
         if (entidad.getItems() != null) {
-            dto.setItems(new HashMap<>(entidad.getItems()));
+        dto.setItems(new HashMap<>(entidad.getItems()));
+            System.out.println("DEBUG: Se mapearon " + entidad.getItems().size() + " items al DTO");
         } else {
-            dto.setItems(new HashMap<>());
+            System.out.println("DEBUG: La entidad Orden traía el mapa de items NULO");
         }
 
         return dto;

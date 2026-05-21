@@ -4,8 +4,8 @@
  */
 package com.mycompany.dto_mariscos.mermas;
 
-
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +20,7 @@ public class OrdenDTO {
     private String proveedor;         
     private String estado;            // "Pendiente", "Confirmada", "Pagada", etc.
     private String estadoFacturacion; // "Sin Facturar" / "Facturada"
-    private Map<String, Double> items;
+    private Map<String, Double> items = new HashMap<>();;
 
     public OrdenDTO(String id, int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<String, Double> items) {
         this.id = id;
@@ -95,18 +95,23 @@ public class OrdenDTO {
     }
 
     public Map<String, Double> getItems() {
-        return items;
+        if (this.items == null) {
+            this.items = new HashMap<>();
+        }
+        return this.items;
     }
 
     public void setItems(Map<String, Double> items) {
         this.items = items;
     }
 
-    
-
     @Override
     public String toString() {
-        return "OrdenDTO{" + "id=" + id + ", numeroOrden=" + numeroOrden + ", fechaCreacion=" + fechaCreacion + ", responsable=" + responsable + ", proveedor=" + proveedor + ", estado=" + estado + ", estadoFacturacion=" + estadoFacturacion + ", items=" + items + '}';
+        return "Numero de orde: " + numeroOrden + ", Prroveedor: " + proveedor;
     }
+
+    
+
+    
     
 }
