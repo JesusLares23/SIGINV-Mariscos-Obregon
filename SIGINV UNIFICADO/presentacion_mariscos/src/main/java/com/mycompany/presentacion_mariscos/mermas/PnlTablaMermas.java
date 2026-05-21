@@ -4,6 +4,8 @@
  */
 package com.mycompany.presentacion_mariscos.mermas;
 
+import com.mycompany.controller_mariscos.insumo.IInsumoControl;
+import com.mycompany.controller_mariscos.inventario.IInventarioControl;
 import com.mycompany.controller_mariscos.merma.IMermaControl;
 import com.mycompany.controller_mariscos.merma.MermaControl;
 import com.mycompany.dto_mariscos.mermas.MermaDTO;
@@ -22,7 +24,8 @@ public class PnlTablaMermas extends javax.swing.JPanel {
     
     //Controller
     private IMermaControl mermaControl;
-    
+    private IInventarioControl inventarioControl;
+    private IInsumoControl insumoControl;
     //Lista Mermas
     private List<MermaDTO> listaMermas;
     
@@ -33,15 +36,23 @@ public class PnlTablaMermas extends javax.swing.JPanel {
     /**
      * Creates new form pnlTablaMermas
      */
-    public PnlTablaMermas(IMermaControl mermaControl) {
+    public PnlTablaMermas(IMermaControl mermaControl, IInventarioControl inventarioControl, IInsumoControl insumoControl) {
         this.mermaControl = mermaControl;
+        this.inventarioControl = inventarioControl;
+        this.insumoControl = insumoControl;
         initComponents();
         
         
-        pnlRegistroMermas = new PnlRegistroMermas(mermaControl);
+        pnlRegistroMermas = new PnlRegistroMermas(mermaControl, inventarioControl, insumoControl);
         
         configurarTabla();
         cargarMermas();
+        barraBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filtrarMermas(barraBusqueda.getText());
+            }
+        });
     }
 
     /**
@@ -77,6 +88,7 @@ public class PnlTablaMermas extends javax.swing.JPanel {
         tblMermas = new javax.swing.JTable();
         btnCrearMerma = new javax.swing.JButton();
         lblTablaLeyend1 = new javax.swing.JLabel();
+        barraBusqueda = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -111,14 +123,17 @@ public class PnlTablaMermas extends javax.swing.JPanel {
 
         txtInsumo.setBackground(new java.awt.Color(204, 204, 204));
         txtInsumo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtInsumo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtInsumo.setFocusable(false);
 
         txtCantPerdida.setBackground(new java.awt.Color(204, 204, 204));
         txtCantPerdida.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtCantPerdida.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtCantPerdida.setFocusable(false);
 
         txtUnidadMedida.setBackground(new java.awt.Color(204, 204, 204));
         txtUnidadMedida.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtUnidadMedida.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtUnidadMedida.setFocusable(false);
 
         lblCausaMerma.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -127,6 +142,7 @@ public class PnlTablaMermas extends javax.swing.JPanel {
 
         txtCausa.setBackground(new java.awt.Color(204, 204, 204));
         txtCausa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtCausa.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtCausa.setFocusable(false);
 
         lblDescripcion.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -137,6 +153,8 @@ public class PnlTablaMermas extends javax.swing.JPanel {
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
         txtDescripcion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtDescripcion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        txtDescripcion.setEnabled(false);
         jScrollPane1.setViewportView(txtDescripcion);
 
         lblFecha.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -149,10 +167,12 @@ public class PnlTablaMermas extends javax.swing.JPanel {
 
         txtUbicacion.setBackground(new java.awt.Color(204, 204, 204));
         txtUbicacion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtUbicacion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtUbicacion.setFocusable(false);
 
         txtFecha.setBackground(new java.awt.Color(204, 204, 204));
         txtFecha.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtFecha.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtFecha.setFocusable(false);
         txtFecha.setOpaque(true);
 
@@ -268,6 +288,10 @@ public class PnlTablaMermas extends javax.swing.JPanel {
         lblTablaLeyend1.setForeground(new java.awt.Color(0, 0, 0));
         lblTablaLeyend1.setText("Para registrar una merma presione el boton Crear Merma.");
 
+        barraBusqueda.setBackground(new java.awt.Color(255, 255, 255));
+        barraBusqueda.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        barraBusqueda.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -283,7 +307,8 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTablaLeyend1))
+                            .addComponent(lblTablaLeyend1)
+                            .addComponent(barraBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                         .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -303,7 +328,9 @@ public class PnlTablaMermas extends javax.swing.JPanel {
                     .addComponent(pnlInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTablaLeyend1)
-                        .addGap(49, 49, 49)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(barraBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCrearMerma, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -317,6 +344,7 @@ public class PnlTablaMermas extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField barraBusqueda;
     private javax.swing.JButton btnCrearMerma;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -400,6 +428,37 @@ public class PnlTablaMermas extends javax.swing.JPanel {
             });
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar mermas: " + e.getMessage());
+        }
+    }
+    
+    private void filtrarMermas(String textoBusqueda) {
+        DefaultTableModel modelo = (DefaultTableModel) tblMermas.getModel();
+        modelo.setRowCount(0);
+
+        List<MermaDTO> filtradas;
+
+        if (textoBusqueda == null || textoBusqueda.isBlank()) {
+            filtradas = listaMermas;
+        } else {
+            filtradas = listaMermas.stream()
+                .filter(m -> m.getNombreInsumo()
+                    .toLowerCase()
+                    .contains(textoBusqueda.toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+        }
+
+        for (MermaDTO m : filtradas) {
+            String fecha = m.getFechaOcurrido()
+                .atZone(java.time.ZoneId.systemDefault())
+                .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+            modelo.addRow(new Object[]{
+                m.getNombreInsumo(),
+                m.getCantPerdida(),
+                m.getUnidadMedida(),
+                m.getCausa(),
+                fecha
+            });
         }
     }
 }
