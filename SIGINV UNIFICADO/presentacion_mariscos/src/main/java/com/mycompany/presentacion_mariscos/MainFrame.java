@@ -3,12 +3,16 @@ package com.mycompany.presentacion_mariscos;
 
 
 import com.mycompany.config_mariscos.MongoClientProvider;
+import com.mycompany.controller_marisco.orden.IOrdenControl;
+import com.mycompany.controller_marisco.orden.OrdenControl;
 import com.mycompany.controller_mariscos.insumo.IInsumoControl;
 import com.mycompany.controller_mariscos.insumo.InsumoControl;
 import com.mycompany.controller_mariscos.inventario.IInventarioControl;
 import com.mycompany.controller_mariscos.inventario.InventarioControl;
 import com.mycompany.controller_mariscos.merma.IMermaControl;
 import com.mycompany.controller_mariscos.merma.MermaControl;
+import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
+import com.mycompany.controller_mariscos.solicitudFactura.SolicitudFacturaControl;
 import com.mycompany.persistencia_mariscos.insumo.IInsumoDAO;
 import com.mycompany.persistencia_mariscos.insumo.InsumoDAO;
 import com.mycompany.persistencia_mariscos.inventario.IInventarioDAO;
@@ -36,23 +40,18 @@ import presentacion_mariscos.RecepcionMercancia.PnlRecepcionMercancia;
  */
 public class MainFrame extends javax.swing.JFrame {
     
-        /* moviendo por pruebas
-    PnlCarrito pnlCarrito = new PnlCarrito();
-    PnlProductos pnlProductos = new PnlProductos(pnlCarrito);
-    */
-    
-    
-    
-    //---DAOS---
+
+        //---DAOS---
     private IInsumoDAO insumoDAO;
     private IInventarioDAO inventarioDAO;
     private IMermasDAO mermasDAO;
-    
     
     //---CONTROLLERS---
     private IInsumoControl insumoControl;
     private IInventarioControl inventarioControl;
     private IMermaControl mermaControl;
+    private IOrdenControl ordenControl;
+    private ISolicitudFacturaControl solicitudFacturaControl;
     
     private PnlCarrito pnlCarrito;
     private PnlProductos pnlProductos;
@@ -62,7 +61,6 @@ public class MainFrame extends javax.swing.JFrame {
     private pnlDatosFacturacion pnlDatos;
     
     private PnlTablaMermas pnlTablaMermas;
-    
     private PnlRecepcionMercancia pnlRecepcionMerca;
     /**
      * Creates new form MainFrame
@@ -80,8 +78,9 @@ public class MainFrame extends javax.swing.JFrame {
         inventarioControl = new InventarioControl(inventarioDAO);
         mermaControl = new MermaControl(mermasDAO);
         
-       
-        
+        ordenControl = new OrdenControl();
+        solicitudFacturaControl = new SolicitudFacturaControl();
+
         initComponents();
 
         //Inicaliza navegador solo una vez
@@ -91,6 +90,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         pnlProductos = new PnlProductos(pnlCarrito, inventarioControl);
         
+        seleccionOrden = new SeleccionOrden();
+        pnlCarrito.setReferences(pnlContainer, pnlProveedores2, lblVentana);
+        
         pnlProveedores2 = new PnlProveedores();
 
         seleccionOrden = new SeleccionOrden();
@@ -99,6 +101,11 @@ public class MainFrame extends javax.swing.JFrame {
          
           pnlProveedores2.setReferences(pnlContainer, pnlProductos, pnlCarrito, lblVentana);
           
+          
+        seleccionOrden.setSolicitudControl(solicitudFacturaControl);
+        seleccionOrden.setOrdenControl(ordenControl);
+        
+        
           pnlDatos = new pnlDatosFacturacion();
           seleccionOrden.setReferences( pnlContainer, pnlDatos, lblVentana);
         
@@ -106,7 +113,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         
         
+        pnlDatos = new pnlDatosFacturacion();
+seleccionOrden.setReferences(pnlContainer, pnlDatos, lblVentana);
+pnlDatos.setReferences(pnlContainer, seleccionOrden, lblVentana);
 
+
+pnlDatos.setSolicitudControl(solicitudFacturaControl);
+pnlDatos.setOrdenControl(ordenControl);
+
+seleccionOrden.setSolicitudControl(solicitudFacturaControl);
+seleccionOrden.setOrdenControl(ordenControl);
         
         pnlRecepcionMerca = new PnlRecepcionMercancia();
 
@@ -239,6 +255,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnFacturacionOrdenCompra.setToolTipText("");
         btnFacturacionOrdenCompra.setBorder(null);
         btnFacturacionOrdenCompra.setFocusable(false);
+        btnFacturacionOrdenCompra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFacturacionOrdenCompraMouseClicked(evt);
+            }
+        });
 
         btnSalir.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
@@ -358,11 +379,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnSolicitarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitarFacturaActionPerformed
 
-        pnlContainer.removeAll();
-        pnlContainer.add(seleccionOrden, BorderLayout.CENTER);
-        lblVentana.setText("Solicitud de Facturación");
-        pnlContainer.revalidate();
-        pnlContainer.repaint();
+   
     }//GEN-LAST:event_btnSolicitarFacturaActionPerformed
 
     private void btnMermasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMermasMouseClicked
@@ -386,6 +403,15 @@ public class MainFrame extends javax.swing.JFrame {
         pnlContainer.repaint();
 
     }//GEN-LAST:event_btnRecepcionMercanciaMouseClicked
+
+    private void btnFacturacionOrdenCompraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFacturacionOrdenCompraMouseClicked
+        // TODO add your handling code here:     
+        pnlContainer.removeAll();
+        pnlContainer.add(seleccionOrden, BorderLayout.CENTER);
+        lblVentana.setText("Solicitud de Facturación");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+    }//GEN-LAST:event_btnFacturacionOrdenCompraMouseClicked
 
     
     /**

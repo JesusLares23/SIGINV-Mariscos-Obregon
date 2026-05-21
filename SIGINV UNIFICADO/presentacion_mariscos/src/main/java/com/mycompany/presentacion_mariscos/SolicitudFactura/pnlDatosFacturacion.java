@@ -4,9 +4,15 @@
  */
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
+import com.mycompany.controller_marisco.orden.IOrdenControl;
+import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
+import com.mycompany.dto_mariscos.solicitudFactura.SolicitudFacturaDTO;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,11 +20,19 @@ import javax.swing.JDialog;
  */
 public class pnlDatosFacturacion extends javax.swing.JPanel {
 
-    /**
-     * Creates new form pnlDatosFacturacion
-     */
+    private ISolicitudFacturaControl solicitudControl;
+    private SolicitudFacturaDTO solicitudFacturaDTO;
+    private pnlConfirmacionFactura pnlConfirmacion;
+    private IOrdenControl ordenControl;
+    
+    private javax.swing.JPanel pnlContainer;
+private SeleccionOrden pnlSeleccionOrden;
+private javax.swing.JLabel lblVentana;
+    
+
     public pnlDatosFacturacion() {
         initComponents();
+        inicializarComboBoxes();
     }
 
     /**
@@ -30,120 +44,114 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        lblTitulo = new javax.swing.JLabel();
+        lblRfc = new javax.swing.JLabel();
+        lblRazonSocial = new javax.swing.JLabel();
+        lblCFDI = new javax.swing.JLabel();
+        lblDireccion = new javax.swing.JLabel();
+        lblCodigoPostal = new javax.swing.JLabel();
+        lblCorreo = new javax.swing.JLabel();
+        lblCalle = new javax.swing.JLabel();
+        rfcTextField = new javax.swing.JTextField();
+        TextFieldrazonSocial = new javax.swing.JTextField();
+        calleTextField = new javax.swing.JTextField();
+        ciudadTextField = new javax.swing.JTextField();
+        lblCiudad = new javax.swing.JLabel();
+        codigoPostalTextField = new javax.swing.JTextField();
+        correoTextField = new javax.swing.JTextField();
         BtnLimpiarEspacios = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        pnlDatosPedido = new javax.swing.JPanel();
+        lblDatosPedido = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        datosPedidoTextArea = new javax.swing.JTextArea();
         btnEnviar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        cfdiComboBox = new javax.swing.JComboBox<>();
+        lblsituacionFiscal = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(1331, 772));
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Ingrese los Datos");
+        lblTitulo.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
+        lblTitulo.setText("Ingrese los Datos");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("RFC: ");
+        lblRfc.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblRfc.setText("RFC: ");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Razón social:");
+        lblRazonSocial.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblRazonSocial.setText("Razón social:");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Uso de  CFDI:");
+        lblCFDI.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCFDI.setText("Uso de  CFDI:");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Direccion:");
+        lblDireccion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblDireccion.setText("Direccion:");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Codigo Postal:");
+        lblCodigoPostal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblCodigoPostal.setText("Codigo Postal:");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("Correo: ");
+        lblCorreo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCorreo.setText("Correo: ");
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel10.setText("Calle:");
+        lblCalle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblCalle.setText("Calle:");
 
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        rfcTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                rfcTextFieldActionPerformed(evt);
             }
         });
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        ciudadTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                ciudadTextFieldActionPerformed(evt);
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel11.setText("Ciudad:");
+        lblCiudad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblCiudad.setText("Ciudad:");
 
         BtnLimpiarEspacios.setBackground(new java.awt.Color(35, 53, 74));
         BtnLimpiarEspacios.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
         BtnLimpiarEspacios.setForeground(new java.awt.Color(255, 255, 255));
         BtnLimpiarEspacios.setText("Limpiar Espacios");
         BtnLimpiarEspacios.setToolTipText("");
+        BtnLimpiarEspacios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLimpiarEspaciosActionPerformed(evt);
+            }
+        });
 
-        jPanel1.setBackground(new java.awt.Color(248, 248, 248));
+        pnlDatosPedido.setBackground(new java.awt.Color(248, 248, 248));
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setText("Datos del Pedido:\n\n");
+        lblDatosPedido.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblDatosPedido.setText("Datos del Pedido:\n\n");
 
-        jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setRows(5);
-        jTextArea1.setText("N°  de Pedido:  214.\n\nProveedor: pescadería Mar de cortes.\n\nCantidad: 15,265.00 MXN.\n\nFecha de pago:  30 - 03- 2026.");
-        jScrollPane1.setViewportView(jTextArea1);
+        datosPedidoTextArea.setColumns(20);
+        datosPedidoTextArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        datosPedidoTextArea.setRows(5);
+        jScrollPane1.setViewportView(datosPedidoTextArea);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlDatosPedidoLayout = new javax.swing.GroupLayout(pnlDatosPedido);
+        pnlDatosPedido.setLayout(pnlDatosPedidoLayout);
+        pnlDatosPedidoLayout.setHorizontalGroup(
+            pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
+                .addGroup(pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
                         .addGap(149, 149, 149)
-                        .addComponent(jLabel12))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblDatosPedido))
+                    .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlDatosPedidoLayout.setVerticalGroup(
+            pnlDatosPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDatosPedidoLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jLabel12)
+                .addComponent(lblDatosPedido)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -169,6 +177,19 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
             }
         });
 
+        cfdiComboBox.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        cfdiComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Adquisición de mercancías", "Devoluciones", "descuentos o bonificaciones", "Gastos en general", "Construcciones", "Equipo de transporte", "Equipo de cómputo" }));
+        cfdiComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cfdiComboBoxActionPerformed(evt);
+            }
+        });
+
+        lblsituacionFiscal.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblsituacionFiscal.setText("Situación Fiscal");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "601 General de Ley Personas Morales", "603 Personas Morales con Fines no Lucrativos", "605 Sueldos y Salarios e Ingresos Asimilados", "606 Arrendamiento", "607 Régimen de Enajenación o Adquisición de Bienes", "608 Demás ingresos", "610 Residentes en el Extranjero sin Establecimiento Permanente", "611 Ingresos por Dividendos", "612 Personas Físicas con Actividades Empresariales y Profesionales", "614 Ingresos por intereses", "615 Régimen de los ingresos por obtención de premios", "616 Sin obligaciones fiscales", "621 Incorporación Fiscal", "625 Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas", "626 Régimen Simplificado de Confianza" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -177,156 +198,326 @@ public class pnlDatosFacturacion extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jTextField4))))
-                        .addGap(921, 921, 921))
+                        .addComponent(calleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(ciudadTextField)
+                        .addGap(296, 296, 296)
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(146, 146, 146)
+                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(173, 173, 173))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 1042, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(46, 46, 46)
-                                        .addComponent(BtnLimpiarEspacios)))
-                                .addGap(113, 113, 113))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(146, 146, 146)
-                .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(173, 173, 173))
+                                    .addComponent(TextFieldrazonSocial, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+                                    .addComponent(cfdiComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblRfc)
+                                            .addComponent(lblTitulo)
+                                            .addComponent(lblCFDI)
+                                            .addComponent(lblRazonSocial)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(rfcTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(49, 49, 49)
+                                                .addComponent(BtnLimpiarEspacios)))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(113, 113, 113))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblsituacionFiscal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCorreo)
+                            .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblCalle)
+                                .addGap(112, 112, 112)
+                                .addComponent(lblCiudad))
+                            .addComponent(codigoPostalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDireccion)
+                            .addComponent(lblCodigoPostal))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(jLabel1)
-                .addGap(56, 56, 56)
+                .addComponent(lblTitulo)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnLimpiarEspacios, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel11))
-                        .addGap(204, 204, 204))
+                        .addGap(56, 56, 56)
+                        .addComponent(pnlDatosPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(150, 150, 150)
+                        .addGap(35, 35, 35)
+                        .addComponent(lblRfc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rfcTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BtnLimpiarEspacios, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addComponent(lblRazonSocial)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextFieldrazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCFDI)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cfdiComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblsituacionFiscal)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jTextField3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(137, 137, 137))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDireccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblCiudad)
+                            .addComponent(lblCalle))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ciudadTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(calleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCodigoPostal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(codigoPostalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCorreo)
+                        .addGap(18, 18, 18)
+                        .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(240, 240, 240))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void ciudadTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ciudadTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_ciudadTextFieldActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void rfcTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rfcTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_rfcTextFieldActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+    if (!validarCampos()) {
+        return;
+    }
 
+    solicitudFacturaDTO.setRfc(rfcTextField.getText());
+    solicitudFacturaDTO.setRazonSocial(TextFieldrazonSocial.getText());
+    solicitudFacturaDTO.setUsoCFDI((String) cfdiComboBox.getSelectedItem());
+    solicitudFacturaDTO.setCalle(calleTextField.getText());
+    solicitudFacturaDTO.setColonia(ciudadTextField.getText());
+    solicitudFacturaDTO.setCp(codigoPostalTextField.getText());
+    solicitudFacturaDTO.setCorreo(correoTextField.getText());
+
+    pnlConfirmacion = new pnlConfirmacionFactura();
+    pnlConfirmacion.setSolicitudDTO(solicitudFacturaDTO);
+    pnlConfirmacion.setControl(solicitudControl);                    // ← ESTA LÍNEA DEBE ESTAR
+    pnlConfirmacion.setOrdenControl(ordenControl);
+    pnlConfirmacion.setIdOrden(solicitudFacturaDTO.getOrden_id());
 
     JDialog dialogo = new JDialog();
-    setPreferredSize(new Dimension(1060, 492));
+    dialogo.setUndecorated(true);
     dialogo.setModal(true);
     dialogo.setTitle("Confirmación");
-    dialogo.setContentPane(new pnlConfirmacion());
+    dialogo.add(pnlConfirmacion);
+    dialogo.setPreferredSize(new Dimension(600, 400));
     dialogo.pack();
     dialogo.setLocationRelativeTo(this);
     dialogo.setVisible(true);
-    dialogo.setUndecorated(true);
-    
+
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
+              // Limpiar campos
+    rfcTextField.setText("");
+    TextFieldrazonSocial.setText("");
+    calleTextField.setText("");
+    ciudadTextField.setText("");
+    codigoPostalTextField.setText("");
+    correoTextField.setText("");
+    limpiarErrores();
+    
+    // Regresar a SeleccionOrden
 
+           pnlContainer.removeAll();
+        pnlContainer.add(pnlSeleccionOrden, BorderLayout.CENTER);
+        lblVentana.setText("Solicitud de Facturación");
+        pnlContainer.revalidate();
+        pnlContainer.repaint();
+    
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void BtnLimpiarEspaciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLimpiarEspaciosActionPerformed
+        rfcTextField.setText("");
+        TextFieldrazonSocial.setText("");
+        calleTextField.setText("");
+        ciudadTextField.setText("");
+        codigoPostalTextField.setText("");
+        correoTextField.setText("");
+
+    }//GEN-LAST:event_BtnLimpiarEspaciosActionPerformed
+
+    private void cfdiComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cfdiComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cfdiComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLimpiarEspacios;
+    private javax.swing.JTextField TextFieldrazonSocial;
     private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField calleTextField;
+    private javax.swing.JComboBox<String> cfdiComboBox;
+    private javax.swing.JTextField ciudadTextField;
+    private javax.swing.JTextField codigoPostalTextField;
+    private javax.swing.JTextField correoTextField;
+    private javax.swing.JTextArea datosPedidoTextArea;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JLabel lblCFDI;
+    private javax.swing.JLabel lblCalle;
+    private javax.swing.JLabel lblCiudad;
+    private javax.swing.JLabel lblCodigoPostal;
+    private javax.swing.JLabel lblCorreo;
+    private javax.swing.JLabel lblDatosPedido;
+    private javax.swing.JLabel lblDireccion;
+    private javax.swing.JLabel lblRazonSocial;
+    private javax.swing.JLabel lblRfc;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblsituacionFiscal;
+    private javax.swing.JPanel pnlDatosPedido;
+    private javax.swing.JTextField rfcTextField;
     // End of variables declaration//GEN-END:variables
+
+    private void inicializarComboBoxes() {
+        String[] usoCFDI = {
+            "Adquisición de mercancías",
+            "Devoluciones, descuentos o bonificaciones",
+            "Gastos en general",
+            "Construcciones",
+            "Equipo de transporte",
+            "Equipo de cómputo"
+        };
+
+        for (String item : usoCFDI) {
+            cfdiComboBox.addItem(item);
+        }
+    }
+
+    public void setSolicitudControl(ISolicitudFacturaControl control) {
+        this.solicitudControl = control;
+    }
+
+    public void setSolicitudFactura(SolicitudFacturaDTO solicitud) {
+        this.solicitudFacturaDTO = solicitud;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        String datosText = String.format(
+                "N° de Pedido: %s\n\n"
+                + "Proveedor: %s\n\n"
+                + "Fecha: %s",
+                solicitud.getOrden_id(),
+                solicitud.getRazonSocial(),
+                sdf.format(solicitud.getFechaSolicitud())
+        );
+
+        datosPedidoTextArea.setText(datosText);
+    }
+
+    private boolean validarCampos() {
+        if (rfcTextField.getText().trim().isEmpty()) {
+            marcarCampoError(rfcTextField);
+            JOptionPane.showMessageDialog(this, "El RFC es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (TextFieldrazonSocial.getText().trim().isEmpty()) {
+            marcarCampoError(TextFieldrazonSocial);
+            JOptionPane.showMessageDialog(this, "La Razón Social es obligatoria", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (calleTextField.getText().trim().isEmpty()) {
+            marcarCampoError(calleTextField);
+            JOptionPane.showMessageDialog(this, "La Calle es obligatoria", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (ciudadTextField.getText().trim().isEmpty()) {
+            marcarCampoError(ciudadTextField);
+            JOptionPane.showMessageDialog(this, "La Ciudad es obligatoria", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (codigoPostalTextField.getText().trim().isEmpty()) {
+            marcarCampoError(codigoPostalTextField);
+            JOptionPane.showMessageDialog(this, "El Código Postal es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (correoTextField.getText().trim().isEmpty()) {
+            marcarCampoError(correoTextField);
+            JOptionPane.showMessageDialog(this, "El Correo es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        limpiarErrores();
+        return true;
+    }
+
+    private void marcarCampoError(javax.swing.JTextField campo) {
+        campo.setBackground(new Color(255, 200, 200));
+        campo.setForeground(Color.RED);
+    }
+
+    private void limpiarErrores() {
+        rfcTextField.setBackground(Color.WHITE);
+        TextFieldrazonSocial.setBackground(Color.WHITE);
+        calleTextField.setBackground(Color.WHITE);
+        ciudadTextField.setBackground(Color.WHITE);
+        codigoPostalTextField.setBackground(Color.WHITE);
+        correoTextField.setBackground(Color.WHITE);
+
+        rfcTextField.setForeground(Color.BLACK);
+        TextFieldrazonSocial.setForeground(Color.BLACK);
+        calleTextField.setForeground(Color.BLACK);
+        ciudadTextField.setForeground(Color.BLACK);
+        codigoPostalTextField.setForeground(Color.BLACK);
+        correoTextField.setForeground(Color.BLACK);
+    }
+
+    public void setOrdenControl(IOrdenControl control) {
+        this.ordenControl = control;
+    }
+    
+public void setReferences(javax.swing.JPanel container, 
+                          SeleccionOrden seleccion, 
+                          javax.swing.JLabel lbl) {
+    this.pnlContainer = container;
+    this.pnlSeleccionOrden = seleccion;
+    this.lblVentana = lbl;
+}
+
+private void limpiarTodosCampos() {
+    rfcTextField.setText("");
+    TextFieldrazonSocial.setText("");
+    calleTextField.setText("");
+    ciudadTextField.setText("");
+    codigoPostalTextField.setText("");
+    correoTextField.setText("");
+    limpiarErrores();
+}
+
 }
