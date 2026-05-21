@@ -1,6 +1,10 @@
-C:\NetBeansProjects\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\insumo\IInsumoDAO.java
-C:\NetBeansProjects\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\insumo\InsumoDAO.java
-C:\NetBeansProjects\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\inventario\IInventarioDAO.java
-C:\NetBeansProjects\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\inventario\InventarioDAO.java
-C:\NetBeansProjects\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\merma\IMermasDAO.java
-C:\NetBeansProjects\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\merma\MermasDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\insumo\IInsumoDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\insumo\InsumoDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\inventario\IInventarioDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\inventario\InventarioDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\merma\IMermasDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\merma\MermasDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\solicitudFactura\ISolicitudFacturaDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_mariscos\solicitudFactura\SolicitudFacturaDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_orden\IOrdenDAO.java
+C:\Users\52644\Documents\NetBeansProjects\GitHub\SIGINV-Mariscos-Obregon\SIGINV UNIFICADO\persistencia_mariscos\src\main\java\com\mycompany\persistencia_orden\OrdenDAO.java
