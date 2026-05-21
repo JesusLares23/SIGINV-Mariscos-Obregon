@@ -1,6 +1,6 @@
 package com.mycompany.presentacion_mariscos.SolicitudFactura;
 
-//import com.mycompany.apifacturacion.ApiFacturacion;
+import com.mycompany.apifacturacion.ApiFacturacion;
 import com.mycompany.controller_marisco.orden.IOrdenControl;
 import com.mycompany.controller_mariscos.solicitudFactura.ISolicitudFacturaControl;
 import com.mycompany.dto_mariscos.mermas.OrdenDTO;
@@ -157,7 +157,7 @@ public class pnlConfirmacionFactura extends JPanel {
             actualizarEstadoOrden();
  
             // PROCESAR SOLICITUDES Y ACTUALIZAR ESTADO EN MONGO
-            //ApiFacturacion.procesarSolicitudes();
+            ApiFacturacion.procesarSolicitudes();
         
 
             JOptionPane.showMessageDialog(
