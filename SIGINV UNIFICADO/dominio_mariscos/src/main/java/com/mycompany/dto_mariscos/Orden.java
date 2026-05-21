@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 /**
@@ -20,6 +21,7 @@ public class Orden {
     private String proveedor;         
     private String estado;            // "Pendiente", "Confirmada", "Pagada", etc.
     private String estadoFacturacion; // "Sin Facturar" / "Facturada"
+    @BsonIgnore
     private Map<String, Double> items; // ObjectId de insumo y cantidad solicitada
 
     public Orden(ObjectId _id, int numeroOrden, Instant fechaCreacion, String responsable, String proveedor, String estado, String estadoFacturacion, Map<String, Double> items) {

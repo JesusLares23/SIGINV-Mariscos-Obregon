@@ -44,6 +44,13 @@ public class PnlProductos extends javax.swing.JPanel {
 
         initComponents();
         generarCardsInsumos();
+        
+        barraBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filtrarCards(barraBusqueda.getText());
+            }
+        });
     }
 
     /**
@@ -139,6 +146,7 @@ public class PnlProductos extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void generarCardsInsumos() {
+        filtrarCards("");
         for (Inventario inventario : listaInventario) {
             CardInsumos card = new CardInsumos(inventario);
 
@@ -182,6 +190,49 @@ public class PnlProductos extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error al cargar inventario: " + e);
             
         }
+    }
+    
+    private void filtrarCards(String textoBusqueda) {
+        pnlCards.removeAll(); // limpia los cards actuales
+
+        List<Inventario> filtrados;
+
+        if (textoBusqueda == null || textoBusqueda.isBlank()) {
+            filtrados = listaInventario; // muestra todos
+        } else {
+            // filtra por nombre ignorando mayusculas
+            filtrados = listaInventario.stream()
+                .filter(inv -> inv.getInsumo().getNombre()
+                    .toLowerCase()
+                    .contains(textoBusqueda.toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+        }
+
+        // regenera los cards con la lista filtrada
+        for (Inventario inventario : filtrados) {
+            CardInsumos card = new CardInsumos(inventario);
+
+            card.getBtnAgregar().addActionListener(e -> {
+                Double cantidad = Double.valueOf(card.getTxtCantidad().getText());
+
+                boolean yaExiste = pnlCarrito.getListaOrden().stream()
+                    .anyMatch(i -> i.getInventario().getInsumo().getNombre()
+                        .equals(inventario.getInsumo().getNombre()));
+
+                if (yaExiste) {
+                    System.out.println("El insumo ya esta en el carrito");
+                    return;
+                }
+
+                pnlCarrito.agregarItemAlCarrito(inventario, cantidad);
+                card.getTxtCantidad().setText("0");
+            });
+
+            pnlCards.add(card);
+        }
+
+        pnlCards.revalidate();
+        pnlCards.repaint();
     }
 
 

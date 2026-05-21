@@ -89,5 +89,70 @@ public class OrdenControl implements IOrdenControl{
 
         return dto;
     }
+    
+       @Override
+public List<Orden> obtenerOrdenesFacturables(int ano, String ordenamiento) throws DaoException {
+    try {
+        List<Orden> ordenes = ordenDAO.findByAno(ano);
+        
+        List<Orden> facturables = new ArrayList<>();
+        for (Orden orden : ordenes) {
+            String estado = orden.getEstadoFacturacion();
+            if (estado != null && 
+                (estado.equalsIgnoreCase("pendiente") || 
+                 estado.equalsIgnoreCase("sin facturar") ||
+                 estado.equalsIgnoreCase("por facturar"))) {
+                facturables.add(orden);
+            }
+        }
+        
+        if ("nuevo".equalsIgnoreCase(ordenamiento)) {
+            facturables.sort((o1, o2) -> o2.getFechaCreacion().compareTo(o1.getFechaCreacion()));
+        } else {
+            facturables.sort((o1, o2) -> o1.getFechaCreacion().compareTo(o2.getFechaCreacion()));
+        }
+        
+        return facturables;
+    } catch (Exception ex) {
+        throw new DaoException("Error al obtener órdenes facturables: " + ex.getMessage(), ex);
+    }
+}
+
+    @Override
+    public boolean actualizarSoloEstadoFacturacion(String id, String nuevoEstadoFacturacion) throws Exception {
+    try {
+        if (nuevoEstadoFacturacion == null || nuevoEstadoFacturacion.isEmpty()) {
+            throw new Exception("El estado de facturación no puede estar vacío.");
+        }
+        return ordenDAO.actualizarSoloEstadoFacturacion(id, nuevoEstadoFacturacion);
+    } catch (DaoException e) {
+        throw new Exception("Error en control al actualizar estado de facturación: " + e.getMessage());
+    }
+}
+    
+        public boolean actualizarEstadoFacturacion(String id, String nuevoEstadoFacturacion) throws Exception {
+        try {
+            if (nuevoEstadoFacturacion == null || nuevoEstadoFacturacion.isEmpty()) {
+                throw new Exception("El estado de facturación no puede estar vacío.");
+            }
+            return ordenDAO.actualizarEstadoFacturacion(id, nuevoEstadoFacturacion);
+        } catch (DaoException e) {
+            throw new Exception("Error en control al actualizar estado de facturación: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    public List<com.mycompany.dto_mariscos.Orden> listarOrdenesEntidades() throws Exception {
+        try {
+            return ordenDAO.listarOrdenes();
+        } catch (DaoException e) {
+            throw new Exception("Error en control al listar órdenes: " + e.getMessage());
+        }
+    }
+    
+    
+    
+    
+    
 
 }

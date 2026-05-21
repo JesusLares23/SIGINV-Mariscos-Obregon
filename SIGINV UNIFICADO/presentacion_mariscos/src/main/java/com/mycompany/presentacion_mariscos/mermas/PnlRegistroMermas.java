@@ -46,41 +46,40 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
     
     //DAO Y CONTROLLER
     private IMermaControl mermaControl;
+   
     
-    private IInsumoDAO insumoDAO;
-    private IInsumoControl insumoControl;
-    
-    private IInventarioDAO inventarioDAO;
     private IInventarioControl inventarioControl;
     
     
-    //Lista Mermas
+    private IInsumoControl insumoControl;
+    
+    //Lista inventario
     private List<Inventario> listaInventario;
     
-    //Panel de Registro de Mermas
-    PnlRegistroMermas pnlRegistroMermas;
+    
+    
+    
     
 
     /**
      * Creates new form pnlTablaMermas
      */
-    public PnlRegistroMermas(IMermaControl mermaControl) {
+    public PnlRegistroMermas(IMermaControl mermaControl, IInventarioControl inventarioControl, IInsumoControl insumoControl) {
         this.mermaControl = mermaControl;
+        this.inventarioControl = inventarioControl;
+        this.insumoControl = insumoControl;
         
         
-        insumoDAO = new InsumoDAO();
-        insumoControl = new InsumoControl(insumoDAO);
         
-        inventarioDAO = new InventarioDAO();
-        inventarioControl = new InventarioControl(inventarioDAO);
         
         initComponents();
         
-        
-        
-        
         configurarTabla();
         cargarInsumos();
+        
+        ((javax.swing.text.AbstractDocument) txtCantPerdida.getDocument()).setDocumentFilter(new MyDecimalFilter());
+        
+        
     }
 
     /**
@@ -153,6 +152,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
         txtInsumo.setBackground(new java.awt.Color(204, 204, 204));
         txtInsumo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtInsumo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtInsumo.setFocusable(false);
 
         txtCantPerdida.setBackground(new java.awt.Color(255, 255, 255));
@@ -160,6 +160,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
         txtUnidadMedida.setBackground(new java.awt.Color(204, 204, 204));
         txtUnidadMedida.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        txtUnidadMedida.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtUnidadMedida.setFocusable(false);
 
         lblCausaMerma.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
@@ -289,6 +290,11 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             }
         ));
         tblInsumos.setSelectionBackground(new java.awt.Color(35, 52, 75));
+        tblInsumos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInsumosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblInsumos);
 
         btnRegistrarMerma.setBackground(new java.awt.Color(35, 52, 75));
@@ -397,10 +403,6 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         try{
             
             String nombre = txtInsumo.getText();
-            
-//            Insumo insumo = insumoControl.obtenerInsumoPorNombre(nombre);
-//            String id = insumo.getId().toHexString();
-            
             double cantPerdida = Double.parseDouble(txtCantPerdida.getText());
             String unidadMedida = txtUnidadMedida.getText();
             String causaMerma = comboCausa.getSelectedItem().toString();
@@ -413,6 +415,19 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             if (chooserFecha.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Seleccione una fecha");
                 return;
+            }
+            
+            // Confirmacion antes de registrar
+            int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea registrar la merma?",
+                "Confirmar registro",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return; // El usuario cancelo
             }
         
             //Convertir Date a LocalDateTime
@@ -429,7 +444,7 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
 
                     
         }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número válido");
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser un numero valido");
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "Error al registrar merma: " + e.getMessage());
 
@@ -467,6 +482,17 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
             leerQR(archivo);
         }
     }//GEN-LAST:event_btnSeleccionarQRActionPerformed
+
+    private void tblInsumosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInsumosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblInsumos.getSelectedRow();
+        if (fila >= 0) {
+            int indiceReal = paginaActual * REGISTROS_POR_PAGINA + fila;
+            Inventario inventario = listaInventario.get(indiceReal); // ✅
+            txtInsumo.setText(inventario.getInsumo().getNombre());
+            txtUnidadMedida.setText(inventario.getInsumo().getUnidadMedida());
+        }
+    }//GEN-LAST:event_tblInsumosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -581,6 +607,27 @@ public class PnlRegistroMermas extends javax.swing.JPanel {
         } catch (Exception e) {
             
             JOptionPane.showMessageDialog(this, "Error al leer QR: " + e.getMessage());
+        }
+    }
+    
+    //Filtro para txtCantPerdida para que solo acepte numeros enteros y decimales
+    class MyDecimalFilter extends javax.swing.text.DocumentFilter {
+        private static final String REGEX = "^[0-9]*\\.?[0-9]*$";
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) 
+                throws javax.swing.text.BadLocationException {
+            String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+            String nextText = currentText.substring(0, offset) + string + currentText.substring(offset);
+            if (nextText.matches(REGEX)) { super.insertString(fb, offset, string, attr); }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                throws javax.swing.text.BadLocationException {
+            String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+            String nextText = currentText.substring(0, offset) + text + currentText.substring(offset + length);
+            if (nextText.matches(REGEX)) { super.replace(fb, offset, length, text, attrs); }
         }
     }
 
