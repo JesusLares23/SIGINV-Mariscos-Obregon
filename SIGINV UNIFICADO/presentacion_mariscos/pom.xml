@@ -55,10 +55,20 @@
             <artifactId>javase</artifactId>
             <version>3.5.2</version>
         </dependency>
+        
+        <!-- API FACTURACIÓN NECESARIA PARA CU3: SOLICITUD DE FACTURA!-->
+        <dependency>
+            <groupId>com.mycompany</groupId>
+            <artifactId>ApiFacturadoraMock</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
+       
+        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.mycompany.presentacion_mariscos.Presentacion_mariscos</exec.mainClass>
+        <exec.mainClass>com.mycompany.presentacion_mariscos.MainFrame</exec.mainClass>
     </properties>
 </project>
