@@ -11,8 +11,11 @@ import com.mongodb.client.result.UpdateResult;
 import com.mycompany.config_mariscos.MongoClientProvider;
 import com.mycompany.dto_mariscos.Orden;
 import com.mycompany.exception_mariscos.DaoException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.bson.types.ObjectId;
 
 /**
@@ -89,4 +92,25 @@ public class OrdenDAO implements IOrdenDAO{
         }
     }
     
+    public void insertarOrdenProvisional() throws DaoException {
+        try {
+            Orden orden = new Orden();
+            orden.setNumeroOrden(2026002);
+            orden.setFechaCreacion(Instant.now());
+            orden.setResponsable("Sistema - Test");
+            orden.setProveedor("Mariscos del Yaqui");
+            orden.setEstado("Pendiente");
+            orden.setEstadoFacturacion("Sin Facturar");
+
+            Map<String, Double> items = new HashMap<>();
+            items.put("6a00dc3cb11dcb39618c0b32", 45.5);
+            orden.setItems(items);
+
+            col.insertOne(orden);
+            System.out.println("Orden de prueba insertada con éxito.");
+        } catch (Exception e) {
+            throw new DaoException("Error al insertar orden provisional: " + e.getMessage());
+        }
+    }
+
 }

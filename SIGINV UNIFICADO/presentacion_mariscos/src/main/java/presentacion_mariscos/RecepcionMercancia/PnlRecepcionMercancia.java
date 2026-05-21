@@ -4,6 +4,14 @@
  */
 package presentacion_mariscos.RecepcionMercancia;
 
+import com.mycompany.controller_marisco.orden.IOrdenControl;
+import com.mycompany.controller_marisco.orden.OrdenControl;
+import com.mycompany.controller_mariscos.insumo.IInsumoControl;
+import com.mycompany.controller_mariscos.insumo.InsumoControl;
+import com.mycompany.dto_mariscos.Insumo;
+import com.mycompany.dto_mariscos.mermas.InsumoDTO;
+import com.mycompany.dto_mariscos.mermas.OrdenDTO;
+import com.mycompany.persistencia_mariscos.insumo.InsumoDAO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,14 +23,18 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,6 +45,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -45,20 +59,27 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
     private final Color COLOR_ROJO_FAIL = new Color(255, 204, 201);
     private final Color COLOR_BTN_FINALIZAR = new Color(74, 184, 102);
 
-    private JComboBox<String> cbOrdenes;
+    private JComboBox<OrdenDTO> cbOrdenes;
     private JLabel lblProveedor, lblFecha, lblEstado;
     private JTable tablaDetalles;
     private DefaultTableModel modeloTabla;
     private JPanel pnlListaResumen;
-    private JLabel lblSubtotal, lblIVA, lblTotal;
+    private OrdenDTO ordenSeleccionada;
+    
+    private IOrdenControl ordenControl;
+    private IInsumoControl insumoControl;
 
     /**
      * Creates new form PnlRecepcionMercancia
      */
     public PnlRecepcionMercancia() {
+        this.insumoControl = new InsumoControl(new InsumoDAO());
+        this.ordenControl = new OrdenControl();
         initComponents();
         iniciarComponentes();
         configurarEventos();
+        configurarComboBox(); // Configuramos el Renderer
+        cargarOrdenesDesdeBD();
     }
 
     /**
@@ -104,7 +125,7 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         JPanel pnlCombo = new JPanel(new BorderLayout(0, 5));
         pnlCombo.setOpaque(false);
         pnlCombo.add(new JLabel("Seleccionar orden de compra:"), BorderLayout.NORTH);
-        cbOrdenes = new JComboBox<>(new String[]{"Seleccione una...", "OC-20260215-015", "OC-20260215-016"});
+        cbOrdenes = new JComboBox<>();
         pnlCombo.add(cbOrdenes, BorderLayout.CENTER);
 
         JPanel pnlInfoProv = new JPanel(new GridLayout(3, 1));
@@ -124,10 +145,12 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         pnlIzquierdo.add(pnlHeader, gbcIzq);
 
         // 2. Tabla
-        modeloTabla = new DefaultTableModel(new Object[]{"Ítem", "Pedida", "Recibida", "Unidad", "Validación", "Aprobar", "PrecioHidden"}, 0) {
+        modeloTabla = new DefaultTableModel(
+                new Object[]{"Ítem", "Pedida", "Recibida", "Unidad", "Validación", "Aprobar"}, 0
+        ) {
             @Override
             public boolean isCellEditable(int r, int c) {
-                return c == 2 || c == 4 || c == 5; // Solo recibida, botón validación y checkbox
+                return c == 2 || c == 4 || c == 5; // Recibida, Botón y Checkbox
             }
 
             @Override
@@ -189,19 +212,14 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         pnlFooter.setBackground(Color.WHITE);
         pnlFooter.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        lblSubtotal = new JLabel("Subtotal: $0.00");
-        lblIVA = new JLabel("IVA (16%): $0.00");
-        lblTotal = new JLabel("Total: $0.00");
-        lblTotal.setFont(new Font("SansSerif", Font.BOLD, 16));
+
 
         JButton btnFinalizar = new JButton("Finalizar recepción y actualizar stock");
         btnFinalizar.setBackground(COLOR_BTN_FINALIZAR);
         btnFinalizar.setForeground(Color.WHITE);
         btnFinalizar.setFocusPainted(false);
 
-        pnlFooter.add(lblSubtotal);
-        pnlFooter.add(lblIVA);
-        pnlFooter.add(lblTotal);
+
         pnlFooter.add(btnFinalizar);
         pnl.add(pnlFooter, BorderLayout.SOUTH);
 
@@ -209,24 +227,27 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
     }
 
     private void personalizarTabla() {
-        // Ocultar columna de precio (índice 6)
-        tablaDetalles.getColumnModel().getColumn(6).setMinWidth(0);
-        tablaDetalles.getColumnModel().getColumn(6).setMaxWidth(0);
+        TableColumnModel columnModel = tablaDetalles.getColumnModel();
 
-        // Renderer y Editor para el botón de Validación (Columna 4)
-        TableColumn colValidacion = tablaDetalles.getColumnModel().getColumn(4);
-        colValidacion.setCellRenderer(new BotonEstadoRenderer());
-        colValidacion.setCellEditor(new BotonEstadoEditor(new JCheckBox()));
+        columnModel.getColumn(0).setPreferredWidth(200); // Ítem
+        columnModel.getColumn(1).setPreferredWidth(80);  // Pedida
+        columnModel.getColumn(2).setPreferredWidth(80);  // Recibida
+        columnModel.getColumn(3).setPreferredWidth(80);  // Unidad
+        columnModel.getColumn(4).setPreferredWidth(120); // Validación (Botón)
+        columnModel.getColumn(5).setPreferredWidth(80);  // Aprobar (Checkbox)
+
+        // Configurar el Renderer y Editor del botón en la columna 4
+        columnModel.getColumn(4).setCellRenderer(new BotonEstadoRenderer());
+        columnModel.getColumn(4).setCellEditor(new BotonEstadoEditor(new JCheckBox()));
     }
 
     private void configurarEventos() {
         // Evento Combo Box
         cbOrdenes.addActionListener(e -> {
-            String selected = (String) cbOrdenes.getSelectedItem();
-            if (selected.equals("Seleccione una...")) {
-                limpiarTodo();
-            } else {
-                cargarDatosSimulados(selected);
+            OrdenDTO seleccionada = (OrdenDTO) cbOrdenes.getSelectedItem();
+            if (seleccionada != null) {
+                System.out.println("Orden seleccionada: " + seleccionada.getNumeroOrden());
+                cargarDatosReales(seleccionada);
             }
         });
 
@@ -238,42 +259,94 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         });
     }
 
-    private void cargarDatosSimulados(String oc) {
-        limpiarTodo();
-        lblProveedor.setText("Proveedor: Mariscos del Yaqui");
-        lblFecha.setText("Fecha: 15/02/2026");
-        lblEstado.setText("Estado: Pendiente");
+    
+    private void cargarDatosReales(OrdenDTO orden) {
+        modeloTabla.setRowCount(0); // Limpiar tabla
 
-        // Simulamos datos de persistencia: {Nombre, CantPedida, CantRecibida, Unidad, Estado, Check, PrecioUnitario}
-        modeloTabla.addRow(new Object[]{"Filete de pescado", 30, 30, "KG", "Buen estado", false, 25.20});
-        modeloTabla.addRow(new Object[]{"Tomate fresco", 25, 0, "KG", "Buen estado", false, 8.00});
-        modeloTabla.addRow(new Object[]{"Sal de grano", 5, 5, "KG", "Buen estado", false, 40.00});
+
+        lblProveedor.setText("Proveedor: " + orden.getProveedor());
+
+        if (orden.getFechaCreacion() != null) {
+            lblFecha.setText("Fecha de pedido: " + orden.getFechaCreacion().toString());
+        } else {
+            lblFecha.setText("Fecha de pedido: No disponible");
+        }
+        
+        lblEstado.setText("Estado: " + orden.getEstado());
+        
+        orden.getItems().forEach((idInsumo, cantidadPedida) -> {
+            System.out.println("Buscando insumo con ID: " + idInsumo);
+            try {
+                // Buscamos los detalles del insumo para mostrar Nombre y Unidad
+                Insumo insumo = insumoControl.obtenerInsumoPorId(new ObjectId(idInsumo));
+
+                modeloTabla.addRow(new Object[]{
+                    insumo.getNombre(), // Nombre real del insumo
+                    cantidadPedida, // Cantidad desde la Orden
+                    0, // Cantidad Recibida inicial
+                    insumo.getUnidadMedida(), // Unidad (KG, PZ, etc)
+                    "Buen estado",
+                    false 
+                });
+            } catch (Exception e) {
+                System.err.println("Error al cargar item de insumo: " + e.getMessage());
+            }
+        });
+        
+        modeloTabla.fireTableDataChanged();
+        tablaDetalles.revalidate();
+        tablaDetalles.repaint();
     }
+    
+    
+//    private void cargarDatosSimulados(String oc) {
+//        limpiarTodo();
+//        lblProveedor.setText("Proveedor: Mariscos del Yaqui");
+//        lblFecha.setText("Fecha: 15/02/2026");
+//        lblEstado.setText("Estado: Pendiente");
+//        
+//        try{
+//            List<OrdenDTO> listaOrdenesActivas = ordenControl.listarOrdenes();
+//            for (OrdenDTO orden: listaOrdenesActivas) {
+//                
+//            }
+//            
+//            
+//            
+//            
+//        }
+//        catch(Exception ex){
+//            System.out.println("error: " + ex.getMessage());
+//        }
+//        
+//        
+//        // Simulamos datos de persistencia: {Nombre, CantPedida, CantRecibida, Unidad, Estado, Check, PrecioUnitario}
+//        modeloTabla.addRow(new Object[]{"Filete de pescado", 30, 30, "KG", "Buen estado", false, 25.20});
+//        modeloTabla.addRow(new Object[]{"Tomate fresco", 25, 0, "KG", "Buen estado", false, 8.00});
+//        modeloTabla.addRow(new Object[]{"Sal de grano", 5, 5, "KG", "Buen estado", false, 40.00});
+//    }
 
     private void actualizarResumen() {
         pnlListaResumen.removeAll();
-        double subtotal = 0;
+        int contadorItems = 0;
 
         for (int i = 0; i < modeloTabla.getRowCount(); i++) {
             boolean aprobado = (boolean) modeloTabla.getValueAt(i, 5);
             if (aprobado) {
                 String nombre = (String) modeloTabla.getValueAt(i, 0);
-                int cant = Integer.parseInt(modeloTabla.getValueAt(i, 2).toString());
-                double precioU = (double) modeloTabla.getValueAt(i, 6);
-                double parcial = cant * precioU;
-                subtotal += parcial;
+                String cantRecibida = modeloTabla.getValueAt(i, 2).toString();
+                String unidad = modeloTabla.getValueAt(i, 3).toString();
 
-                JLabel lblItem = new JLabel("• " + nombre + "  $" + String.format("%.2f", parcial));
+                // Solo mostramos información de cantidad y nombre
+                JLabel lblItem = new JLabel("• " + nombre + " (" + cantRecibida + " " + unidad + ")");
                 lblItem.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
                 pnlListaResumen.add(lblItem);
+                contadorItems++;
             }
         }
 
-        double iva = subtotal * 0.16;
-        lblSubtotal.setText("Subtotal: $" + String.format("%.2f", subtotal));
-        lblIVA.setText("IVA (16%): $" + String.format("%.2f", iva));
-        lblTotal.setText("Total: $" + String.format("%.2f", (subtotal + iva)));
-
+        // Opcional: Un label que indique cuántos productos se están aprobando
+        // lblConteoItems.setText("Productos a recibir: " + contadorItems);
         pnlListaResumen.revalidate();
         pnlListaResumen.repaint();
     }
@@ -282,10 +355,63 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         modeloTabla.setRowCount(0);
         pnlListaResumen.removeAll();
         lblProveedor.setText("Proveedor: -");
-        lblSubtotal.setText("Subtotal: $0.00");
-        lblTotal.setText("Total: $0.00");
         pnlListaResumen.revalidate();
         pnlListaResumen.repaint();
+    }
+
+    private void configurarComboBox() {
+        Object seleccionado = cbOrdenes.getSelectedItem();
+
+        if (seleccionado instanceof OrdenDTO) {
+            OrdenDTO orden = (OrdenDTO) seleccionado;
+            // Llamas a tu método de llenado de tabla pasando el DTO real
+            this.llenarTablaConOrden(orden);
+
+            // Actualizar los labels superiores
+            lblProveedor.setText("Proveedor: " + orden.getProveedor());
+            lblFecha.setText("Fecha de pedido: " + orden.getFechaCreacion().toString());
+            lblEstado.setText("Estado: " + orden.getEstado());
+        } else {
+            limpiarTodo();
+        }
+    }
+
+    private void llenarTablaConOrden(OrdenDTO orden) {
+        modeloTabla.setRowCount(0);
+
+        orden.getItems().forEach((idInsumo, cantidadPedida) -> {
+            try {
+                Insumo insumo = insumoControl.obtenerInsumoPorId(new ObjectId(idInsumo));
+                if (insumo != null) {
+                    modeloTabla.addRow(new Object[]{
+                        insumo.getNombre(),
+                        cantidadPedida,
+                        cantidadPedida,
+                        insumo.getUnidadMedida(),
+                        "Buen estado",
+                        false
+                    });
+                }
+            } catch (Exception ex) {
+                System.err.println("Error al cargar insumo: " + idInsumo);
+            }
+        });
+    }
+
+    private void cargarOrdenesDesdeBD() {
+        try {
+            List<OrdenDTO> lista = ordenControl.listarOrdenes();
+            cbOrdenes.removeAllItems();
+
+            for (OrdenDTO orden : lista) {
+                if (orden.getEstado().equalsIgnoreCase("Pendiente")
+                        || orden.getEstado().equalsIgnoreCase("Confirmada")) {
+                    cbOrdenes.addItem(orden);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar órdenes: " + e.getMessage());
+        }
     }
 
     // --- CLASES PARA EL BOTÓN DINÁMICO EN LA TABLA ---
