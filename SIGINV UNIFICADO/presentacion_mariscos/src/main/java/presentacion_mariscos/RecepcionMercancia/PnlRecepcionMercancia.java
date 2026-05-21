@@ -36,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -47,6 +48,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.bson.types.ObjectId;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -66,6 +72,8 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
     private JPanel pnlListaResumen;
     private OrdenDTO ordenSeleccionada;
     
+    JTextArea txtNotas;
+    JButton btnFinalizar;
     private IOrdenControl ordenControl;
     private IInsumoControl insumoControl;
 
@@ -172,7 +180,7 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         pnlIzquierdo.add(scroll, gbcIzq);
 
         // 3. Notas
-        JTextArea txtNotas = new JTextArea(3, 20);
+        txtNotas = new JTextArea(3, 20);
         JScrollPane scrollNotas = new JScrollPane(txtNotas);
         scrollNotas.setBorder(BorderFactory.createTitledBorder("Notas de recepción"));
         gbcIzq.gridy = 2;
@@ -214,7 +222,7 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
 
 
 
-        JButton btnFinalizar = new JButton("Finalizar recepción y actualizar stock");
+        btnFinalizar = new JButton("Finalizar recepción y actualizar stock");
         btnFinalizar.setBackground(COLOR_BTN_FINALIZAR);
         btnFinalizar.setForeground(Color.WHITE);
         btnFinalizar.setFocusPainted(false);
@@ -257,6 +265,30 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
                 actualizarResumen();
             }
         });
+
+        btnFinalizar.addActionListener(e -> {
+            // 1. Crear el campo de texto para la contraseña
+            JPasswordField pf = new JPasswordField();
+            int okCancell = JOptionPane.showConfirmDialog(
+                    this,
+                    pf,
+                    "Confirmación de Gerencia - Ingrese Contraseña",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (okCancell == JOptionPane.OK_OPTION) {
+
+                OrdenDTO orden = (OrdenDTO) cbOrdenes.getSelectedItem();
+
+                generarReportePDF(String.valueOf(orden.getNumeroOrden()), orden.getProveedor());
+
+                ejecutarProcesoFinalizacion();
+
+                ejecutarProcesoFinalizacion();
+            }
+        });
+
     }
 
     
@@ -414,6 +446,35 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         }
     }
 
+    private void ejecutarProcesoFinalizacion() {
+        try {
+            System.out.println("Procesando entrada de mercancía...");
+
+            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                boolean aprobado = (boolean) modeloTabla.getValueAt(i, 5);
+                if (aprobado) {
+                    String nombreInsumo = (String) modeloTabla.getValueAt(i, 0);
+                    double cantRecibida = Double.parseDouble(modeloTabla.getValueAt(i, 2).toString());
+                    System.out.println("Insertando al inventario: " + nombreInsumo + " - Cant: " + cantRecibida);
+                }
+            }
+            OrdenDTO seleccionada = (OrdenDTO) cbOrdenes.getSelectedItem();
+            ordenControl.actualizarEstadoOrden(seleccionada.getId(), "Recibido");
+                    
+            
+            
+            JOptionPane.showMessageDialog(this,
+                    "¡Recepción finalizada con éxito!\nEl inventario ha sido actualizado.",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            limpiarFormulario();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al finalizar: " + ex.getMessage());
+        }
+    }
+
     // --- CLASES PARA EL BOTÓN DINÁMICO EN LA TABLA ---
     class BotonEstadoRenderer extends JButton implements TableCellRenderer {
 
@@ -480,7 +541,50 @@ public class PnlRecepcionMercancia extends javax.swing.JPanel {
         }
 
     }
+    
+    private void generarReportePDF(String numeroOrden, String proveedor) {
+        Document documento = new Document();
+        try {
+            String ruta = "Reporte_Recepcion_" + numeroOrden + ".pdf";
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta));
+            documento.open();
 
+            documento.add(new Paragraph("REPORTE DE RECEPCIÓN DE MERCANCÍA"));
+            documento.add(new Paragraph("Orden de Compra: " + numeroOrden));
+            documento.add(new Paragraph("Proveedor: " + proveedor));
+            documento.add(new Paragraph("Fecha: " + LocalDateTime.now().toString()));
+            documento.add(new Paragraph("------------------------------------------------------------------\n\n"));
+
+            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                boolean aprobado = (boolean) modeloTabla.getValueAt(i, 5);
+                if (aprobado) {
+                    String nombre = (String) modeloTabla.getValueAt(i, 0);
+                    String cant = modeloTabla.getValueAt(i, 2).toString();
+                    String unidad = modeloTabla.getValueAt(i, 3).toString();
+
+                    documento.add(new Paragraph("• " + nombre + ": " + cant + " " + unidad));
+                }
+            }
+            documento.add(new Paragraph("------------------------------------------------------------------\n\n"));
+            documento.add(new Paragraph("Notas adicionales: " + txtNotas.getText()));
+            
+            documento.close();
+            JOptionPane.showMessageDialog(this, "PDF generado con éxito: " + ruta);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar PDF: " + e.getMessage());
+        }
+    }
+
+    private void limpiarFormulario() {
+        modeloTabla.setRowCount(0);
+        cbOrdenes.setSelectedIndex(0); // Regresa a "Seleccione una..."
+        lblProveedor.setText("Proveedor: -");
+        lblFecha.setText("Fecha de pedido: -");
+        lblEstado.setText("Estado: -");
+        pnlListaResumen.removeAll();
+        pnlListaResumen.revalidate();
+        pnlListaResumen.repaint();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
