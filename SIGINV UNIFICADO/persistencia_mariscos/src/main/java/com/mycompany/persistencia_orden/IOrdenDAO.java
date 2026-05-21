@@ -37,4 +37,10 @@ public interface IOrdenDAO {
      * @throws DaoException 
      */
     boolean actualizarEstadoOrden(String id, String nuevoEstado) throws DaoException;
+    
+        boolean actualizarEstadoFacturacion(String id, String nuevoEstadoFacturacion) throws DaoException;
+    
+    List<Orden> findByAno(int ano) throws DaoException;
+    boolean actualizarSoloEstadoFacturacion(String id, String nuevoEstadoFacturacion) throws DaoException;
+ 
 }
