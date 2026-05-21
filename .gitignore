@@ -20,10 +20,6 @@
 *.tar.gz
 *.rar
 
-# Ignorar todo target/ menos generados
-**/target/
-!**/target/generated-sources/
-
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
@@ -47,5 +43,10 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/maven,java
+=======
+/nbactions.xml
+# End of https://www.toptal.com/developers/gitignore/api/java,maven
+>>>>>>> 644f217866e7901d0faa977c0d6ecb7b4eb6dae3
 SIGINV UNIFICADO/presentacion_mariscos/nbactions.xml
